@@ -12,9 +12,7 @@
            <div id="main-area">
             <!-- 歡迎欄位（固定顯示） -->
             <div id="welcome-panel">迷途的旅人，請選擇前進的方向來決定你在沙漠中的命運吧！</div>
-            <!-- 角色與敵人資訊（位於歡迎欄下方） -->
-            <div id="status-panel"></div>
-            <!-- 事件與戰鬥說明（在角色資訊下方） -->
+            <!-- 事件與戰鬥說明 -->
             <div id="game-output"></div>
                 <div id="move-controls">
                     <div id="move-buttons">
@@ -24,17 +22,24 @@
                     </div>
                     <div id="map-info">剩餘步數: <span id="map-steps">30</span></div>
                 </div>
-                 <div id="slot-machine">
-                     <div class="reel" id="reel-0"></div>
-                     <div class="reel" id="reel-1"></div>
-                     <div class="reel" id="reel-2"></div>
-                 </div>
-                 <div id="slot-controls">
-                     <button id="spin-btn">旋轉</button>
-                     <button id="stop-btn" disabled>停止</button>
-                     <button id="auto-spin-btn">自動旋轉</button>
-                     <button id="flee-btn">逃離</button>
-                     <button id="equip-btn">裝備</button>
+                 <!-- 戰鬥區域：左側角色資訊 + 中間輪盤 + 右側敵人資訊 -->
+                 <div id="battle-area">
+                     <div id="player-status" class="status-box-side"></div>
+                     <div id="slot-center">
+                         <div id="slot-machine">
+                             <div class="reel" id="reel-0"></div>
+                             <div class="reel" id="reel-1"></div>
+                             <div class="reel" id="reel-2"></div>
+                         </div>
+                         <div id="slot-controls">
+                             <button id="spin-btn">旋轉</button>
+                             <button id="stop-btn" disabled>停止</button>
+                             <button id="auto-spin-btn">自動旋轉</button>
+                             <button id="flee-btn">逃離</button>
+                             <button id="equip-btn">裝備</button>
+                         </div>
+                     </div>
+                     <div id="enemy-status" class="status-box-side"></div>
                  </div>
                 <div id="equipment-panel" style="display:none; border:1px solid #666; padding:8px; background:#fff; position:fixed; right:20px; top:100px; width:240px; z-index:40;">
                     <h3>裝備與背包</h3>

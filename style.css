@@ -188,18 +188,68 @@ body {
     flex: 1 1 0;
 }
 
-#status-panel {
-    background: linear-gradient(180deg,#fff,#fff8eb);
-    border: 1px solid rgba(0,0,0,0.04);
-    padding: 10px 12px;
-    border-radius: 6px;
-    margin-bottom: 12px;
+/* 戰鬥區域佈局：角色-輪盤-敵人 */
+#battle-area {
     display: flex;
+    gap: 16px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    padding: 12px;
+    background: linear-gradient(180deg,#fff,#fff8eb);
+    border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+
+#slot-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: 12px;
-    align-items: flex-start;
-    flex-wrap: nowrap;
+}
+
+.status-box-side {
+    flex: 0 0 180px;
+    background: linear-gradient(180deg,#ffffff,#fffaf0);
+    border-radius: 6px;
+    padding: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    min-height: 200px;
+}
+
+.status-box-side .stat-label {
+    font-weight: 800;
+    margin-bottom: 8px;
+    font-size: 1.1em;
+    text-align: center;
+}
+
+#status-panel {
+    display: none;
 }
 #status-panel .stat { font-weight:700; }
+
+/* 裝備行樣式 */
+.equip-row {
+    margin-top: 8px;
+    font-size: 0.9em;
+}
+.equip-row > div {
+    margin-bottom: 4px;
+}
+.equip-row button {
+    font-size: 0.8em;
+    padding: 2px 6px;
+    margin-left: 4px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    background: #d4a855;
+    color: white;
+}
+.equip-row button:hover {
+    background: #b88f42;
+}
 
 /* 狀態面板左右並列：玩家與敵人 */
 .status-box {
@@ -234,7 +284,14 @@ body {
 
 /* 當畫面窄時轉成直列 */
 @media (max-width:800px) {
-    #status-panel { flex-direction: column; }
+    #battle-area { 
+        flex-direction: column;
+    }
+    .status-box-side {
+        flex: 1 1 auto;
+        width: 100%;
+        min-height: auto;
+    }
 }
 #sidebar {
     width: 220px;
