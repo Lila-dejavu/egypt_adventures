@@ -569,11 +569,11 @@ function genEnemyName(type) {
 				let enemyImage = '';
 				if (this.inBattle && this.enemy.type) {
 					if (this.enemy.type === 'monster') {
-						enemyImage = '<div style="text-align: center; margin-top: 10px;"><img src="m1.jpg" alt="普通敵人" style="width: 250px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);"></div>';
+						enemyImage = '<div style="text-align: center; margin-top: 10px;"><img src="m1.png" alt="普通敵人" style="width: 150px; opacity: 0.9; mix-blend-mode: multiply;"></div>';
 					} else if (this.enemy.type === 'elite') {
-						enemyImage = '<div style="text-align: center; margin-top: 10px;"><img src="m3.png" alt="菁英敵人" style="width: 250px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);"></div>';
+						enemyImage = '<div style="text-align: center; margin-top: 10px;"><img src="m3.png" alt="菁英敵人" style="width: 150px; opacity: 0.9; mix-blend-mode: multiply;"></div>';
 					} else if (this.enemy.type === 'mini_boss') {
-						enemyImage = '<div style="text-align: center; margin-top: 10px;"><img src="m4.png" alt="小頭目" style="width: 250px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);"></div>';
+						enemyImage = '<div style="text-align: center; margin-top: 10px;"><img src="m4.png" alt="小頭目" style="width: 150px; opacity: 0.9; mix-blend-mode: multiply;"></div>';
 					}
 				}
 				
