@@ -1620,7 +1620,7 @@ function genEnemyName(type) {
 	}
 
 	mysteriousStranger() {
-		showMessage('👤 你遇到了一位神秘的陌生人...');
+		showMessage(t('strangerMet'));
 		const outcomes = [
 			{ type: 'gamble', weight: 30 },
 			{ type: 'gift', weight: 25 },
@@ -1638,64 +1638,64 @@ function genEnemyName(type) {
 
 		if (result.type === 'gamble') {
 			if (this.player.gold >= 100) {
-				showMessage('🎲 陌生人邀請你賭一把：投入100金幣，有機會獲得雙倍或失去全部...');
+				showMessage(t('strangerGamble'));
 				if (Math.random() < 0.5) {
 					this.player.gold -= 100;
-					showMessage('😔 你輸了，損失100金幣。');
+					showMessage(t('strangerGambleLost'));
 				} else {
 					this.player.gold += 100;
-					showMessage('🎉 你贏了！獲得200金幣（淨賺100）！');
+					showMessage(t('strangerGambleWon'));
 				}
 			} else {
-				showMessage('陌生人想邀請你賭博，但你的金幣不足（需要100金幣）。');
-				showMessage('陌生人微笑著離開了。');
+				showMessage(t('strangerNoGold'));
+				showMessage(t('strangerLeaves'));
 			}
 		} else if (result.type === 'gift') {
 			const giftType = Math.random();
 			if (giftType < 0.4) {
 				const gold = 80 + Math.floor(Math.random() * 120);
 				this.player.gold += gold;
-				showMessage(`💰 陌生人贈送你 ${gold} 金幣後消失了。`);
+				showMessage(`${t('strangerGiftGold')} ${gold} ${t('strangerDisappear')}`);
 			} else if (giftType < 0.7) {
 				this.player.potions += 2;
-				showMessage('🧪 陌生人給了你2瓶藥水後神秘地消失了。');
+				showMessage(t('strangerGiftPotions'));
 			} else {
 				const item = ITEMS[Math.floor(Math.random() * ITEMS.length)];
 				const newItem = Object.assign({}, item, { rarity: 'rare' });
 				this.player.inventory.push(newItem);
-				showMessage(`✨ 陌生人贈送你 ${this.formatItem(newItem)}後化作煙霧消失了！`);
+				showMessage(`${t('strangerGiftItem')} ${this.formatItem(newItem)} ${t('strangerSmoke')}`);
 			}
 		} else if (result.type === 'prophecy') {
-			showMessage('🔮 陌生人預言了你的未來...');
+			showMessage(t('strangerProphecy'));
 			const prophecies = [
-				{ text: '「你將在下一次戰鬥中獲得勝利的力量」', buff: 'combat' },
-				{ text: '「財富之神將眷顧你」', buff: 'gold' },
-				{ text: '「危險即將降臨，但你會倖存」', buff: 'defense' }
+				{ text: t('prophecyCombat'), buff: 'combat' },
+				{ text: t('prophecyGold'), buff: 'gold' },
+				{ text: t('prophecyDefense'), buff: 'defense' }
 			];
 			const prophecy = prophecies[Math.floor(Math.random() * prophecies.length)];
 			showMessage(prophecy.text);
 			
 			if (prophecy.buff === 'combat') {
 				this.player.luck_combat += 3;
-				showMessage('戰鬥幸運 +3');
+				showMessage(`${t('combatLuck')} +3`);
 			} else if (prophecy.buff === 'gold') {
 				this.player.luck_gold += 3;
-				showMessage('金幣幸運 +3');
+				showMessage(`${t('goldLuck')} +3`);
 			} else if (prophecy.buff === 'defense') {
 				this.player.shield += 30;
-				showMessage('獲得30點護盾');
+				showMessage(t('gainShield'));
 			}
 		} else if (result.type === 'curse') {
-			showMessage('😈 陌生人露出邪惡的笑容，對你施加了詛咒！');
+			showMessage(t('strangerCurse'));
 			const curseType = Math.random();
 			if (curseType < 0.5) {
 				const goldLoss = Math.min(this.player.gold, 50 + Math.floor(Math.random() * 100));
 				this.player.gold -= goldLoss;
-				showMessage(`💸 你的金幣憑空消失了 -${goldLoss}！`);
+				showMessage(`${t('curseGoldLoss')} -${goldLoss}！`);
 			} else {
 				const damage = 20 + Math.floor(Math.random() * 20);
 				this.player.hp = Math.max(1, this.player.hp - damage);
-				showMessage(`💀 詛咒侵蝕你的身體 -${damage} HP！`);
+				showMessage(`${t('curseHpLoss')} -${damage} HP！`);
 			}
 		} else {
 			showMessage('🏪 陌生人原來是個特殊商人！');
