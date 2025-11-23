@@ -1163,7 +1163,12 @@ function startAutoSpinLoop() {
 									el = el.parentElement;
 								}
 								const landedSymbol = el ? el.textContent.trim() : targetSymbol;
-								results[index] = landedSymbol;
+								// 確保符號不為空，且在有效符號列表中
+								if (landedSymbol && SYMBOLS.includes(landedSymbol)) {
+									results[index] = landedSymbol;
+								} else {
+									results[index] = targetSymbol;
+								}
 							} catch (e) {
 								// 如果出錯，直接使用目標符號
 								results[index] = targetSymbol;

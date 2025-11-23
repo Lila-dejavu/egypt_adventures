@@ -156,12 +156,13 @@ body {
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 24px;
+    font-size: 32px;
     color: #333;
     background: #fff;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif;
 }
 
 /* spinning class uses JS to apply continuous translateY animation */
