@@ -1,6 +1,8 @@
 body {
     font-family: 'Segoe UI', Arial, sans-serif;
-    background: linear-gradient(180deg, #f7e9c4 0%, #e8d4a0 50%, #d4c090 100%);
+    background: 
+        linear-gradient(180deg, rgba(139, 69, 19, 0.05) 0%, transparent 100%),
+        linear-gradient(180deg, #d4a574 0%, #c89b5f 50%, #b8885a 100%);
     background-attachment: fixed;
     margin: 0;
     padding: 0;
@@ -8,7 +10,7 @@ body {
     min-height: 100vh;
 }
 
-/* 埃及風格背景裝飾 */
+/* 莎草紙紋理效果 */
 body::before {
     content: '';
     position: fixed;
@@ -17,8 +19,26 @@ body::before {
     width: 100%;
     height: 100%;
     background-image: 
-        repeating-linear-gradient(90deg, rgba(212, 175, 55, 0.03) 0px, transparent 1px, transparent 50px, rgba(212, 175, 55, 0.03) 51px),
-        repeating-linear-gradient(0deg, rgba(212, 175, 55, 0.03) 0px, transparent 1px, transparent 50px, rgba(212, 175, 55, 0.03) 51px);
+        repeating-linear-gradient(90deg, rgba(139, 69, 19, 0.02) 0px, transparent 2px, transparent 8px, rgba(139, 69, 19, 0.02) 10px),
+        repeating-linear-gradient(0deg, rgba(139, 69, 19, 0.015) 0px, transparent 1px, transparent 12px, rgba(139, 69, 19, 0.015) 13px),
+        radial-gradient(circle at 20% 30%, rgba(218, 165, 32, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(184, 134, 11, 0.02) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.8;
+}
+
+/* 象形文字裝飾背景 */
+body::after {
+    content: '𓀀 𓀁 𓀂 𓀃 𓀄 𓀅 𓁹 𓂀 𓃀 𓃁 𓃂 𓆣 𓆤 𓆥 𓆦 𓆧 𓆨 𓆩 𓆪 𓆫';
+    position: fixed;
+    top: 10px;
+    left: 0;
+    right: 0;
+    font-size: 24px;
+    color: rgba(139, 69, 19, 0.08);
+    text-align: center;
+    letter-spacing: 30px;
     pointer-events: none;
     z-index: 0;
 }
@@ -26,41 +46,61 @@ body::before {
     max-width: 960px;
     width: 95%;
     margin: 24px auto;
-    background: linear-gradient(180deg, #fffef5 0%, #fffbe6 100%);
-    border-radius: 12px;
+    background: 
+        linear-gradient(180deg, rgba(218, 165, 32, 0.05) 0%, transparent 10%, transparent 90%, rgba(139, 69, 19, 0.05) 100%),
+        linear-gradient(180deg, #f5e6d3 0%, #f0dfc8 50%, #e8d4bc 100%);
+    border-radius: 0;
     box-shadow: 
-        0 4px 20px rgba(139, 69, 19, 0.15),
-        0 0 0 3px rgba(218, 165, 32, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.6);
-    padding: 16px;
+        0 8px 24px rgba(101, 67, 33, 0.3),
+        inset 0 2px 0 rgba(255, 248, 220, 0.8),
+        inset 0 -2px 0 rgba(139, 69, 19, 0.2);
+    padding: 24px;
     position: relative;
-    border: 2px solid rgba(218, 165, 32, 0.3);
+    border: none;
+    border-top: 4px solid #8b4513;
+    border-bottom: 4px solid #8b4513;
 }
 
-/* 埃及風格裝飾角 */
-#game-container::before,
+/* 莎草紙捲軸頂部裝飾 */
+#game-container::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: repeating-linear-gradient(
+        90deg,
+        #d4af37 0px,
+        #d4af37 2px,
+        #8b4513 2px,
+        #8b4513 4px,
+        #c4941f 4px,
+        #c4941f 6px,
+        #8b4513 6px,
+        #8b4513 8px
+    );
+}
+
+/* 莎草紙捲軸底部裝飾 */
 #game-container::after {
     content: '';
     position: absolute;
-    width: 40px;
-    height: 40px;
-    border: 3px solid #d4af37;
-}
-
-#game-container::before {
-    top: -2px;
-    left: -2px;
-    border-right: none;
-    border-bottom: none;
-    border-top-left-radius: 12px;
-}
-
-#game-container::after {
-    bottom: -2px;
-    right: -2px;
-    border-left: none;
-    border-top: none;
-    border-bottom-right-radius: 12px;
+    bottom: -4px;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: repeating-linear-gradient(
+        90deg,
+        #d4af37 0px,
+        #d4af37 2px,
+        #8b4513 2px,
+        #8b4513 4px,
+        #c4941f 4px,
+        #c4941f 6px,
+        #8b4513 6px,
+        #8b4513 8px
+    );
 }
 
 #header-area {
@@ -99,15 +139,35 @@ body::before {
 }
 #game-output {
     margin-bottom: 16px;
-    background: #f0e6d2;
-    border-radius: 4px;
-    padding: 12px;
-    font-size: 1.1em;
-    /* 固定高度，內容滾動 */
+    background: 
+        linear-gradient(180deg, rgba(139, 69, 19, 0.03) 0%, transparent 5%, transparent 95%, rgba(139, 69, 19, 0.03) 100%),
+        #f5ead6;
+    border-radius: 0;
+    padding: 16px;
+    font-size: 1.05em;
     height: 320px;
     overflow-y: auto;
     overflow-x: hidden;
     box-sizing: border-box;
+    border: 2px solid #c9a875;
+    box-shadow: 
+        inset 0 2px 4px rgba(139, 69, 19, 0.1),
+        inset 0 0 20px rgba(218, 165, 32, 0.05);
+    position: relative;
+}
+
+/* 象形文字裝飾邊框 */
+#game-output::before {
+    content: '𓆣 𓇋 𓂧 𓏏';
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #f5ead6;
+    padding: 0 10px;
+    color: #c9a875;
+    font-size: 16px;
+    letter-spacing: 8px;
 }
 #game-input {
     width: 70%;
@@ -393,41 +453,43 @@ body::before {
 
 .status-box-side {
     flex: 0 0 180px;
-    background: linear-gradient(180deg, #fffef5 0%, #fffaf0 50%, #fff8eb 100%);
-    border-radius: 8px;
+    background: 
+        repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(139, 69, 19, 0.015) 3px, rgba(139, 69, 19, 0.015) 6px),
+        linear-gradient(180deg, #faf5eb 0%, #f5ead6 50%, #f0dfc8 100%);
+    border-radius: 0;
     padding: 14px;
     box-shadow: 
-        0 3px 10px rgba(139, 69, 19, 0.12),
-        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        0 4px 12px rgba(101, 67, 33, 0.2),
+        inset 0 2px 0 rgba(255, 248, 220, 0.5),
+        inset 0 -2px 0 rgba(139, 69, 19, 0.1);
     display: flex;
     flex-direction: column;
-    border: 2px solid rgba(212, 175, 55, 0.3);
+    border: 2px solid #c9a875;
+    border-left: 3px solid #8b4513;
+    border-right: 3px solid #8b4513;
     position: relative;
 }
 
-/* 狀態框裝飾角 */
+/* 象形文字裝飾角 */
 .status-box-side::before {
-    content: '';
+    content: '𓆣';
     position: absolute;
-    top: 8px;
-    left: 8px;
-    width: 20px;
-    height: 20px;
-    border-top: 2px solid #d4af37;
-    border-left: 2px solid #d4af37;
+    top: 5px;
+    left: 5px;
+    color: #d4af37;
+    font-size: 18px;
     opacity: 0.5;
 }
 
 .status-box-side::after {
-    content: '';
+    content: '𓆣';
     position: absolute;
-    bottom: 8px;
-    right: 8px;
-    width: 20px;
-    height: 20px;
-    border-bottom: 2px solid #d4af37;
-    border-right: 2px solid #d4af37;
+    bottom: 5px;
+    right: 5px;
+    color: #d4af37;
+    font-size: 18px;
     opacity: 0.5;
+    transform: rotate(180deg);
 }
 
 .status-box-side .stat-label {
@@ -529,27 +591,34 @@ body::before {
 }
 #sidebar {
     width: 240px;
-    background: linear-gradient(180deg, #fffef5 0%, #fff8ea 100%);
-    border-radius: 10px;
-    padding: 16px;
+    background: 
+        repeating-linear-gradient(0deg, transparent 0px, transparent 4px, rgba(139, 69, 19, 0.02) 4px, rgba(139, 69, 19, 0.02) 8px),
+        linear-gradient(180deg, #faf5eb 0%, #f0e5d0 100%);
+    border-radius: 0;
+    padding: 18px;
     box-shadow: 
-        0 3px 10px rgba(139, 69, 19, 0.12),
-        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        0 4px 12px rgba(101, 67, 33, 0.2),
+        inset 0 2px 0 rgba(255, 248, 220, 0.5);
     font-size: 13px;
     flex-shrink: 0;
-    border: 2px solid rgba(212, 175, 55, 0.25);
+    border: 2px solid #c9a875;
+    border-top: 3px solid #8b4513;
+    border-bottom: 3px solid #8b4513;
     position: relative;
 }
 
+/* 象形文字標題裝飾 */
 #sidebar::before {
-    content: '';
+    content: '𓂧 𓏏 𓇋';
     position: absolute;
-    top: 10px;
-    left: 10px;
-    right: 10px;
-    height: 2px;
-    background: linear-gradient(90deg, transparent 0%, #d4af37 50%, transparent 100%);
-    opacity: 0.3;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #f0e5d0;
+    padding: 0 10px;
+    color: #d4af37;
+    font-size: 14px;
+    letter-spacing: 5px;
 }
 #sidebar h2 { 
     margin-top: 0; 
@@ -575,42 +644,50 @@ body::before {
 /* 隱藏側欄上方的敵人說明（因為已在狀態面板顯示） */
 #status-summary { display: none; }
 
-/* 歡迎欄樣式 */
+/* 歡迎欄樣式 - 莎草紙卷軸風格 */
 #welcome-panel {
-    background: linear-gradient(135deg, #fff9e6 0%, #ffe9b8 50%, #ffd98e 100%);
-    border: 2px solid #d4af37;
-    padding: 16px 20px;
-    border-radius: 10px;
+    background: 
+        repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(139, 69, 19, 0.02) 2px, rgba(139, 69, 19, 0.02) 4px),
+        linear-gradient(135deg, #fef9e7 0%, #f9efd4 50%, #f5e6c8 100%);
+    border: none;
+    border-top: 3px solid #8b4513;
+    border-bottom: 3px solid #8b4513;
+    padding: 18px 60px;
+    border-radius: 0;
     font-weight: 700;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
     text-align: center;
     box-shadow: 
-        0 4px 12px rgba(212, 175, 55, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.5);
-    color: #8b4513;
-    font-size: 1.1em;
-    letter-spacing: 1px;
+        0 4px 12px rgba(139, 69, 19, 0.25),
+        inset 0 2px 0 rgba(255, 248, 220, 0.6),
+        inset 0 -2px 0 rgba(139, 69, 19, 0.1);
+    color: #654321;
+    font-size: 1.15em;
+    letter-spacing: 2px;
     position: relative;
 }
 
-/* 歡迎欄裝飾角 */
-#welcome-panel::before,
-#welcome-panel::after {
-    content: '◇';
+/* 象形文字裝飾 */
+#welcome-panel::before {
+    content: '𓁹';
     position: absolute;
+    left: 15px;
     top: 50%;
     transform: translateY(-50%);
     color: #d4af37;
-    font-size: 1.5em;
-    opacity: 0.6;
-}
-
-#welcome-panel::before {
-    left: 10px;
+    font-size: 2em;
+    opacity: 0.7;
 }
 
 #welcome-panel::after {
-    right: 10px;
+    content: '𓁹';
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%) scaleX(-1);
+    color: #d4af37;
+    font-size: 2em;
+    opacity: 0.7;
 }
 
 /* move controls */
