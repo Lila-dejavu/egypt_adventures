@@ -452,69 +452,37 @@ function updateUILanguage() {
 	// 更新標題
 	document.querySelector('h1').textContent = t('title');
 	
-	// 更新側邊欄
-	const sidebar = document.querySelector('#sidebar h2');
-	if (sidebar) sidebar.textContent = t('symbolGuide');
+	// 使用 data-i18n 屬性自動更新所有元素
+	document.querySelectorAll('[data-i18n]').forEach(el => {
+		const key = el.getAttribute('data-i18n');
+		el.textContent = t(key);
+	});
 	
-	// 更新符號說明
+	// 使用 data-i18n-placeholder 更新 placeholder
+	document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+		const key = el.getAttribute('data-i18n-placeholder');
+		el.placeholder = t(key);
+	});
+	
+	// 使用 data-i18n-prefix 更新前綴文字（保留後面的內容）
+	document.querySelectorAll('[data-i18n-prefix]').forEach(el => {
+		const key = el.getAttribute('data-i18n-prefix');
+		const textNode = Array.from(el.childNodes).find(node => node.nodeType === 3);
+		if (textNode) {
+			textNode.textContent = t(key);
+		}
+	});
+	
+	// 更新符號說明（需要保留 HTML 結構）
 	const symbolList = document.querySelectorAll('#sidebar ul li');
 	if (symbolList.length >= 6) {
-		symbolList[0].innerHTML = `<strong>⚔️</strong> - ${t('attack')}`;
-		symbolList[1].innerHTML = `<strong>⚡️</strong> - ${t('skill')}`;
-		symbolList[2].innerHTML = `<strong>🛡️</strong> - ${t('defense')}`;
-		symbolList[3].innerHTML = `<strong>💀</strong> - ${t('enemyAttack')}`;
-		symbolList[4].innerHTML = `<strong>🧪</strong> - ${t('heal')}`;
-		symbolList[5].innerHTML = `<strong>⭐</strong> - ${t('luckyBonus')}`;
+		symbolList[0].innerHTML = `<strong>⚔️</strong> - <span data-i18n="attack">${t('attack')}</span>`;
+		symbolList[1].innerHTML = `<strong>⚡️</strong> - <span data-i18n="skill">${t('skill')}</span>`;
+		symbolList[2].innerHTML = `<strong>🛡️</strong> - <span data-i18n="defense">${t('defense')}</span>`;
+		symbolList[3].innerHTML = `<strong>💀</strong> - <span data-i18n="enemyAttack">${t('enemyAttack')}</span>`;
+		symbolList[4].innerHTML = `<strong>🧪</strong> - <span data-i18n="heal">${t('heal')}</span>`;
+		symbolList[5].innerHTML = `<strong>⭐</strong> - <span data-i18n="luckyBonus">${t('luckyBonus')}</span>`;
 	}
-	
-	// 更新歡迎訊息
-	const welcomePanel = document.getElementById('welcome-panel');
-	if (welcomePanel) welcomePanel.textContent = t('welcomeMessage');
-	
-	// 更新按鈕
-	const moveFront = document.getElementById('move-front');
-	const moveLeft = document.getElementById('move-left');
-	const moveRight = document.getElementById('move-right');
-	if (moveFront) moveFront.textContent = t('front');
-	if (moveLeft) moveLeft.textContent = t('left');
-	if (moveRight) moveRight.textContent = t('right');
-	
-	const spinBtn = document.getElementById('spin-btn');
-	const stopBtn = document.getElementById('stop-btn');
-	const autoSpinBtn = document.getElementById('auto-spin-btn');
-	const fleeBtn = document.getElementById('flee-btn');
-	const saveBtn = document.getElementById('save-btn');
-	const loadBtn = document.getElementById('load-btn');
-	const submitBtn = document.getElementById('submit-btn');
-	
-	if (spinBtn) spinBtn.textContent = t('spin');
-	if (stopBtn) stopBtn.textContent = t('stop');
-	if (autoSpinBtn) autoSpinBtn.textContent = t('autoSpin');
-	if (fleeBtn) fleeBtn.textContent = t('flee');
-	if (saveBtn) saveBtn.textContent = t('save');
-	if (loadBtn) loadBtn.textContent = t('load');
-	if (submitBtn) submitBtn.textContent = t('submit');
-	
-	// 更新輸入框
-	const input = document.getElementById('game-input');
-	if (input) input.placeholder = t('inputPlaceholder');
-	
-	// 更新裝備面板
-	const equipPanel = document.querySelector('#equipment-panel h3');
-	if (equipPanel) equipPanel.textContent = t('equipmentAndInventory');
-	
-	const closeEquipBtn = document.getElementById('close-equip');
-	if (closeEquipBtn) closeEquipBtn.textContent = t('close');
-	
-	// 更新黑市面板
-	const blackMarketPanel = document.querySelector('#blackmarket-panel h3');
-	if (blackMarketPanel) blackMarketPanel.textContent = t('blackMarket');
-	
-	const blackMarketDesc = document.getElementById('blackmarket-desc');
-	if (blackMarketDesc) blackMarketDesc.textContent = t('blackMarketDesc');
-	
-	const closeBlackMarketBtn = document.getElementById('close-blackmarket');
-	if (closeBlackMarketBtn) closeBlackMarketBtn.textContent = t('close');
 	
 	// 更新地圖資訊
 	updateMapInfoText();
