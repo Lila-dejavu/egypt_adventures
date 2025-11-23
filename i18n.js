@@ -543,6 +543,21 @@ const TRANSLATIONS = {
 		hpStaminaRecovered: '(PV/Endurance complètement récupérés)',
 		shrineBlessing: '✨ La bénédiction du sanctuaire descend ! Endurance Max',
 		caravanBuyFood: '🍖 Vous avez acheté de la nourriture et du repos à la caravane (coût 60 or), PV et endurance complètement récupérés !',
+		caravanGift: '🍞 La caravane a partagé de la nourriture et de l\'eau, PV',
+		quicksandStruggle: '😰 Vous vous êtes débattu dans des sables mouvants, consommant beaucoup d\'endurance et de santé.',
+		consumeStamina: 'Endurance consommée',
+		
+		// Black market
+		price: 'Prix',
+		buy: 'Acheter',
+		purchased: 'Acheté',
+		blackMarketLimit: 'Limite d\'achat du marché noir atteinte (2 objets).',
+		blackMarketEnd: 'Commerce du marché noir terminé.',
+		notEnoughGold: 'Pas assez d\'or pour acheter cet objet.',
+		blackMarketBought: 'Acheté au marché noir',
+		spent: 'dépensé',
+		revealAttributes: 'Attributs de l\'équipement révélés',
+		noSpecialAttributes: 'Aucun attribut spécial',
 		leaveBlackMarket: 'Quitté le marché noir.',
 		
 		// Equipment panel
@@ -559,21 +574,6 @@ const TRANSLATIONS = {
 		inventoryEmpty: 'L\'inventaire est vide',
 		unequipped: 'Enlevé',
 		addedToInventory: 'ajouté à l\'inventaire',
-		
-		// Language selector
-		language: 'Langue',
-		languageChinese: '繁體中文',
-		languageEnglish: 'English',
-		languageFrench: 'Français'
-	}
-};blackMarketLimit: 'Limite d\'achat du marché noir atteinte (2 objets).',
-		blackMarketEnd: 'Commerce du marché noir terminé.',
-		notEnoughGold: 'Pas assez d\'or pour acheter cet objet.',
-		blackMarketBought: 'Acheté au marché noir',
-		spent: 'dépensé',
-		revealAttributes: 'Attributs de l\'équipement révélés',
-		noSpecialAttributes: 'Aucun attribut spécial',
-		leaveBlackMarket: 'Quitté le marché noir.',
 		
 		// Language selector
 		language: 'Langue',
