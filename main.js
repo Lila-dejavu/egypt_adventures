@@ -772,8 +772,8 @@ function genEnemyName(type) {
 			
 			this.updateStatus();
 			
-			// 如果不是戰鬥事件，立即生成下一組方向提示
-			if (!this.inBattle) {
+			// 如果不是戰鬥事件且不在商店中，立即生成下一組方向提示
+			if (!this.inBattle && !this.inShop) {
 				this.generateDirectionHints();
 			}
 		}
@@ -1071,6 +1071,7 @@ function genEnemyName(type) {
 
 		blackMarket() {
 			// 黑市商人：可購買裝備（普通到史詩），屬於賭博交易，最多購買兩件
+			this.inShop = true; // 標記玩家進入商店
 			showMessage('遇到黑市商人：能在黑市中獲得普通到史詩級裝備，此為賭博交易，最多購買兩件。');
 			const panel = document.getElementById('blackmarket-panel');
 			const itemsDiv = document.getElementById('blackmarket-items');
@@ -1181,11 +1182,16 @@ function genEnemyName(type) {
 			});
 			// 關閉按鈕
 			const close = document.getElementById('close-blackmarket');
-			if (close) close.onclick = ()=>{ panel.style.display = 'none'; showMessage(t('leaveBlackMarket')); 
+			if (close) close.onclick = ()=>{ 
+				panel.style.display = 'none'; 
+				this.inShop = false; // 清除商店標記
+				showMessage(t('leaveBlackMarket')); 
 				// 恢復移動按鈕
 				const mf = document.getElementById('move-front'); if (mf) mf.disabled = false;
 				const ml = document.getElementById('move-left'); if (ml) ml.disabled = false;
 				const mr = document.getElementById('move-right'); if (mr) mr.disabled = false;
+				// 離開黑市後生成方向提示
+				this.generateDirectionHints();
 			};
 			// 停用移動以避免切換情境
 			const mf = document.getElementById('move-front'); if (mf) mf.disabled = true;
