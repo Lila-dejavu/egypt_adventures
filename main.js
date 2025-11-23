@@ -1878,7 +1878,12 @@ function genEnemyName(type) {
 						stopBtn.disabled = true;
 						// 停止自動旋轉並禁用自動旋轉按鈕
 						try { stopAutoSpinLoop(); } catch(e) {}
-						const autoBtn = document.getElementById('auto-spin-btn'); if (autoBtn) autoBtn.disabled = true;
+						const autoBtn = document.getElementById('auto-spin-btn'); 
+						if (autoBtn) {
+							autoBtn.disabled = true;
+							autoBtn.textContent = '自動旋轉'; // 確保文字重置
+							autoBtn.style.background = ''; // 重置背景色
+						}
 						const mf = document.getElementById('move-front'); if (mf) mf.disabled = false;
 						const ml = document.getElementById('move-left'); if (ml) ml.disabled = false;
 						const mr = document.getElementById('move-right'); if (mr) mr.disabled = false;
@@ -1925,7 +1930,13 @@ function stopAutoSpinLoop() {
 	if (autoSpinTimer) { clearTimeout(autoSpinTimer); autoSpinTimer = null; }
 	if (autoSpinTimer2) { clearTimeout(autoSpinTimer2); autoSpinTimer2 = null; }
 	autoSpinActive = false;
-	const btn = document.getElementById('auto-spin-btn'); if (btn) btn.textContent = '自動旋轉';
+	const btn = document.getElementById('auto-spin-btn'); 
+	if (btn) {
+		btn.textContent = '自動旋轉';
+		// 強制移除可能的啟用狀態樣式
+		btn.style.background = '';
+		btn.classList.remove('active');
+	}
 }
 
 function runAutoCycle() {
