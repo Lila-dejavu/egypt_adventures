@@ -559,25 +559,154 @@ function genEnemyName(type) {
 				mapEl.textContent = Math.max(0, this.map_goal - this.map_steps);
 			}
 		}
-	}		moveStep(direction) {
-			if (this.inPyramid) {
-				// 金字塔副本模式
-				this.pyramidSteps += 1;
-				showMessage(`你在金字塔中往${direction}走。🔺 金字塔探險: ${this.pyramidSteps}/${this.pyramidMaxSteps} 步。`);
+	}
+	
+	// 生成方向提示（多支線版本）
+	generateDirectionHints() {
+		// 為每個方向預先決定事件和可能的支線
+		const directions = {
+			'前': this.generateBranchPath(),
+			'左': this.generateBranchPath(),
+			'右': this.generateBranchPath()
+		};
+		
+		// 金字塔副本在前10步不出現
+		if (!this.inPyramid && this.map_steps <= 10) {
+			Object.keys(directions).forEach(dir => {
+				if (directions[dir].main === 'pyramid') {
+					directions[dir] = this.generateBranchPath();
+					if (directions[dir].main === 'pyramid') {
+						directions[dir].main = 'monster';
+						directions[dir].branches = [];
+					}
+				}
+			});
+		}
+		
+		// 儲存當前方向事件映射
+		this.currentDirections = directions;
+		
+		// 生成提示文字
+		const hints = {
+			'monster': ['聽見戰鬥的聲音', '看到沙塵飛揚', '感覺到殺氣', '聽到咆哮聲', '看見腳印'],
+			'elite': ['感受到強大的氣息', '看到巨大的身影', '聽到低沉的吼聲', '察覺到危險的氣息'],
+			'mini_boss': ['看到古老的神殿', '感覺到恐怖的壓迫感', '聽到震撼的腳步聲', '看見巨大的陰影'],
+			'merchant': ['聽到商隊的駝鈴聲', '看到商旅的帳篷', '聞到香料的味道', '看見商人的旗幟'],
+			'black_market': ['聽到神秘的交易聲', '看到可疑的黑帳篷', '察覺到黑市的氣息', '看見蒙面商人'],
+			'oasis': ['聽到流水聲', '看到綠色植物', '感覺到濕潤的空氣', '看見棕櫚樹的倒影', '聞到清新的水氣'],
+			'sandstorm': ['看到黃沙漫天', '感覺到強風吹來', '聽到風沙呼嘯', '天色變得昏暗'],
+			'buried_treasure': ['看到奇怪的地標', '發現古老的記號', '看見反光的物體', '察覺到寶藏的氣息'],
+			'pyramid': ['看到金字塔的尖頂', '發現古老的神殿', '看見巨大的石碑', '感受到神秘的力量'],
+			'dead_traveler': ['看到倒下的旅人', '發現遺棄的物品', '看見破舊的背包', '察覺到悲劇的痕跡'],
+			'ancient_shrine': ['看到神秘的祭壇', '發現古老的雕像', '感受到神聖的力量', '看見發光的符文'],
+			'caravan_rest': ['看到駱駝商隊休息', '聽到旅人的歡笑聲', '看見營火的亮光', '聞到食物的香味'],
+			'empty': ['一片平靜', '什麼都沒有', '只有沙漠', '風平浪靜', '寂靜無聲']
+		};
+		
+		const directionTexts = {
+			'前': '前方',
+			'左': '左邊',
+			'右': '右邊'
+		};
+		
+		let message = this.inPyramid 
+			? `你在金字塔的通道中，感受著古老的氣息...\n` 
+			: `你沿著沙漠前行...\n`;
+		
+		Object.keys(directions).forEach(dir => {
+			const eventPath = directions[dir];
+			const event = eventPath.main;
+			const hintPool = hints[event] || hints['empty'];
+			const hint = hintPool[Math.floor(Math.random() * hintPool.length)];
+			
+			// 如果有支線，添加額外提示
+			let branchHint = '';
+			if (eventPath.branches && eventPath.branches.length > 0) {
+				branchHint = ' ✨';
+				if (eventPath.branches.length > 1) branchHint = ' ⭐';
+			}
+			
+			message += `${directionTexts[dir]}${hint}${branchHint}。\n`;
+		});
+		
+		message += `\n你選擇哪個方向？`;
+		showMessage(message);
+	}
+	
+	// 生成支線路徑（包含主事件和可能的分支）
+	generateBranchPath() {
+		const mainEvent = this.inPyramid ? this.choosePyramidEvent() : chooseEvent();
+		const branches = [];
+		
+		// 30%機率觸發支線
+		if (Math.random() < 0.3) {
+			const branchType = this.chooseBranchType(mainEvent);
+			branches.push(branchType);
+		}
+		
+		// 10%機率觸發雙重支線
+		if (Math.random() < 0.1 && branches.length > 0) {
+			const secondBranch = this.chooseBranchType(mainEvent);
+			if (secondBranch !== branches[0]) {
+				branches.push(secondBranch);
+			}
+		}
+		
+		return { main: mainEvent, branches: branches };
+	}
+	
+	// 根據主事件選擇合適的支線類型
+	chooseBranchType(mainEvent) {
+		const branchMap = {
+			'monster': ['ambush', 'treasure_drop', 'ally_join', 'escape_route'],
+			'elite': ['epic_loot', 'curse', 'power_surge', 'boss_insight'],
+			'mini_boss': ['legendary_loot', 'god_blessing', 'ancient_power', 'hidden_passage'],
+			'merchant': ['discount', 'rare_item', 'trade_quest', 'caravan_info'],
+			'black_market': ['stolen_goods', 'black_contract', 'smuggler_route', 'forbidden_item'],
+			'oasis': ['healing_spring', 'hidden_treasure', 'desert_guide', 'oasis_blessing'],
+			'sandstorm': ['lost_items', 'shelter_find', 'storm_vision', 'sand_curse'],
+			'pyramid': ['secret_chamber', 'pharaoh_curse', 'divine_trial', 'treasure_vault'],
+			'ancient_shrine': ['god_trial', 'divine_gift', 'ancient_wisdom', 'curse_removal'],
+			'buried_treasure': ['trap_avoid', 'double_loot', 'treasure_map', 'curse_item'],
+			'dead_traveler': ['dying_wish', 'revenge_quest', 'inherited_skill', 'cursed_item'],
+			'caravan_rest': ['trade_opportunity', 'rest_bonus', 'caravan_quest', 'guide_hire'],
+			'empty': ['mirage', 'buried_cache', 'desert_spirit', 'quicksand']
+		};
+		
+		const options = branchMap[mainEvent] || ['random_event'];
+		return options[Math.floor(Math.random() * options.length)];
+	}
+	
+	moveStep(direction) {
+		// 如果沒有預設方向提示，生成新的
+		if (!this.currentDirections) {
+			this.generateDirectionHints();
+			return; // 等待玩家選擇
+		}
+		
+		// 根據選擇的方向獲取對應事件路徑
+		const eventPath = this.currentDirections[direction];
+		
+		if (this.inPyramid) {
+			// 金字塔副本模式
+			this.pyramidSteps += 1;
+			showMessage(`你選擇往${direction}走。🔺 金字塔探險: ${this.pyramidSteps}/${this.pyramidMaxSteps} 步。`);
 		} else {
 			// 正常地圖模式
 			this.map_steps += 1;
-			showMessage(`你往${direction}走。 已移動 ${this.map_steps}/${this.map_goal} 步。`);
-		}			// 選擇地圖事件並處理
-			let event = this.inPyramid ? this.choosePyramidEvent() : chooseEvent();
-			// 金字塔副本在前10步不出現
-			if (!this.inPyramid && this.map_steps <= 10 && event === 'pyramid') {
-				event = chooseEvent(); // 重新選擇
-				// 如果還是金字塔，再選一次
-				if (event === 'pyramid') event = 'monster';
-			}
-			showMessage(`遇到事件：${event}`);
-			this.handleEvent(event);
+			showMessage(`你選擇往${direction}走。已移動 ${this.map_steps}/${this.map_goal} 步。`);
+		}
+		
+		// 清除當前方向映射
+		this.currentDirections = null;
+		
+		// 處理主事件
+		this.handleEvent(eventPath.main);
+		
+		// 處理支線事件
+		if (eventPath.branches && eventPath.branches.length > 0) {
+			this.handleBranchEvents(eventPath.branches);
+		}
 			
 			// 檢查是否完成金字塔或正常地圖
 			if (this.inPyramid && this.pyramidSteps >= this.pyramidMaxSteps) {
@@ -587,6 +716,128 @@ function genEnemyName(type) {
 			}
 			
 			this.updateStatus();
+			
+			// 如果不是戰鬥事件，立即生成下一組方向提示
+			if (!this.inBattle) {
+				this.generateDirectionHints();
+			}
+		}
+
+		// 處理支線事件
+		handleBranchEvents(branches) {
+			branches.forEach(branch => {
+				switch(branch) {
+					case 'ambush':
+						showMessage('⚠️ 突然遭遇伏擊！額外的敵人出現！');
+						if (!this.inBattle) this.battle('monster');
+						break;
+					case 'treasure_drop':
+						showMessage('✨ 敵人掉落了稀有寶物！');
+						this.gainGold(Math.floor(50 * this.difficulty * (1 + Math.random())));
+						break;
+					case 'ally_join':
+						showMessage('👥 一位流浪戰士加入協助你戰鬥！（下次戰鬥攻擊+20%）');
+						this.tempAllyBonus = 0.2;
+						break;
+					case 'escape_route':
+						showMessage('🏃 發現逃生路線！（可選擇逃跑）');
+						this.canEscape = true;
+						break;
+					case 'epic_loot':
+						showMessage('💎 獲得史詩級戰利品！');
+						const epicItem = generateItem('epic', this.difficulty);
+						this.inventory.push(epicItem);
+						break;
+					case 'curse':
+						showMessage('💀 被詛咒！最大生命-10%');
+						this.max_hp = Math.floor(this.max_hp * 0.9);
+						this.hp = Math.min(this.hp, this.max_hp);
+						break;
+					case 'power_surge':
+						showMessage('⚡ 力量激增！攻擊力暫時+50%（3回合）');
+						this.powerSurge = 3;
+						break;
+					case 'boss_insight':
+						showMessage('🔍 洞察敵人弱點！下次對BOSS傷害+30%');
+						this.bossInsight = true;
+						break;
+					case 'legendary_loot':
+						showMessage('👑 傳說級寶物！');
+						const legendItem = generateItem('epic', this.difficulty + 2);
+						this.inventory.push(legendItem);
+						this.gainGold(200 * this.difficulty);
+						break;
+					case 'god_blessing':
+						showMessage('✨ 獲得神祇祝福！全屬性+10%');
+						this.godBlessing = true;
+						this.calculateStats();
+						break;
+					case 'ancient_power':
+						showMessage('🔥 吸收古老力量！永久攻擊+5');
+						this.base_atk += 5;
+						break;
+					case 'hidden_passage':
+						showMessage('🚪 發現隱藏通道！跳過3步');
+						if (this.inPyramid) this.pyramidSteps += 3;
+						else this.map_steps += 3;
+						break;
+					case 'discount':
+						showMessage('💰 商人給你折扣！所有物品8折');
+						this.merchantDiscount = 0.8;
+						break;
+					case 'rare_item':
+						showMessage('🎁 商人展示稀有商品！');
+						// 商人事件會顯示額外稀有物品
+						break;
+					case 'healing_spring':
+						showMessage('💧 治癒之泉！完全恢復生命值');
+						this.hp = this.max_hp;
+						break;
+					case 'hidden_treasure':
+						showMessage('🗝️ 發現隱藏寶藏！');
+						this.gainGold(100 * this.difficulty);
+						const treasure = generateItem('rare', this.difficulty);
+						this.inventory.push(treasure);
+						break;
+					case 'desert_guide':
+						showMessage('🧭 遇到沙漠嚮導！下5步顯示事件類型');
+						this.hasGuide = 5;
+						break;
+					case 'oasis_blessing':
+						showMessage('🌴 綠洲祝福！生命恢復速度+50%（持續）');
+						this.oasisBlessing = true;
+						break;
+					case 'secret_chamber':
+						showMessage('🔓 發現秘密房間！獲得大量金幣');
+						this.gainGold(300 * this.difficulty);
+						break;
+					case 'divine_trial':
+						showMessage('⚔️ 神聖試煉！擊敗額外守衛獲得神器');
+						this.divineTrial = true;
+						break;
+					case 'double_loot':
+						showMessage('💰💰 雙倍寶藏！');
+						this.gainGold(200 * this.difficulty);
+						break;
+					case 'curse_item':
+						showMessage('😈 獲得詛咒物品！強大但有代價');
+						const cursedItem = generateItem('epic', this.difficulty);
+						cursedItem.name = '詛咒的' + cursedItem.name;
+						cursedItem.cursed = true;
+						this.inventory.push(cursedItem);
+						break;
+					case 'revenge_quest':
+						showMessage('⚔️ 接受復仇任務！擊敗特定敵人獲得獎勵');
+						this.revengeQuest = true;
+						break;
+					case 'quicksand':
+						showMessage('⚠️ 陷入流沙！損失一些金幣');
+						this.gold = Math.max(0, this.gold - 50 * this.difficulty);
+						break;
+					default:
+						showMessage(`🎲 觸發特殊事件：${branch}`);
+				}
+			});
 		}
 
 		choosePyramidEvent() {
@@ -2040,6 +2291,9 @@ function genEnemyName(type) {
 						const mr = document.getElementById('move-right'); if (mr) mr.disabled = false;
 						
 						this.enemy.turnsToAttack = 3;
+						
+						// 戰鬥結束後生成新的方向提示
+						this.generateDirectionHints();
 					}
 				}
 
@@ -2087,6 +2341,9 @@ function genEnemyName(type) {
 
 	const game = new Game();
 	game.updateStatus();
+	
+	// 顯示初始方向提示
+	game.generateDirectionHints();
 
 	// 控制旋轉的 interval
 	const reelState = reels.map(()=>({interval:null, spinning:false}));
