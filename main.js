@@ -1916,17 +1916,25 @@ function genEnemyName(type) {
 // 自動旋轉控制
 let autoSpin = false;
 let autoSpinTimer = null;
+let autoSpinTimer2 = null; // 用於追蹤嵌套的第二個 timeout
 let autoSpinActive = false;
 
 function stopAutoSpinLoop() {
 	autoSpin = false;
+	// 清除所有可能的 timeout
 	if (autoSpinTimer) { clearTimeout(autoSpinTimer); autoSpinTimer = null; }
+	if (autoSpinTimer2) { clearTimeout(autoSpinTimer2); autoSpinTimer2 = null; }
 	autoSpinActive = false;
 	const btn = document.getElementById('auto-spin-btn'); if (btn) btn.textContent = '自動旋轉';
 }
 
 function runAutoCycle() {
-	if (!autoSpin) { autoSpinActive = false; return; }
+	// 每次執行前先檢查戰鬥狀態和 autoSpin 標記
+	if (!autoSpin || !game.inBattle) { 
+		autoSpinActive = false; 
+		stopAutoSpinLoop();
+		return; 
+	}
 	if (stopBtn && !stopBtn.disabled) {
 		// currently stopping; schedule next attempt
 		autoSpinTimer = setTimeout(runAutoCycle, 300);
@@ -1937,9 +1945,21 @@ function runAutoCycle() {
 		spinBtn.click();
 		const delay = 800 + Math.floor(Math.random()*600);
 		autoSpinTimer = setTimeout(()=>{
+			// 再次檢查是否需要停止
+			if (!autoSpin || !game.inBattle) {
+				stopAutoSpinLoop();
+				return;
+			}
 			if (!stopBtn.disabled) stopBtn.click();
 			// schedule next cycle after slight pause to allow results
-			autoSpinTimer = setTimeout(runAutoCycle, 400);
+			autoSpinTimer2 = setTimeout(()=>{
+				// 第三次檢查
+				if (!autoSpin || !game.inBattle) {
+					stopAutoSpinLoop();
+					return;
+				}
+				runAutoCycle();
+			}, 400);
 		}, delay);
 	} else {
 		// 無法旋轉時稍後重試
