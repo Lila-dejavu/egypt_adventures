@@ -304,6 +304,27 @@ body {
     transition: width 350ms ease;
 }
 .enemy-hp { background: linear-gradient(90deg,#ff7a7a,#e94242); }
+
+/* 經驗值條樣式 */
+.xp-row { font-weight:700; margin-bottom:6px; font-size: 0.9em; }
+.xp-bar {
+    width: 100%;
+    height: 10px;
+    background: #efecec;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+.xp-inner {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(90deg,#ffd700,#ffa500);
+    transform-origin: left center;
+    transition: width 350ms ease;
+}
+.xp-text {
+    color: #d4a02e;
+}
 .stats-row { display: flex; gap: 8px; flex-wrap: wrap; font-size: 0.95em; }
 
 /* 當畫面窄時轉成直列 */

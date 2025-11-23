@@ -363,10 +363,17 @@ function genEnemyName(type) {
 				}
 
 				const playerPct = Math.max(0, Math.min(100, Math.floor((this.player.hp / this.player.max_hp) * 100)));
+				
+				// 計算經驗值進度
+				const xpNeeded = this.xpForNext(this.player.level);
+				const xpPct = this.player.level >= 99 ? 100 : Math.max(0, Math.min(100, Math.floor((this.player.xp / xpNeeded) * 100)));
+				
 				playerStatusEl.innerHTML = `
-					<div class="stat-label">玩家</div>
+					<div class="stat-label">玩家 Lv.${this.player.level}</div>
 					<div class="hp-row">HP: <span class="hp-text">${this.player.hp}/${this.player.max_hp}</span></div>
 					<div class="hp-bar"><div class="hp-inner" style="width:${playerPct}%"></div></div>
+					<div class="xp-row">經驗: <span class="xp-text">${this.player.xp}/${xpNeeded === Infinity ? 'MAX' : xpNeeded}</span></div>
+					<div class="xp-bar"><div class="xp-inner" style="width:${xpPct}%"></div></div>
                     <div class="stats-row">
                     	<div>體力: ${this.player.stamina}/${this.player.max_stamina}</div>
                     	<div>護盾: ${this.player.shield}</div>
@@ -1284,6 +1291,460 @@ function startAutoSpinLoop() {
 		const fleeBtn = document.getElementById('flee-btn');
 		if (fleeBtn) fleeBtn.addEventListener('click', ()=>{ game.attemptFlee(); });
 
+	// 儲存/讀取功能
+	const saveBtn = document.getElementById('save-btn');
+	const loadBtn = document.getElementById('load-btn');
+
+	if (saveBtn) saveBtn.addEventListener('click', ()=>{
+		try {
+			const saveData = {
+				player: game.player,
+				enemy: game.enemy,
+				inBattle: game.inBattle,
+				consecutivePrimarySymbol: game.consecutivePrimarySymbol,
+				consecutivePrimaryCount: game.consecutivePrimaryCount,
+				map_steps: game.map_steps,
+				map_goal: game.map_goal,
+				difficulty: game.difficulty,
+				inPyramid: game.inPyramid,
+				pyramidSteps: game.pyramidSteps,
+				pyramidMaxSteps: game.pyramidMaxSteps,
+				normalMapSteps: game.normalMapSteps,
+				timestamp: Date.now()
+			};
+			localStorage.setItem('egypt_adventures_save', JSON.stringify(saveData));
+			showMessage('💾 遊戲已儲存！');
+		} catch (e) {
+			showMessage('❌ 儲存失敗：' + e.message);
+		}
+	});
+
+	if (loadBtn) loadBtn.addEventListener('click', ()=>{
+		try {
+			const saveData = localStorage.getItem('egypt_adventures_save');
+			if (!saveData) {
+				showMessage('❌ 找不到存檔！');
+				return;
+			}
+			const data = JSON.parse(saveData);
+			
+			// 還原玩家狀態
+			game.player = data.player;
+			game.enemy = data.enemy;
+			game.inBattle = data.inBattle;
+			game.consecutivePrimarySymbol = data.consecutivePrimarySymbol;
+			game.consecutivePrimaryCount = data.consecutivePrimaryCount;
+			game.map_steps = data.map_steps;
+			game.map_goal = data.map_goal;
+			game.difficulty = data.difficulty;
+			game.inPyramid = data.inPyramid || false;
+			game.pyramidSteps = data.pyramidSteps || 0;
+			game.pyramidMaxSteps = data.pyramidMaxSteps || 8;
+			game.normalMapSteps = data.normalMapSteps || 0;
+			
+			// 更新UI狀態
+			if (game.inBattle) {
+				spinBtn.disabled = false;
+				const autoBtn = document.getElementById('auto-spin-btn'); if (autoBtn) autoBtn.disabled = false;
+				const mf = document.getElementById('move-front'); if (mf) mf.disabled = true;
+				const ml = document.getElementById('move-left'); if (ml) ml.disabled = true;
+				const mr = document.getElementById('move-right'); if (mr) mr.disabled = true;
+			} else {
+				spinBtn.disabled = true;
+				const autoBtn = document.getElementById('auto-spin-btn'); if (autoBtn) autoBtn.disabled = true;
+				const mf = document.getElementById('move-front'); if (mf) mf.disabled = false;
+				const ml = document.getElementById('move-left'); if (ml) ml.disabled = false;
+				const mr = document.getElementById('move-right'); if (mr) mr.disabled = false;
+			}
+			
+			game.updateStatus();
+			const saveDate = new Date(data.timestamp);
+			showMessage(`📂 讀取成功！存檔時間：${saveDate.toLocaleString('zh-TW')}`);
+		} catch (e) {
+			showMessage('❌ 讀取失敗：' + e.message);
+		}
+	});
+
 	// 初始歡迎訊息已放在頁面上方（#welcome-panel），不重複顯示在訊息區。
+
+	// ============================================
+	// DEBUG MODE - Press Ctrl+D to toggle
+	// ============================================
+	let debugMode = false;
+	const debugPanel = createDebugPanel();
+
+	function createDebugPanel() {
+		const panel = document.createElement('div');
+		panel.id = 'debug-panel';
+		panel.style.cssText = `
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			background: rgba(0, 0, 0, 0.95);
+			color: #0f0;
+			font-family: 'Courier New', monospace;
+			font-size: 13px;
+			border: 2px solid #0f0;
+			border-radius: 8px;
+			padding: 20px;
+			z-index: 10000;
+			display: none;
+			max-width: 600px;
+			max-height: 80vh;
+			overflow-y: auto;
+			box-shadow: 0 0 30px rgba(0, 255, 0, 0.3);
+		`;
+
+		panel.innerHTML = `
+			<h2 style="margin-top: 0; color: #0f0; text-align: center; text-shadow: 0 0 10px #0f0;">🛠️ DEBUG MODE 🛠️</h2>
+			<div style="margin-bottom: 16px; padding: 8px; background: rgba(0, 255, 0, 0.1); border-radius: 4px;">
+				<div style="margin-bottom: 4px;">快捷鍵: <strong>Ctrl+Shift+D</strong> 開關除錯面板</div>
+				<div>修改數值後會立即套用到遊戲狀態</div>
+			</div>
+			
+			<div class="debug-section">
+				<h3>玩家狀態</h3>
+				<div class="debug-input-row">
+					<label>HP: <input type="number" id="debug-hp" /></label>
+					<label>最大HP: <input type="number" id="debug-max-hp" /></label>
+				</div>
+				<div class="debug-input-row">
+					<label>體力: <input type="number" id="debug-stamina" /></label>
+					<label>最大體力: <input type="number" id="debug-max-stamina" /></label>
+				</div>
+				<div class="debug-input-row">
+					<label>護盾: <input type="number" id="debug-shield" /></label>
+					<label>藥水: <input type="number" id="debug-potions" /></label>
+				</div>
+				<div class="debug-input-row">
+					<label>金幣: <input type="number" id="debug-gold" /></label>
+					<label>等級: <input type="number" id="debug-level" /></label>
+				</div>
+				<div class="debug-input-row">
+					<label>經驗值: <input type="number" id="debug-xp" /></label>
+					<label>戰鬥幸運: <input type="number" id="debug-luck-combat" /></label>
+				</div>
+				<div class="debug-input-row">
+					<label>金幣幸運: <input type="number" id="debug-luck-gold" /></label>
+				</div>
+			</div>
+
+			<div class="debug-section">
+				<h3>地圖狀態</h3>
+				<div class="debug-input-row">
+					<label>已移動步數: <input type="number" id="debug-map-steps" /></label>
+					<label>目標步數: <input type="number" id="debug-map-goal" /></label>
+				</div>
+				<div class="debug-input-row">
+					<label>難度: <input type="number" id="debug-difficulty" /></label>
+					<label>
+						金字塔模式: 
+						<input type="checkbox" id="debug-in-pyramid" />
+					</label>
+				</div>
+				<div class="debug-input-row">
+					<label>金字塔步數: <input type="number" id="debug-pyramid-steps" /></label>
+				</div>
+			</div>
+
+			<div class="debug-section">
+				<h3>戰鬥狀態</h3>
+				<div class="debug-input-row">
+					<label>
+						進行中: 
+						<input type="checkbox" id="debug-in-battle" />
+					</label>
+				</div>
+				<div id="debug-enemy-section">
+					<div class="debug-input-row">
+						<label>敵人HP: <input type="number" id="debug-enemy-hp" /></label>
+						<label>敵人最大HP: <input type="number" id="debug-enemy-max-hp" /></label>
+					</div>
+					<div class="debug-input-row">
+						<label>敵人攻擊: <input type="number" id="debug-enemy-attack" /></label>
+						<label>攻擊倒數: <input type="number" id="debug-enemy-turns" /></label>
+					</div>
+					<div class="debug-input-row">
+						<label>敵人強度: <input type="number" step="0.1" id="debug-enemy-strength" /></label>
+					</div>
+				</div>
+			</div>
+
+			<div class="debug-section">
+				<h3>快速操作</h3>
+				<div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px;">
+					<button class="debug-btn" id="debug-heal-full">完全恢復</button>
+					<button class="debug-btn" id="debug-add-gold">+1000金幣</button>
+					<button class="debug-btn" id="debug-level-up">升級</button>
+					<button class="debug-btn" id="debug-kill-enemy">秒殺敵人</button>
+					<button class="debug-btn" id="debug-add-item">隨機裝備</button>
+					<button class="debug-btn" id="debug-start-battle">開始戰鬥</button>
+					<button class="debug-btn" id="debug-end-battle">結束戰鬥</button>
+					<button class="debug-btn" id="debug-enter-pyramid">進入金字塔</button>
+				</div>
+			</div>
+
+			<div style="margin-top: 16px; text-align: center;">
+				<button class="debug-btn" id="debug-apply" style="background: #0a0; font-size: 1.1em; padding: 10px 20px;">套用變更</button>
+				<button class="debug-btn" id="debug-close" style="background: #a00; font-size: 1.1em; padding: 10px 20px;">關閉</button>
+			</div>
+		`;
+
+		// Add styles for debug panel elements
+		const style = document.createElement('style');
+		style.textContent = `
+			.debug-section {
+				margin: 16px 0;
+				padding: 12px;
+				background: rgba(0, 255, 0, 0.05);
+				border: 1px solid rgba(0, 255, 0, 0.3);
+				border-radius: 4px;
+			}
+			.debug-section h3 {
+				margin: 0 0 12px 0;
+				color: #0ff;
+				font-size: 1.1em;
+				text-shadow: 0 0 5px #0ff;
+			}
+			.debug-input-row {
+				display: flex;
+				gap: 12px;
+				margin-bottom: 8px;
+				flex-wrap: wrap;
+			}
+			.debug-input-row label {
+				flex: 1;
+				min-width: 120px;
+				display: flex;
+				align-items: center;
+				gap: 8px;
+			}
+			.debug-input-row input[type="number"],
+			.debug-input-row input[type="text"] {
+				flex: 1;
+				background: rgba(0, 255, 0, 0.1);
+				border: 1px solid #0f0;
+				color: #0f0;
+				padding: 4px 8px;
+				border-radius: 3px;
+				font-family: 'Courier New', monospace;
+			}
+			.debug-input-row input[type="checkbox"] {
+				width: 20px;
+				height: 20px;
+			}
+			.debug-btn {
+				background: rgba(0, 255, 0, 0.2);
+				border: 1px solid #0f0;
+				color: #0f0;
+				padding: 6px 12px;
+				border-radius: 4px;
+				cursor: pointer;
+				font-family: 'Courier New', monospace;
+				font-weight: bold;
+				transition: all 0.2s;
+			}
+			.debug-btn:hover {
+				background: rgba(0, 255, 0, 0.4);
+				box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+			}
+			.debug-btn:active {
+				transform: scale(0.95);
+			}
+		`;
+		document.head.appendChild(style);
+
+		document.body.appendChild(panel);
+		return panel;
+	}
+
+	function loadDebugValues() {
+		document.getElementById('debug-hp').value = game.player.hp;
+		document.getElementById('debug-max-hp').value = game.player.max_hp;
+		document.getElementById('debug-stamina').value = game.player.stamina;
+		document.getElementById('debug-max-stamina').value = game.player.max_stamina;
+		document.getElementById('debug-shield').value = game.player.shield;
+		document.getElementById('debug-potions').value = game.player.potions;
+		document.getElementById('debug-gold').value = game.player.gold;
+		document.getElementById('debug-level').value = game.player.level;
+		document.getElementById('debug-xp').value = game.player.xp;
+		document.getElementById('debug-luck-combat').value = game.player.luck_combat;
+		document.getElementById('debug-luck-gold').value = game.player.luck_gold;
+		document.getElementById('debug-map-steps').value = game.map_steps;
+		document.getElementById('debug-map-goal').value = game.map_goal;
+		document.getElementById('debug-difficulty').value = game.difficulty;
+		document.getElementById('debug-in-pyramid').checked = game.inPyramid;
+		document.getElementById('debug-pyramid-steps').value = game.pyramidSteps;
+		document.getElementById('debug-in-battle').checked = game.inBattle;
+		document.getElementById('debug-enemy-hp').value = game.enemy.hp;
+		document.getElementById('debug-enemy-max-hp').value = game.enemy.max_hp;
+		document.getElementById('debug-enemy-attack').value = game.enemy.baseAttack;
+		document.getElementById('debug-enemy-turns').value = game.enemy.turnsToAttack;
+		document.getElementById('debug-enemy-strength').value = game.enemy.strength || 1;
+	}
+
+	function applyDebugChanges() {
+		game.player.hp = parseInt(document.getElementById('debug-hp').value) || 0;
+		game.player.max_hp = parseInt(document.getElementById('debug-max-hp').value) || 1;
+		game.player.stamina = parseInt(document.getElementById('debug-stamina').value) || 0;
+		game.player.max_stamina = parseInt(document.getElementById('debug-max-stamina').value) || 1;
+		game.player.shield = parseInt(document.getElementById('debug-shield').value) || 0;
+		game.player.potions = parseInt(document.getElementById('debug-potions').value) || 0;
+		game.player.gold = parseInt(document.getElementById('debug-gold').value) || 0;
+		game.player.level = parseInt(document.getElementById('debug-level').value) || 1;
+		game.player.xp = parseInt(document.getElementById('debug-xp').value) || 0;
+		game.player.luck_combat = parseInt(document.getElementById('debug-luck-combat').value) || 0;
+		game.player.luck_gold = parseInt(document.getElementById('debug-luck-gold').value) || 0;
+		game.map_steps = parseInt(document.getElementById('debug-map-steps').value) || 0;
+		game.map_goal = parseInt(document.getElementById('debug-map-goal').value) || 30;
+		game.difficulty = parseInt(document.getElementById('debug-difficulty').value) || 1;
+		game.inPyramid = document.getElementById('debug-in-pyramid').checked;
+		game.pyramidSteps = parseInt(document.getElementById('debug-pyramid-steps').value) || 0;
+		
+		const wasBattle = game.inBattle;
+		game.inBattle = document.getElementById('debug-in-battle').checked;
+		
+		if (game.inBattle) {
+			game.enemy.hp = parseInt(document.getElementById('debug-enemy-hp').value) || 0;
+			game.enemy.max_hp = parseInt(document.getElementById('debug-enemy-max-hp').value) || 1;
+			game.enemy.baseAttack = parseInt(document.getElementById('debug-enemy-attack').value) || 10;
+			game.enemy.turnsToAttack = parseInt(document.getElementById('debug-enemy-turns').value) || 3;
+			game.enemy.strength = parseFloat(document.getElementById('debug-enemy-strength').value) || 1;
+			
+			if (!wasBattle) {
+				// Enable battle controls
+				spinBtn.disabled = false;
+				const autoBtn = document.getElementById('auto-spin-btn'); if (autoBtn) autoBtn.disabled = false;
+				const mf = document.getElementById('move-front'); if (mf) mf.disabled = true;
+				const ml = document.getElementById('move-left'); if (ml) ml.disabled = true;
+				const mr = document.getElementById('move-right'); if (mr) mr.disabled = true;
+			}
+		} else if (wasBattle && !game.inBattle) {
+			// Disable battle controls
+			spinBtn.disabled = true;
+			const autoBtn = document.getElementById('auto-spin-btn'); if (autoBtn) autoBtn.disabled = true;
+			const mf = document.getElementById('move-front'); if (mf) mf.disabled = false;
+			const ml = document.getElementById('move-left'); if (ml) ml.disabled = false;
+			const mr = document.getElementById('move-right'); if (mr) mr.disabled = false;
+		}
+		
+		game.updateStatus();
+		showMessage('🛠️ Debug: 遊戲狀態已更新');
+	}
+
+	// Debug quick actions
+	document.getElementById('debug-heal-full').addEventListener('click', () => {
+		game.player.hp = game.player.max_hp;
+		game.player.stamina = game.player.max_stamina;
+		game.player.shield = 0;
+		loadDebugValues();
+		game.updateStatus();
+		showMessage('🛠️ Debug: 完全恢復');
+	});
+
+	document.getElementById('debug-add-gold').addEventListener('click', () => {
+		game.player.gold += 1000;
+		loadDebugValues();
+		game.updateStatus();
+		showMessage('🛠️ Debug: +1000 金幣');
+	});
+
+	document.getElementById('debug-level-up').addEventListener('click', () => {
+		game.player.level += 1;
+		game.player.max_hp += 10;
+		game.player.max_stamina += 5;
+		game.player.hp = Math.min(game.player.max_hp, game.player.hp + 10);
+		game.player.stamina = Math.min(game.player.max_stamina, game.player.stamina + 5);
+		loadDebugValues();
+		game.updateStatus();
+		showMessage('🛠️ Debug: 升級');
+	});
+
+	document.getElementById('debug-kill-enemy').addEventListener('click', () => {
+		if (game.inBattle) {
+			game.enemy.hp = 0;
+			loadDebugValues();
+			game.updateStatus();
+			showMessage('🛠️ Debug: 敵人HP歸零');
+		} else {
+			showMessage('🛠️ Debug: 目前不在戰鬥中');
+		}
+	});
+
+	document.getElementById('debug-add-item').addEventListener('click', () => {
+		const item = ITEMS[Math.floor(Math.random() * ITEMS.length)];
+		const rarities = ['common', 'rare', 'epic'];
+		const rarity = rarities[Math.floor(Math.random() * rarities.length)];
+		const newItem = Object.assign({}, item, { rarity });
+		game.player.inventory.push(newItem);
+		showMessage(`🛠️ Debug: 獲得 ${newItem.name} (${rarity})`);
+	});
+
+	document.getElementById('debug-start-battle').addEventListener('click', () => {
+		if (!game.inBattle) {
+			game.battle('monster');
+			loadDebugValues();
+			showMessage('🛠️ Debug: 強制開始戰鬥');
+		} else {
+			showMessage('🛠️ Debug: 已在戰鬥中');
+		}
+	});
+
+	document.getElementById('debug-end-battle').addEventListener('click', () => {
+		if (game.inBattle) {
+			game.inBattle = false;
+			spinBtn.disabled = true;
+			stopBtn.disabled = true;
+			try { stopAutoSpinLoop(); } catch(e) {}
+			const autoBtn = document.getElementById('auto-spin-btn'); if (autoBtn) autoBtn.disabled = true;
+			const mf = document.getElementById('move-front'); if (mf) mf.disabled = false;
+			const ml = document.getElementById('move-left'); if (ml) ml.disabled = false;
+			const mr = document.getElementById('move-right'); if (mr) mr.disabled = false;
+			loadDebugValues();
+			game.updateStatus();
+			showMessage('🛠️ Debug: 強制結束戰鬥');
+		} else {
+			showMessage('🛠️ Debug: 目前不在戰鬥中');
+		}
+	});
+
+	document.getElementById('debug-enter-pyramid').addEventListener('click', () => {
+		if (!game.inPyramid) {
+			game.enterPyramid();
+			loadDebugValues();
+			showMessage('🛠️ Debug: 進入金字塔');
+		} else {
+			showMessage('🛠️ Debug: 已在金字塔中');
+		}
+	});
+
+	document.getElementById('debug-apply').addEventListener('click', () => {
+		applyDebugChanges();
+	});
+
+	document.getElementById('debug-close').addEventListener('click', () => {
+		debugPanel.style.display = 'none';
+	});
+
+	// Keyboard shortcut: Ctrl+Shift+D to toggle debug panel
+	document.addEventListener('keydown', (e) => {
+		if (e.ctrlKey && e.shiftKey && e.key === 'D') {
+			e.preventDefault();
+			debugMode = !debugMode;
+			if (debugMode) {
+				loadDebugValues();
+				debugPanel.style.display = 'block';
+				showMessage('🛠️ Debug模式已啟動 (Ctrl+Shift+D 關閉)');
+			} else {
+				debugPanel.style.display = 'none';
+				showMessage('🛠️ Debug模式已關閉');
+			}
+		}
+	});
+
+	// Initial message about debug mode
+	console.log('%c🛠️ DEBUG MODE AVAILABLE', 'color: #0f0; font-size: 16px; font-weight: bold;');
+	console.log('%cPress Ctrl+Shift+D to toggle debug panel', 'color: #0ff; font-size: 14px;');
 });
 
