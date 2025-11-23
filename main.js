@@ -1186,13 +1186,13 @@ function genEnemyName(type) {
 		}
 
 	sandstorm() {
-		showMessage('遭遇沙漠風暴，受到些微損傷。');
+		showMessage(t('sandstormEncounter'));
 		this.player.hp = Math.max(0, this.player.hp - 10);
-		showMessage('風暴造成生命損失 -10。');
+		showMessage(`${t('sandstormDamage')} -10。`);
 	}
 
 	buriedTreasure() {
-		showMessage('🏺 你發現了一個掩埋在沙中的古老陶罐...');
+		showMessage(t('buriedTreasureFound'));
 		const outcomes = [
 			{ type: 'jackpot', weight: 25, name: '滿載黃金' },
 			{ type: 'good', weight: 35, name: '不錯的收穫' },
@@ -1211,31 +1211,31 @@ function genEnemyName(type) {
 			const baseGold = 200 + Math.floor(Math.random() * 300);
 			const finalGold = Math.floor(baseGold * (1 + 0.15 * this.player.luck_gold));
 			this.player.gold += finalGold;
-			showMessage(`✨ 陶罐中滿是閃亮的金幣！獲得 ${finalGold} 金幣！`);
+			showMessage(`${t('treasureJackpot')} ${finalGold} ${t('goldCoins')}`);
 			if (this.player.luck_gold > 0) {
-				showMessage(`（金幣幸運加成 +${Math.floor(baseGold * 0.15 * this.player.luck_gold)}）`);
+				showMessage(`${t('goldLuckBonus')} +${Math.floor(baseGold * 0.15 * this.player.luck_gold)}）`);
 			}
 		} else if (result.type === 'good') {
 			const baseGold = 80 + Math.floor(Math.random() * 120);
 			const finalGold = Math.floor(baseGold * (1 + 0.15 * this.player.luck_gold));
 			this.player.gold += finalGold;
-			showMessage(`💰 陶罐中有一些金幣，獲得 ${finalGold} 金幣。`);
+			showMessage(`${t('treasureGood')} ${finalGold} ${t('goldCoins')}`);
 		} else if (result.type === 'poor') {
 			const gold = 20 + Math.floor(Math.random() * 40);
 			this.player.gold += gold;
-			showMessage(`🪙 陶罐中只有少量金幣，獲得 ${gold} 金幣。`);
+			showMessage(`${t('treasurePoor')} ${gold} ${t('goldCoins')}`);
 		} else {
 			const rnd = Math.random();
 			if (rnd < 0.5) {
-				showMessage('😔 陶罐是空的，什麼也沒有...');
+				showMessage(t('treasureEmpty'));
 			} else {
-				showMessage('💔 陶罐中的黃金已經完全風化，化為塵土，一無所獲。');
+				showMessage(t('treasureDecayed'));
 			}
 		}
 	}
 
 	deadTraveler() {
-		showMessage('💀 你發現了一具罹難旅人的遺體...');
+		showMessage(t('deadTravelerFound'));
 		const outcomes = [
 			{ type: 'equipment', weight: 40, name: '裝備' },
 			{ type: 'gold_and_item', weight: 20, name: '金幣與物品' },
