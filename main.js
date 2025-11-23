@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // 事件列表與權重（對應原 Python）
 const EVENTS = ['monster', 'elite', 'mini_boss', 'merchant', 'black_market', 'oasis', 'sandstorm', 'egyptian_god', 'pyramid', 'buried_treasure', 'dead_traveler', 'ancient_shrine', 'caravan_rest', 'mirage', 'nomad_camp', 'quicksand', 'scorpion_nest', 'ancient_ruins', 'mysterious_stranger', 'trading_post', 'empty'];
-const EVENT_WEIGHTS = [24,8,4,7,4,6,8,4,2,6,6,5,5,4,5,5,4,5,4,6,2];
+const EVENT_WEIGHTS = [22,8,4,7,4,6,8,4,6,6,6,5,5,4,5,5,4,5,4,6,2];
 
 function chooseEvent() {
 	const total = EVENT_WEIGHTS.reduce((a,b)=>a+b,0);
