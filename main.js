@@ -10,8 +10,8 @@ document.addEventListener('DOMContentLoaded', function() {
 	const reels = [document.getElementById('reel-0'), document.getElementById('reel-1'), document.getElementById('reel-2')];
 
 // 事件列表與權重（對應原 Python）
-const EVENTS = ['monster', 'elite', 'mini_boss', 'merchant', 'black_market', 'oasis', 'sandstorm', 'egyptian_god', 'pyramid', 'empty'];
-const EVENT_WEIGHTS = [30,10,5,10,5,5,10,5,2,18];
+const EVENTS = ['monster', 'elite', 'mini_boss', 'merchant', 'black_market', 'oasis', 'sandstorm', 'egyptian_god', 'pyramid', 'buried_treasure', 'dead_traveler', 'ancient_shrine', 'caravan_rest', 'mirage', 'nomad_camp', 'quicksand', 'scorpion_nest', 'ancient_ruins', 'mysterious_stranger', 'trading_post', 'empty'];
+const EVENT_WEIGHTS = [24,8,4,7,4,6,8,4,2,6,6,5,5,4,5,5,4,5,4,6,2];
 
 function chooseEvent() {
 	const total = EVENT_WEIGHTS.reduce((a,b)=>a+b,0);
@@ -484,6 +484,30 @@ function genEnemyName(type) {
 				this.godEvent();
 			} else if (event === 'pyramid') {
 				this.pyramid();
+			} else if (event === 'buried_treasure') {
+				this.buriedTreasure();
+			} else if (event === 'dead_traveler') {
+				this.deadTraveler();
+			} else if (event === 'ancient_shrine') {
+				this.ancientShrine();
+			} else if (event === 'caravan_rest') {
+				this.caravanRest();
+			} else if (event === 'mirage') {
+				this.mirage();
+			} else if (event === 'nomad_camp') {
+				this.nomadCamp();
+			} else if (event === 'quicksand') {
+				this.quicksand();
+			} else if (event === 'scorpion_nest') {
+				this.scorpionNest();
+			} else if (event === 'ancient_ruins') {
+				this.ancientRuins();
+			} else if (event === 'mysterious_stranger') {
+				this.mysteriousStranger();
+			} else if (event === 'trading_post') {
+				this.tradingPost();
+			} else if (event === 'empty') {
+				this.emptyEvent();
 			} else {
 				showMessage('什麼都沒發生。');
 			}
@@ -707,7 +731,687 @@ function genEnemyName(type) {
 		showMessage('遭遇沙漠風暴，受到些微損傷。');
 		this.player.hp = Math.max(0, this.player.hp - 10);
 		showMessage('風暴造成生命損失 -10。');
-	}		godEvent() {
+	}
+
+	buriedTreasure() {
+		showMessage('🏺 你發現了一個掩埋在沙中的古老陶罐...');
+		const outcomes = [
+			{ type: 'jackpot', weight: 25, name: '滿載黃金' },
+			{ type: 'good', weight: 35, name: '不錯的收穫' },
+			{ type: 'poor', weight: 30, name: '少量金幣' },
+			{ type: 'nothing', weight: 10, name: '空罐或風化' }
+		];
+		const total = outcomes.reduce((s, o) => s + o.weight, 0);
+		let r = Math.random() * total;
+		let result = null;
+		for (const o of outcomes) {
+			r -= o.weight;
+			if (r <= 0) { result = o; break; }
+		}
+		
+		if (result.type === 'jackpot') {
+			const baseGold = 200 + Math.floor(Math.random() * 300);
+			const finalGold = Math.floor(baseGold * (1 + 0.15 * this.player.luck_gold));
+			this.player.gold += finalGold;
+			showMessage(`✨ 陶罐中滿是閃亮的金幣！獲得 ${finalGold} 金幣！`);
+			if (this.player.luck_gold > 0) {
+				showMessage(`（金幣幸運加成 +${Math.floor(baseGold * 0.15 * this.player.luck_gold)}）`);
+			}
+		} else if (result.type === 'good') {
+			const baseGold = 80 + Math.floor(Math.random() * 120);
+			const finalGold = Math.floor(baseGold * (1 + 0.15 * this.player.luck_gold));
+			this.player.gold += finalGold;
+			showMessage(`💰 陶罐中有一些金幣，獲得 ${finalGold} 金幣。`);
+		} else if (result.type === 'poor') {
+			const gold = 20 + Math.floor(Math.random() * 40);
+			this.player.gold += gold;
+			showMessage(`🪙 陶罐中只有少量金幣，獲得 ${gold} 金幣。`);
+		} else {
+			const rnd = Math.random();
+			if (rnd < 0.5) {
+				showMessage('😔 陶罐是空的，什麼也沒有...');
+			} else {
+				showMessage('💔 陶罐中的黃金已經完全風化，化為塵土，一無所獲。');
+			}
+		}
+	}
+
+	deadTraveler() {
+		showMessage('💀 你發現了一具罹難旅人的遺體...');
+		const outcomes = [
+			{ type: 'equipment', weight: 40, name: '裝備' },
+			{ type: 'gold_and_item', weight: 20, name: '金幣與物品' },
+			{ type: 'gold', weight: 25, name: '金幣' },
+			{ type: 'nothing', weight: 15, name: '一無所獲' }
+		];
+		const total = outcomes.reduce((s, o) => s + o.weight, 0);
+		let r = Math.random() * total;
+		let result = null;
+		for (const o of outcomes) {
+			r -= o.weight;
+			if (r <= 0) { result = o; break; }
+		}
+		
+		if (result.type === 'equipment') {
+			const item = ITEMS[Math.floor(Math.random() * ITEMS.length)];
+			const rarities = ['common', 'rare', 'epic'];
+			const rarityWeights = [60, 30, 10];
+			let rr = Math.random() * 100;
+			let rarity = 'common';
+			if (rr < 10) rarity = 'epic';
+			else if (rr < 40) rarity = 'rare';
+			const newItem = Object.assign({}, item, { rarity });
+			this.player.inventory.push(newItem);
+			showMessage(`⚔️ 你在遺體旁找到了 ${newItem.name} (${rarity})！`);
+			showMessage('（已加入背包）');
+		} else if (result.type === 'gold_and_item') {
+			const gold = 50 + Math.floor(Math.random() * 100);
+			this.player.gold += gold;
+			const item = ITEMS[Math.floor(Math.random() * ITEMS.length)];
+			const newItem = Object.assign({}, item, { rarity: 'common' });
+			this.player.inventory.push(newItem);
+			showMessage(`💰 你找到了 ${gold} 金幣和 ${newItem.name}！`);
+		} else if (result.type === 'gold') {
+			const gold = 30 + Math.floor(Math.random() * 70);
+			this.player.gold += gold;
+			showMessage(`💰 你在遺體旁找到了 ${gold} 金幣。`);
+		} else {
+			const rnd = Math.random();
+			if (rnd < 0.4) {
+				showMessage('🕊️ 你為旅人默哀，但身上已經沒有任何有價值的東西了。');
+			} else if (rnd < 0.7) {
+				showMessage('💨 遺體和裝備都已被風沙侵蝕，無法使用。');
+			} else {
+				showMessage('🦂 遺體周圍有毒蠍的痕跡，你謹慎地離開了，什麼也沒拿。');
+				const damage = 5;
+				this.player.hp = Math.max(1, this.player.hp - damage);
+				showMessage(`（小心離開時受到輕傷 -${damage} HP）`);
+			}
+		}
+	}
+
+	emptyEvent() {
+		const messages = [
+			'你繼續前行，沒有遇到任何特別的事情。',
+			'一陣風吹過沙丘，沒什麼特別的。',
+			'你小心翼翼地前進，這段路程很平靜。',
+			'遠處傳來駱駝的叫聲，但周圍空無一物。',
+			'你在沙地上看到一些腳印，但主人早已不見蹤影。'
+		];
+		showMessage(messages[Math.floor(Math.random() * messages.length)]);
+	}
+
+	ancientShrine() {
+		showMessage('🛕 你發現了一座古老的神殿廢墟...');
+		const outcomes = [
+			{ type: 'blessing', weight: 35 },
+			{ type: 'treasure', weight: 25 },
+			{ type: 'curse', weight: 20 },
+			{ type: 'trap', weight: 20 }
+		];
+		const total = outcomes.reduce((s, o) => s + o.weight, 0);
+		let r = Math.random() * total;
+		let result = null;
+		for (const o of outcomes) {
+			r -= o.weight;
+			if (r <= 0) { result = o; break; }
+		}
+
+		if (result.type === 'blessing') {
+			const blessings = [
+				{ type: 'hp', value: 30 },
+				{ type: 'stamina', value: 20 },
+				{ type: 'luck_combat', value: 2 },
+				{ type: 'luck_gold', value: 2 }
+			];
+			const blessing = blessings[Math.floor(Math.random() * blessings.length)];
+			
+			if (blessing.type === 'hp') {
+				this.player.max_hp += blessing.value;
+				this.player.hp = Math.min(this.player.max_hp, this.player.hp + blessing.value);
+				showMessage(`✨ 神殿的祝福降臨！最大HP +${blessing.value}`);
+			} else if (blessing.type === 'stamina') {
+				this.player.max_stamina += blessing.value;
+				this.player.stamina = Math.min(this.player.max_stamina, this.player.stamina + blessing.value);
+				showMessage(`✨ 神殿的祝福降臨！最大體力 +${blessing.value}`);
+			} else if (blessing.type === 'luck_combat') {
+				this.player.luck_combat += blessing.value;
+				showMessage(`✨ 神殿的祝福降臨！戰鬥幸運 +${blessing.value}`);
+			} else if (blessing.type === 'luck_gold') {
+				this.player.luck_gold += blessing.value;
+				showMessage(`✨ 神殿的祝福降臨！金幣幸運 +${blessing.value}`);
+			}
+		} else if (result.type === 'treasure') {
+			const gold = 100 + Math.floor(Math.random() * 200);
+			this.player.gold += gold;
+			showMessage(`💎 你在神殿中找到了古老的寶藏！獲得 ${gold} 金幣。`);
+		} else if (result.type === 'curse') {
+			const curses = [
+				'你觸碰了詛咒的雕像，感到身體虛弱。',
+				'神殿的詛咒纏繞著你...',
+				'你不小心打擾了亡靈的安息。'
+			];
+			showMessage(`⚠️ ${curses[Math.floor(Math.random() * curses.length)]}`);
+			const damage = 15 + Math.floor(Math.random() * 15);
+			this.player.hp = Math.max(1, this.player.hp - damage);
+			showMessage(`受到詛咒傷害 -${damage} HP`);
+		} else {
+			showMessage('💥 你觸發了古老的陷阱！');
+			const damage = 20 + Math.floor(Math.random() * 20);
+			this.player.hp = Math.max(1, this.player.hp - damage);
+			showMessage(`陷阱造成 ${damage} 點傷害！`);
+		}
+	}
+
+	caravanRest() {
+		showMessage('🐪 你遇到了一支商隊正在休息...');
+		const outcomes = [
+			{ type: 'trade', weight: 40 },
+			{ type: 'gift', weight: 30 },
+			{ type: 'info', weight: 20 },
+			{ type: 'ambush', weight: 10 }
+		];
+		const total = outcomes.reduce((s, o) => s + o.weight, 0);
+		let r = Math.random() * total;
+		let result = null;
+		for (const o of outcomes) {
+			r -= o.weight;
+			if (r <= 0) { result = o; break; }
+		}
+
+		if (result.type === 'trade') {
+			if (this.player.gold >= 60) {
+				const choice = Math.random();
+				if (choice < 0.5) {
+					this.player.gold -= 60;
+					this.player.potions += 2;
+					showMessage('🧪 你向商隊購買了2瓶藥水（花費60金幣）');
+				} else {
+					this.player.gold -= 60;
+					this.player.hp = this.player.max_hp;
+					this.player.stamina = this.player.max_stamina;
+					showMessage('🍖 你向商隊購買了食物和休息（花費60金幣），HP和體力完全恢復！');
+				}
+			} else {
+				showMessage('商隊願意交易，但你的金幣不足（需要60金幣）。');
+			}
+		} else if (result.type === 'gift') {
+			const gifts = [
+				{ type: 'gold', value: 50 },
+				{ type: 'potion', value: 1 },
+				{ type: 'food', hp: 30, stamina: 15 }
+			];
+			const gift = gifts[Math.floor(Math.random() * gifts.length)];
+			
+			if (gift.type === 'gold') {
+				this.player.gold += gift.value;
+				showMessage(`💰 商隊隊長贈送你一些金幣（+${gift.value}）以答謝你的到來。`);
+			} else if (gift.type === 'potion') {
+				this.player.potions += gift.value;
+				showMessage('🧪 商隊贈送你一瓶藥水以表善意。');
+			} else if (gift.type === 'food') {
+				this.player.hp = Math.min(this.player.max_hp, this.player.hp + gift.hp);
+				this.player.stamina = Math.min(this.player.max_stamina, this.player.stamina + gift.stamina);
+				showMessage(`🍞 商隊分享了食物和水，HP +${gift.hp}，體力 +${gift.stamina}`);
+			}
+		} else if (result.type === 'info') {
+			const xp = 20 + Math.floor(Math.random() * 30);
+			this.addXP(xp);
+			showMessage('📜 商隊分享了沙漠中的生存經驗和地圖情報。');
+		} else {
+			showMessage('⚔️ 這是一群偽裝的盜賊！');
+			this.battle('monster');
+		}
+	}
+
+	mirage() {
+		showMessage('💫 你看到了遠處的幻象...');
+		const outcomes = [
+			{ type: 'oasis_real', weight: 25 },
+			{ type: 'hallucination', weight: 40 },
+			{ type: 'treasure_real', weight: 20 },
+			{ type: 'danger', weight: 15 }
+		];
+		const total = outcomes.reduce((s, o) => s + o.weight, 0);
+		let r = Math.random() * total;
+		let result = null;
+		for (const o of outcomes) {
+			r -= o.weight;
+			if (r <= 0) { result = o; break; }
+		}
+
+		if (result.type === 'oasis_real') {
+			showMessage('🌴 幻象是真的！你找到了一處隱藏的綠洲！');
+			this.player.hp = this.player.max_hp;
+			this.player.stamina = this.player.max_stamina;
+			const gold = 30 + Math.floor(Math.random() * 50);
+			this.player.gold += gold;
+			showMessage(`完全恢復HP和體力，並且找到 ${gold} 金幣！`);
+		} else if (result.type === 'hallucination') {
+			showMessage('😵 那只是海市蜃樓...你追逐幻象消耗了體力。');
+			const staminaLoss = 10 + Math.floor(Math.random() * 10);
+			this.player.stamina = Math.max(0, this.player.stamina - staminaLoss);
+			showMessage(`體力 -${staminaLoss}`);
+		} else if (result.type === 'treasure_real') {
+			showMessage('✨ 幻象指引你找到了真正的寶藏！');
+			const gold = 80 + Math.floor(Math.random() * 120);
+			this.player.gold += gold;
+			showMessage(`獲得 ${gold} 金幣！`);
+		} else {
+			showMessage('⚠️ 幻象引導你走入危險區域！');
+			const damage = 15 + Math.floor(Math.random() * 15);
+			this.player.hp = Math.max(1, this.player.hp - damage);
+			showMessage(`受到傷害 -${damage} HP`);
+		}
+	}
+
+	nomadCamp() {
+		showMessage('⛺ 你遇到了一個遊牧民族的營地...');
+		const outcomes = [
+			{ type: 'healing', weight: 35 },
+			{ type: 'trade_items', weight: 30 },
+			{ type: 'quest', weight: 25 },
+			{ type: 'hostile', weight: 10 }
+		];
+		const total = outcomes.reduce((s, o) => s + o.weight, 0);
+		let r = Math.random() * total;
+		let result = null;
+		for (const o of outcomes) {
+			r -= o.weight;
+			if (r <= 0) { result = o; break; }
+		}
+
+		if (result.type === 'healing') {
+			showMessage('🏕️ 遊牧民熱情地接待了你，提供食物和休息。');
+			this.player.hp = Math.min(this.player.max_hp, this.player.hp + 40);
+			this.player.stamina = Math.min(this.player.max_stamina, this.player.stamina + 25);
+			showMessage('HP +40，體力 +25');
+		} else if (result.type === 'trade_items') {
+			const item = ITEMS[Math.floor(Math.random() * ITEMS.length)];
+			const newItem = Object.assign({}, item, { rarity: 'common' });
+			this.player.inventory.push(newItem);
+			showMessage(`🎁 遊牧民贈送你一件 ${newItem.name}（已加入背包）`);
+		} else if (result.type === 'quest') {
+			const xp = 30 + Math.floor(Math.random() * 40);
+			const gold = 40 + Math.floor(Math.random() * 60);
+			this.addXP(xp);
+			this.player.gold += gold;
+			showMessage('📖 遊牧民告訴你關於沙漠的古老傳說和秘密。');
+			showMessage(`獲得經驗值和 ${gold} 金幣。`);
+		} else {
+			showMessage('⚔️ 這個部落對外來者不友善！');
+			this.battle('monster');
+		}
+	}
+
+	quicksand() {
+		showMessage('⚠️ 你踩到了流沙！');
+		const outcomes = [
+			{ type: 'escape', weight: 50 },
+			{ type: 'struggle', weight: 30 },
+			{ type: 'sink', weight: 20 }
+		];
+		const total = outcomes.reduce((s, o) => s + o.weight, 0);
+		let r = Math.random() * total;
+		let result = null;
+		for (const o of outcomes) {
+			r -= o.weight;
+			if (r <= 0) { result = o; break; }
+		}
+
+		if (result.type === 'escape') {
+			showMessage('💨 你迅速脫離了流沙區域！');
+			const staminaLoss = 5 + Math.floor(Math.random() * 10);
+			this.player.stamina = Math.max(0, this.player.stamina - staminaLoss);
+			showMessage(`消耗體力 -${staminaLoss}`);
+		} else if (result.type === 'struggle') {
+			showMessage('😰 你在流沙中掙扎，消耗了大量體力和生命。');
+			const hpLoss = 10 + Math.floor(Math.random() * 15);
+			const staminaLoss = 15 + Math.floor(Math.random() * 15);
+			this.player.hp = Math.max(1, this.player.hp - hpLoss);
+			this.player.stamina = Math.max(0, this.player.stamina - staminaLoss);
+			showMessage(`HP -${hpLoss}，體力 -${staminaLoss}`);
+		} else {
+			showMessage('💀 你陷入流沙深處，幾乎要窒息！');
+			const hpLoss = 25 + Math.floor(Math.random() * 25);
+			this.player.hp = Math.max(1, this.player.hp - hpLoss);
+			showMessage(`HP -${hpLoss}`);
+			if (this.player.potions > 0 && Math.random() < 0.5) {
+				this.player.potions -= 1;
+				showMessage('🧪 在掙扎中不小心打破了一瓶藥水（-1藥水）');
+			}
+		}
+	}
+
+	scorpionNest() {
+		showMessage('🦂 你無意中闖入了毒蠍的巢穴！');
+		const outcomes = [
+			{ type: 'avoid', weight: 35 },
+			{ type: 'minor_sting', weight: 35 },
+			{ type: 'serious_sting', weight: 20 },
+			{ type: 'treasure', weight: 10 }
+		];
+		const total = outcomes.reduce((s, o) => s + o.weight, 0);
+		let r = Math.random() * total;
+		let result = null;
+		for (const o of outcomes) {
+			r -= o.weight;
+			if (r <= 0) { result = o; break; }
+		}
+
+		if (result.type === 'avoid') {
+			showMessage('🏃 你小心地繞過毒蠍，成功避開了危險！');
+		} else if (result.type === 'minor_sting') {
+			showMessage('😣 你被毒蠍蜇了一下！');
+			const damage = 8 + Math.floor(Math.random() * 12);
+			this.player.hp = Math.max(1, this.player.hp - damage);
+			showMessage(`受到毒素傷害 -${damage} HP`);
+		} else if (result.type === 'serious_sting') {
+			showMessage('💀 多隻毒蠍攻擊了你！');
+			const damage = 20 + Math.floor(Math.random() * 20);
+			this.player.hp = Math.max(1, this.player.hp - damage);
+			const staminaLoss = 10 + Math.floor(Math.random() * 10);
+			this.player.stamina = Math.max(0, this.player.stamina - staminaLoss);
+			showMessage(`HP -${damage}，體力 -${staminaLoss}`);
+		} else {
+			showMessage('✨ 在躲避毒蠍時，你發現了牠們守護的寶藏！');
+			const gold = 100 + Math.floor(Math.random() * 150);
+			this.player.gold += gold;
+			showMessage(`獲得 ${gold} 金幣！`);
+		}
+	}
+
+	ancientRuins() {
+		showMessage('🏛️ 你發現了一處古代遺跡...');
+		const outcomes = [
+			{ type: 'artifact', weight: 25 },
+			{ type: 'inscription', weight: 30 },
+			{ type: 'trap', weight: 25 },
+			{ type: 'guardian', weight: 20 }
+		];
+		const total = outcomes.reduce((s, o) => s + o.weight, 0);
+		let r = Math.random() * total;
+		let result = null;
+		for (const o of outcomes) {
+			r -= o.weight;
+			if (r <= 0) { result = o; break; }
+		}
+
+		if (result.type === 'artifact') {
+			const item = ITEMS[Math.floor(Math.random() * ITEMS.length)];
+			const rarityRoll = Math.random();
+			let rarity = 'common';
+			if (rarityRoll < 0.15) rarity = 'epic';
+			else if (rarityRoll < 0.45) rarity = 'rare';
+			const newItem = Object.assign({}, item, { rarity });
+			this.player.inventory.push(newItem);
+			showMessage(`⚱️ 你在遺跡中找到了古代神器 ${newItem.name} (${rarity})！`);
+		} else if (result.type === 'inscription') {
+			const xp = 40 + Math.floor(Math.random() * 60);
+			this.addXP(xp);
+			showMessage('📜 你研究了遺跡上的銘文，獲得了古老的知識。');
+		} else if (result.type === 'trap') {
+			showMessage('💥 你觸發了遺跡的守護機關！');
+			const damage = 15 + Math.floor(Math.random() * 25);
+			this.player.hp = Math.max(1, this.player.hp - damage);
+			showMessage(`受到 ${damage} 點傷害！`);
+		} else {
+			showMessage('👹 遺跡的守護者被喚醒了！');
+			this.battle('elite');
+		}
+	}
+
+	mysteriousStranger() {
+		showMessage('👤 你遇到了一位神秘的陌生人...');
+		const outcomes = [
+			{ type: 'gamble', weight: 30 },
+			{ type: 'gift', weight: 25 },
+			{ type: 'prophecy', weight: 20 },
+			{ type: 'curse', weight: 15 },
+			{ type: 'merchant', weight: 10 }
+		];
+		const total = outcomes.reduce((s, o) => s + o.weight, 0);
+		let r = Math.random() * total;
+		let result = null;
+		for (const o of outcomes) {
+			r -= o.weight;
+			if (r <= 0) { result = o; break; }
+		}
+
+		if (result.type === 'gamble') {
+			if (this.player.gold >= 100) {
+				showMessage('🎲 陌生人邀請你賭一把：投入100金幣，有機會獲得雙倍或失去全部...');
+				if (Math.random() < 0.5) {
+					this.player.gold -= 100;
+					showMessage('😔 你輸了，損失100金幣。');
+				} else {
+					this.player.gold += 100;
+					showMessage('🎉 你贏了！獲得200金幣（淨賺100）！');
+				}
+			} else {
+				showMessage('陌生人想邀請你賭博，但你的金幣不足（需要100金幣）。');
+				showMessage('陌生人微笑著離開了。');
+			}
+		} else if (result.type === 'gift') {
+			const giftType = Math.random();
+			if (giftType < 0.4) {
+				const gold = 80 + Math.floor(Math.random() * 120);
+				this.player.gold += gold;
+				showMessage(`💰 陌生人贈送你 ${gold} 金幣後消失了。`);
+			} else if (giftType < 0.7) {
+				this.player.potions += 2;
+				showMessage('🧪 陌生人給了你2瓶藥水後神秘地消失了。');
+			} else {
+				const item = ITEMS[Math.floor(Math.random() * ITEMS.length)];
+				const newItem = Object.assign({}, item, { rarity: 'rare' });
+				this.player.inventory.push(newItem);
+				showMessage(`✨ 陌生人贈送你 ${newItem.name} (rare)後化作煙霧消失了！`);
+			}
+		} else if (result.type === 'prophecy') {
+			showMessage('🔮 陌生人預言了你的未來...');
+			const prophecies = [
+				{ text: '「你將在下一次戰鬥中獲得勝利的力量」', buff: 'combat' },
+				{ text: '「財富之神將眷顧你」', buff: 'gold' },
+				{ text: '「危險即將降臨，但你會倖存」', buff: 'defense' }
+			];
+			const prophecy = prophecies[Math.floor(Math.random() * prophecies.length)];
+			showMessage(prophecy.text);
+			
+			if (prophecy.buff === 'combat') {
+				this.player.luck_combat += 3;
+				showMessage('戰鬥幸運 +3');
+			} else if (prophecy.buff === 'gold') {
+				this.player.luck_gold += 3;
+				showMessage('金幣幸運 +3');
+			} else if (prophecy.buff === 'defense') {
+				this.player.shield += 30;
+				showMessage('獲得30點護盾');
+			}
+		} else if (result.type === 'curse') {
+			showMessage('😈 陌生人露出邪惡的笑容，對你施加了詛咒！');
+			const curseType = Math.random();
+			if (curseType < 0.5) {
+				const goldLoss = Math.min(this.player.gold, 50 + Math.floor(Math.random() * 100));
+				this.player.gold -= goldLoss;
+				showMessage(`💸 你的金幣憑空消失了 -${goldLoss}！`);
+			} else {
+				const damage = 20 + Math.floor(Math.random() * 20);
+				this.player.hp = Math.max(1, this.player.hp - damage);
+				showMessage(`💀 詛咒侵蝕你的身體 -${damage} HP！`);
+			}
+		} else {
+			showMessage('🏪 陌生人原來是個特殊商人！');
+			this.merchant();
+		}
+	}
+
+	tradingPost() {
+		showMessage('🏪 你發現了一個沙漠驛站！');
+		showMessage('這裡可以補給物資，也可以出售你不需要的裝備。');
+		
+		// 禁用移動按鈕
+		const mf = document.getElementById('move-front'); if (mf) mf.disabled = true;
+		const ml = document.getElementById('move-left'); if (ml) ml.disabled = true;
+		const mr = document.getElementById('move-right'); if (mr) mr.disabled = true;
+		
+		// 創建驛站面板
+		const panel = document.createElement('div');
+		panel.id = 'trading-post-panel';
+		panel.style.cssText = `
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			background: linear-gradient(180deg, #fff9e6, #ffe4b3);
+			border: 3px solid #d4a855;
+			border-radius: 12px;
+			padding: 24px;
+			box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+			z-index: 100;
+			min-width: 450px;
+			max-width: 600px;
+			max-height: 80vh;
+			overflow-y: auto;
+		`;
+		
+		panel.innerHTML = `
+			<h2 style="color: #8b4513; margin-top: 0; text-align: center;">🏪 沙漠驛站</h2>
+			
+			<div style="background: #fff; padding: 12px; border-radius: 8px; margin-bottom: 16px;">
+				<h3 style="margin-top: 0; color: #d4a855;">💰 你的金幣: <span id="tp-gold">${this.player.gold}</span></h3>
+			</div>
+			
+			<div style="background: #fff; padding: 12px; border-radius: 8px; margin-bottom: 16px;">
+				<h3 style="margin-top: 0; color: #2ecc71;">🛒 補給物資</h3>
+				<div style="display: flex; flex-direction: column; gap: 8px;">
+					<div style="display: flex; justify-content: space-between; align-items: center; padding: 8px; background: #f8f8f8; border-radius: 4px;">
+						<span>🧪 藥水 x1</span>
+						<button class="tp-buy-btn" data-item="potion" data-price="50" style="padding: 6px 12px; background: #2ecc71; color: white; border: none; border-radius: 4px; cursor: pointer;">50金幣</button>
+					</div>
+					<div style="display: flex; justify-content: space-between; align-items: center; padding: 8px; background: #f8f8f8; border-radius: 4px;">
+						<span>🍖 食物（恢復30HP+15體力）</span>
+						<button class="tp-buy-btn" data-item="food" data-price="40" style="padding: 6px 12px; background: #2ecc71; color: white; border: none; border-radius: 4px; cursor: pointer;">40金幣</button>
+					</div>
+					<div style="display: flex; justify-content: space-between; align-items: center; padding: 8px; background: #f8f8f8; border-radius: 4px;">
+						<span>💊 完全恢復（HP+體力全滿）</span>
+						<button class="tp-buy-btn" data-item="fullheal" data-price="80" style="padding: 6px 12px; background: #2ecc71; color: white; border: none; border-radius: 4px; cursor: pointer;">80金幣</button>
+					</div>
+				</div>
+			</div>
+			
+			<div style="background: #fff; padding: 12px; border-radius: 8px; margin-bottom: 16px;">
+				<h3 style="margin-top: 0; color: #e74c3c;">💼 出售裝備</h3>
+				<div id="tp-inventory" style="max-height: 250px; overflow-y: auto;">
+					<!-- 裝備列表將動態生成 -->
+				</div>
+			</div>
+			
+			<div style="text-align: center; margin-top: 16px;">
+				<button id="tp-close" style="padding: 10px 24px; background: #95a5a6; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 1.1em;">離開驛站</button>
+			</div>
+		`;
+		
+		document.body.appendChild(panel);
+		
+		// 生成背包裝備列表
+		const updateInventory = () => {
+			const invDiv = document.getElementById('tp-inventory');
+			if (!invDiv) return;
+			
+			if (this.player.inventory.length === 0) {
+				invDiv.innerHTML = '<div style="text-align: center; color: #999; padding: 20px;">背包是空的</div>';
+				return;
+			}
+			
+			let html = '';
+			this.player.inventory.forEach((item, idx) => {
+				// 計算出售價格：根據稀有度
+				let basePrice = 20;
+				if (item.rarity === 'rare') basePrice = 80;
+				else if (item.rarity === 'epic') basePrice = 200;
+				
+				// 根據屬性加成調整價格
+				if (item.atk) basePrice += item.atk * 5;
+				if (item.def) basePrice += item.def * 5;
+				if (item.max_hp_bonus) basePrice += item.max_hp_bonus * 2;
+				
+				const rarityColor = item.rarity === 'epic' ? '#9b59b6' : (item.rarity === 'rare' ? '#3498db' : '#95a5a6');
+				
+				html += `
+					<div style="display: flex; justify-content: space-between; align-items: center; padding: 8px; background: #f8f8f8; border-radius: 4px; margin-bottom: 6px; border-left: 4px solid ${rarityColor};">
+						<div style="flex: 1;">
+							<div style="font-weight: bold;">${item.name}</div>
+							<div style="font-size: 0.85em; color: #666;">${item.rarity}</div>
+						</div>
+						<button class="tp-sell-btn" data-idx="${idx}" data-price="${basePrice}" style="padding: 6px 12px; background: #e74c3c; color: white; border: none; border-radius: 4px; cursor: pointer;">賣出 ${basePrice}金</button>
+					</div>
+				`;
+			});
+			invDiv.innerHTML = html;
+			
+			// 綁定出售按鈕
+			Array.from(invDiv.querySelectorAll('.tp-sell-btn')).forEach(btn => {
+				btn.addEventListener('click', (e) => {
+					const idx = parseInt(e.target.getAttribute('data-idx'));
+					const price = parseInt(e.target.getAttribute('data-price'));
+					const item = this.player.inventory[idx];
+					
+					if (item) {
+						this.player.inventory.splice(idx, 1);
+						this.player.gold += price;
+						showMessage(`💰 賣出 ${item.name}，獲得 ${price} 金幣。`);
+						document.getElementById('tp-gold').textContent = this.player.gold;
+						updateInventory();
+						this.updateStatus();
+					}
+				});
+			});
+		};
+		
+		updateInventory();
+		
+		// 綁定購買按鈕
+		Array.from(panel.querySelectorAll('.tp-buy-btn')).forEach(btn => {
+			btn.addEventListener('click', (e) => {
+				const item = e.target.getAttribute('data-item');
+				const price = parseInt(e.target.getAttribute('data-price'));
+				
+				if (this.player.gold >= price) {
+					this.player.gold -= price;
+					
+					if (item === 'potion') {
+						this.player.potions += 1;
+						showMessage('🧪 購買藥水 x1');
+					} else if (item === 'food') {
+						this.player.hp = Math.min(this.player.max_hp, this.player.hp + 30);
+						this.player.stamina = Math.min(this.player.max_stamina, this.player.stamina + 15);
+						showMessage('🍖 購買食物，HP +30，體力 +15');
+					} else if (item === 'fullheal') {
+						this.player.hp = this.player.max_hp;
+						this.player.stamina = this.player.max_stamina;
+						showMessage('💊 完全恢復！HP和體力全滿！');
+					}
+					
+					document.getElementById('tp-gold').textContent = this.player.gold;
+					this.updateStatus();
+				} else {
+					showMessage('❌ 金幣不足！');
+				}
+			});
+		});
+		
+		// 關閉按鈕
+		document.getElementById('tp-close').addEventListener('click', () => {
+			document.body.removeChild(panel);
+			showMessage('你離開了驛站，繼續踏上旅程。');
+			// 恢復移動按鈕
+			if (mf) mf.disabled = false;
+			if (ml) ml.disabled = false;
+			if (mr) mr.disabled = false;
+		});
+	}
+
+	godEvent() {
 			showMessage('遇到古埃及神祇，獲得祝福或詛咒（隨機）。');
 			if (Math.random() < 0.5) {
 				let g = 50;
@@ -965,52 +1669,143 @@ function genEnemyName(type) {
 					if (this.enemy.hp <= 0) {
 						showMessage('你擊敗了敵人！戰鬥結束，獲得獎勵。');
 						
-						// 金字塔副本獎勵倍率
-						const pyramidMultiplier = this.inPyramid ? 3 : 1;
+						// 定義 cloneItem 函數來正確處理裝備屬性加成
+						const cloneItem = (base, rarity) => {
+							const it = Object.assign({}, base);
+							it.rarity = rarity;
+							// 調整屬性幅度：rare +~1.5, epic +~2.2
+							if (it.atk) it.atk = Math.max(1, Math.round(it.atk * (rarity==='rare'?1.5: (rarity==='epic'?2.2:1))));
+							if (it.def) it.def = Math.max(1, Math.round(it.def * (rarity==='rare'?1.5: (rarity==='epic'?2.2:1))));
+							if (it.luck_gold) it.luck_gold = Math.max(1, Math.round(it.luck_gold * (rarity==='rare'?1.5: (rarity==='epic'?2.2:1))));
+							if (it.luck_combat) it.luck_combat = Math.max(1, Math.round(it.luck_combat * (rarity==='rare'?1.5: (rarity==='epic'?2.2:1))));
+							if (it.max_hp_bonus) it.max_hp_bonus = Math.max(1, Math.round(it.max_hp_bonus * (rarity==='rare'?1.5: (rarity==='epic'?2.2:1))));
+							
+							// 根據品質添加額外屬性
+							if (rarity !== 'common' && QUALITY_BONUS[it.slot] && QUALITY_BONUS[it.slot][rarity]) {
+								const bonusPool = QUALITY_BONUS[it.slot][rarity];
+								if (bonusPool.length > 0) {
+									const bonus = bonusPool[Math.floor(Math.random() * bonusPool.length)];
+									Object.assign(it, bonus);
+								}
+							}
+							return it;
+						};
+						
+						// 金字塔副本獎勵倍率（改為15倍）
+						const pyramidMultiplier = this.inPyramid ? 15 : 1;
+						
+						// 敵人類型獎勵倍率（精英x2，小頭目x3）
+						let enemyTypeMultiplier = 1;
+						if (this.enemy.strength >= 2.4) { // mini_boss
+							enemyTypeMultiplier = 3;
+						} else if (this.enemy.strength >= 1.6) { // elite
+							enemyTypeMultiplier = 2;
+						}
 						
 						// 獎勵：根據難度給予金幣與經驗值
 						const baseReward = 20 * this.difficulty;
-						const reward = baseReward * pyramidMultiplier;
+						const reward = baseReward * pyramidMultiplier * enemyTypeMultiplier;
 						this.player.gold += reward;
+						
+						let rewardMsg = `獲得金幣 ${reward}`;
 						if (this.inPyramid) {
-							showMessage(`🔺 金字塔獎勵 x3！獲得金幣 ${reward} (基礎 ${baseReward} x3)。`);
-						} else {
-							showMessage(`獲得金幣 ${reward}。`);
+							rewardMsg = `🔺 金字塔獎勵 x15！獲得金幣 ${reward} (基礎 ${baseReward} x15`;
+							if (enemyTypeMultiplier > 1) {
+								rewardMsg += ` x${enemyTypeMultiplier}`;
+							}
+							rewardMsg += ')';
+						} else if (enemyTypeMultiplier > 1) {
+							rewardMsg += ` (基礎 ${baseReward} x${enemyTypeMultiplier})`;
 						}
+						showMessage(rewardMsg);
 						
 						// 經驗值以難度與敵人強度計算
 						const baseXP = Math.floor(15 * this.difficulty * (this.enemy.strength || 1));
-						const xpGain = baseXP * pyramidMultiplier;
+						const xpGain = baseXP * pyramidMultiplier * enemyTypeMultiplier;
 						if (this.inPyramid) {
-							showMessage(`🔺 金字塔獎勵 x3！`);
+							showMessage(`🔺 金字塔經驗值 x15！`);
 						}
 						this.addXP(xpGain);
 						
 						// 掉落機制
 						let dropped = null;
 						if (this.inPyramid) {
-							// 金字塔保證掉落優良(rare)以上裝備
-							const rareItems = ITEMS.filter(i => i.rarity === 'rare');
-							if (rareItems.length > 0) {
-								dropped = rareItems[Math.floor(Math.random() * rareItems.length)];
-							} else {
-								dropped = ITEMS[Math.floor(Math.random() * ITEMS.length)];
+							// 金字塔保證掉落1-2件稀有/史詩裝備
+							const dropCount = 1 + Math.floor(Math.random() * 2);
+							showMessage(`🔺 金字塔寶藏！掉落 ${dropCount} 件裝備`);
+							for (let i = 0; i < dropCount; i++) {
+								// 70% rare, 30% epic
+								const rarityRoll = Math.random();
+								let targetRarity = rarityRoll < 0.3 ? 'epic' : 'rare';
+								const candidateItems = ITEMS.filter(it => it.slot); // 只要有slot的
+								if (candidateItems.length > 0) {
+									const baseItem = candidateItems[Math.floor(Math.random() * candidateItems.length)];
+									dropped = cloneItem(baseItem, targetRarity);
+									this.player.inventory.push(dropped);
+									showMessage(`  ✨ 獲得 ${dropped.name} (${dropped.rarity})`);
+								}
 							}
-							this.player.inventory.push(Object.assign({}, dropped));
-							showMessage(`🔺 金字塔寶藏！敵人掉落：${dropped.name}（${dropped.rarity}）`);
 						} else {
-							// 正常地圖掉落
-							const roll = Math.random() * 100;
-							if (roll < 5) { // 5% 幾率史詩
-								dropped = ITEMS[Math.floor(Math.random()*ITEMS.length)].rarity === 'rare' ? ITEMS[Math.floor(Math.random()*ITEMS.length)] : ITEMS[1];
-							} else if (roll < 20) { // 15% 稀有
-								dropped = ITEMS.find(i=>i.rarity === 'rare') || ITEMS[0];
-							} else if (roll < 50) { // 30% 普通
-								dropped = ITEMS.find(i=>i.rarity === 'common') || ITEMS[0];
-							}
-							if (dropped) {
-								this.player.inventory.push(Object.assign({}, dropped));
-								showMessage(`敵人掉落：${dropped.name}（${dropped.rarity}）`);
+							// 正常地圖掉落（精英和小頭目提高掉落率）
+							let dropChance = 50; // 基礎50%掉落率
+							let epicChance = 5;
+							let rareChance = 15;
+							
+							if (enemyTypeMultiplier === 3) { // mini_boss
+								dropChance = 100; // 100%掉落
+								epicChance = 40; // 40% 史詩
+								rareChance = 50; // 50% 稀有
+								// 小頭目掉落1-2件
+								const dropCount = 1 + Math.floor(Math.random() * 2);
+								showMessage(`💎 小頭目掉落 ${dropCount} 件裝備！`);
+								for (let i = 0; i < dropCount; i++) {
+									const roll = Math.random() * 100;
+									let rarity = 'common';
+									if (roll < epicChance) rarity = 'epic';
+									else if (roll < epicChance + rareChance) rarity = 'rare';
+									
+									const baseItem = ITEMS[Math.floor(Math.random() * ITEMS.length)];
+									dropped = cloneItem(baseItem, rarity);
+									this.player.inventory.push(dropped);
+									showMessage(`  獲得 ${dropped.name} (${rarity})`);
+								}
+							} else if (enemyTypeMultiplier === 2) { // elite
+								dropChance = 85; // 85%掉落
+								epicChance = 20; // 20% 史詩
+								rareChance = 40; // 40% 稀有
+								// 精英掉落1-2件
+								const dropCount = 1 + Math.floor(Math.random() * 2);
+								if (Math.random() * 100 < dropChance) {
+									showMessage(`⚔️ 精英掉落 ${dropCount} 件裝備！`);
+									for (let i = 0; i < dropCount; i++) {
+										const roll = Math.random() * 100;
+										let rarity = 'common';
+										if (roll < epicChance) rarity = 'epic';
+										else if (roll < epicChance + rareChance) rarity = 'rare';
+										
+										const baseItem = ITEMS[Math.floor(Math.random() * ITEMS.length)];
+										dropped = cloneItem(baseItem, rarity);
+										this.player.inventory.push(dropped);
+										showMessage(`  獲得 ${dropped.name} (${rarity})`);
+									}
+								}
+							} else {
+								// 普通敵人掉落
+								const roll = Math.random() * 100;
+								let rarity = null;
+								if (roll < epicChance) {
+									rarity = 'epic';
+								} else if (roll < epicChance + rareChance) {
+									rarity = 'rare';
+								} else if (roll < dropChance) {
+									rarity = 'common';
+								}
+								if (rarity) {
+									const baseItem = ITEMS[Math.floor(Math.random()*ITEMS.length)];
+									dropped = cloneItem(baseItem, rarity);
+									this.player.inventory.push(dropped);
+									showMessage(`敵人掉落：${dropped.name}（${dropped.rarity}）`);
+								}
 							}
 						}
 						this.inBattle = false;
@@ -1206,8 +2001,31 @@ function startAutoSpinLoop() {
 			});
 		};
 
-		// 停 0,1,2 軸
-		stopOne(0).then(()=> stopOne(1)).then(()=> stopOne(2)).then(()=> {
+		// 停第一軸，第一個停止後，第二第三軸直接停止（無動畫）
+		stopOne(0).then(()=> {
+			// 第二和第三軸直接停止，無延遲動畫
+			const stopInstantly = (index) => {
+				const targetSymbol = pickWeightedSymbol();
+				const strip = reels[index].querySelector('.strip');
+				reelState[index].spinning = false;
+				if (reelState[index].raf) cancelAnimationFrame(reelState[index].raf);
+				
+				const targetIdx = SYMBOLS.indexOf(targetSymbol);
+				const symbolIndex = targetIdx >= 0 ? targetIdx : 0;
+				const finalPos = symbolIndex * SYMBOL_HEIGHT + 30;
+				
+				strip.style.transition = 'transform 0.15s ease-out';
+				strip.style.transform = `translateY(-${finalPos}px)`;
+				
+				results[index] = targetSymbol;
+			};
+			
+			stopInstantly(1);
+			stopInstantly(2);
+			
+			// 等待短暫的CSS動畫完成
+			return new Promise(resolve => setTimeout(resolve, 200));
+		}).then(()=> {
 			showMessage(`插槽結果： ${results.join(' | ')}`);
 			// 把結果傳給遊戲邏輯進行處理（attack/skill/defend/enemy）
 			try {
