@@ -552,8 +552,7 @@ function genEnemyName(type) {
 				const mitigated = Math.max(0, dmg - this.player.shield);
 				this.player.shield -= consumedShield;
 				this.player.hp -= mitigated;
-				this.player.stamina = Math.max(0, this.player.stamina - 5);
-				showMessage(`敵人自動普攻，造成 ${dmg} 傷害（護盾吸收 ${consumedShield}），玩家 HP -${mitigated}，體力 -5。`);
+				showMessage(`敵人自動普攻，造成 ${dmg} 傷害（護盾吸收 ${consumedShield}），玩家 HP -${mitigated}。`);
 			}
 			// 重置攻擊倒數
 			this.enemy.turnsToAttack = 3;
@@ -680,18 +679,11 @@ function genEnemyName(type) {
 			this.player.stamina = Math.min(this.player.max_stamina, this.player.stamina + 10);
 		}
 
-		sandstorm() {
-			showMessage('遭遇沙漠風暴，受到些微損傷或裝備損壞。');
-			if (Math.random() < 0.5) {
-				this.player.stamina = Math.max(0, this.player.stamina - 10);
-				showMessage('風暴造成體力損失 -10。');
-			} else {
-				this.player.hp = Math.max(0, this.player.hp - 10);
-				showMessage('風暴造成生命損失 -10。');
-			}
-		}
-
-		godEvent() {
+	sandstorm() {
+		showMessage('遭遇沙漠風暴，受到些微損傷。');
+		this.player.hp = Math.max(0, this.player.hp - 10);
+		showMessage('風暴造成生命損失 -10。');
+	}		godEvent() {
 			showMessage('遇到古埃及神祇，獲得祝福或詛咒（隨機）。');
 			if (Math.random() < 0.5) {
 				let g = 50;
@@ -857,7 +849,10 @@ function genEnemyName(type) {
 					let isCrit2 = Math.random() < critChance2;
 					let finalDmg2 = isCrit2 ? Math.floor(baseDmg * 1.6) : baseDmg;
 					this.enemy.hp -= finalDmg2;
-					showMessage(`你使用技能 x${matchCount}${isCrit2? '（暴擊）':''}，對敵人造成 ${finalDmg2} 傷害。`);
+					// 技能消耗體力
+					const staminaCost = 5 * matchCount;
+					this.player.stamina = Math.max(0, this.player.stamina - staminaCost);
+					showMessage(`你使用技能 x${matchCount}${isCrit2? '（暴擊）':''}，對敵人造成 ${finalDmg2} 傷害，消耗體力 ${staminaCost}。`);
 					break;
 				}
 				case '🛡️': {
@@ -891,9 +886,7 @@ function genEnemyName(type) {
 						const mitigated = Math.max(0, rawDmg - this.player.shield);
 						this.player.shield -= consumedShield;
 						this.player.hp -= mitigated;
-						const staminaLoss = 6 * matchCount; // 減少體力損失幅度
-						this.player.stamina -= staminaLoss;
-						showMessage(`敵人攻擊 x${matchCount}，原始傷害 ${rawDmg}，護盾吸收 ${consumedShield}，實際受損 ${mitigated}，體力 -${staminaLoss}。`);
+						showMessage(`敵人攻擊 x${matchCount}，原始傷害 ${rawDmg}，護盾吸收 ${consumedShield}，實際受損 ${mitigated}。`);
 					}
 					break;
 				}

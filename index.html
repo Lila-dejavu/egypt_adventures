@@ -8,7 +8,20 @@
 </head>
 <body>
     <div id="game-container">
-        <h1>Egypt Adventures</h1>
+        <div id="header-area">
+            <h1>Egypt Adventures</h1>
+            <aside id="sidebar">
+                <h2>符號說明</h2>
+                <ul>
+                    <li><strong>⚔️</strong> - 攻擊</li>
+                    <li><strong>⚡️</strong> - 技能</li>
+                    <li><strong>🛡️</strong> - 防禦</li>
+                    <li><strong>💀</strong> - 敵人攻擊</li>
+                    <li><strong>🧪</strong> - 回復</li>
+                    <li><strong>⭐</strong> - 幸運加成</li>
+                </ul>
+            </aside>
+        </div>
            <div id="main-area">
             <!-- 歡迎欄位（固定顯示） -->
             <div id="welcome-panel">迷途的旅人，請選擇前進的方向來決定你在沙漠中的命運吧！</div>
@@ -55,18 +68,6 @@
         </div>
         <input type="text" id="game-input" placeholder="請輸入指令...">
         <button id="submit-btn">送出</button>
-           <aside id="sidebar">
-               <div id="status-summary"></div>
-               <h2>符號說明</h2>
-               <ul>
-                   <li><strong>⚔️</strong> - 攻擊</li>
-                   <li><strong>⚡️</strong> - 技能</li>
-                   <li><strong>🛡️</strong> - 防禦</li>
-                   <li><strong>💀</strong> - 敵人攻擊</li>
-                   <li><strong>🧪</strong> - 回復</li>
-                   <li><strong>⭐</strong> - 幸運加成</li>
-               </ul>
-           </aside>
     </div>
     <script src="main.js"></script>
 </body>
