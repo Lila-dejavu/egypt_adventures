@@ -1005,13 +1005,14 @@ body::after {
         font-size: 14px !important;
     }
     
-    /* 遊戲輸出區域 */
+    /* 遊戲輸出區域 - 放大文字 */
     #game-output {
-        font-size: 0.9em;
+        font-size: 1.05em;
         padding: 12px;
         height: 220px;
         overflow-y: auto;
         overflow-x: hidden;
+        line-height: 1.5;
     }
     
     #game-output::before {
@@ -1292,7 +1293,8 @@ body::after {
     #game-output {
         height: 180px;
         padding: 10px;
-        font-size: 0.85em;
+        font-size: 1em;
+        line-height: 1.5;
     }
     
     #welcome-panel {
