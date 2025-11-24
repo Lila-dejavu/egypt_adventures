@@ -1614,19 +1614,22 @@ function genEnemyName(type) {
 					}
 				});
 			});
-			// 關閉按鈕
+			// 關閉按鈕 - 使用觸控友善的事件處理
 			const close = document.getElementById('close-blackmarket');
-			if (close) close.onclick = ()=>{ 
-				panel.style.display = 'none'; 
-				this.inShop = false; // 清除商店標記
-				showMessage(t('leaveBlackMarket')); 
-				// 恢復移動按鈕
-				const mf = document.getElementById('move-front'); if (mf) mf.disabled = false;
-				const ml = document.getElementById('move-left'); if (ml) ml.disabled = false;
-				const mr = document.getElementById('move-right'); if (mr) mr.disabled = false;
-				// 離開黑市後生成方向提示
-				this.generateDirectionHints();
-			};
+			if (close && !close._bmBound) {
+				close._bmBound = true;
+				addTouchClickEvent(close, ()=>{ 
+					panel.style.display = 'none'; 
+					game.inShop = false; // 清除商店標記
+					showMessage(t('leaveBlackMarket')); 
+					// 恢復移動按鈕
+					const mf = document.getElementById('move-front'); if (mf) mf.disabled = false;
+					const ml = document.getElementById('move-left'); if (ml) ml.disabled = false;
+					const mr = document.getElementById('move-right'); if (mr) mr.disabled = false;
+					// 離開黑市後生成方向提示
+					game.generateDirectionHints();
+				});
+			}
 			// 停用移動以避免切換情境
 			const mf = document.getElementById('move-front'); if (mf) mf.disabled = true;
 			const ml = document.getElementById('move-left'); if (ml) ml.disabled = true;
@@ -2300,11 +2303,11 @@ function genEnemyName(type) {
 			});
 			invDiv.innerHTML = html;
 			
-			// 綁定出售按鈕
+			// 綁定出售按鈕 - 使用觸控友善的事件處理
 			Array.from(invDiv.querySelectorAll('.tp-sell-btn')).forEach(btn => {
-				btn.addEventListener('click', (e) => {
-					const idx = parseInt(e.target.getAttribute('data-idx'));
-					const price = parseInt(e.target.getAttribute('data-price'));
+				addTouchClickEvent(btn, () => {
+					const idx = parseInt(btn.getAttribute('data-idx'));
+					const price = parseInt(btn.getAttribute('data-price'));
 					const item = this.player.inventory[idx];
 					
 					if (item) {
@@ -2321,11 +2324,11 @@ function genEnemyName(type) {
 		
 		updateInventory();
 		
-		// 綁定購買按鈕
+		// 綁定購買按鈕 - 使用觸控友善的事件處理
 		Array.from(panel.querySelectorAll('.tp-buy-btn')).forEach(btn => {
-			btn.addEventListener('click', (e) => {
-				const item = e.target.getAttribute('data-item');
-				const price = parseInt(e.target.getAttribute('data-price'));
+			addTouchClickEvent(btn, () => {
+				const item = btn.getAttribute('data-item');
+				const price = parseInt(btn.getAttribute('data-price'));
 				
 				if (this.player.gold >= price) {
 					this.player.gold -= price;
@@ -2354,15 +2357,18 @@ function genEnemyName(type) {
 			});
 		});
 		
-		// 關閉按鈕
-		document.getElementById('tp-close').addEventListener('click', () => {
-			document.body.removeChild(panel);
-			showMessage('你離開了驛站，繼續踏上旅程。');
-			// 恢復移動按鈕
-			if (mf) mf.disabled = false;
-			if (ml) ml.disabled = false;
-			if (mr) mr.disabled = false;
-		});
+		// 關閉按鈕 - 使用觸控友善的事件處理
+		const closeBtn = document.getElementById('tp-close');
+		if (closeBtn) {
+			addTouchClickEvent(closeBtn, () => {
+				document.body.removeChild(panel);
+				showMessage('你離開了驛站，繼續踏上旅程。');
+				// 恢復移動按鈕
+				if (mf) mf.disabled = false;
+				if (ml) ml.disabled = false;
+				if (mr) mr.disabled = false;
+			});
+		}
 	}
 
 	godEvent() {
@@ -2453,20 +2459,26 @@ function genEnemyName(type) {
 
 			document.body.appendChild(panel);
 
-			// 綁定按鈕事件
-			document.getElementById('pyramid-enter-btn').addEventListener('click', () => {
-				this.enterPyramid();
-				document.body.removeChild(panel);
-			});
+			// 綁定按鈕事件 - 使用觸控友善的事件處理
+			const enterBtn = document.getElementById('pyramid-enter-btn');
+			if (enterBtn) {
+				addTouchClickEvent(enterBtn, () => {
+					this.enterPyramid();
+					document.body.removeChild(panel);
+				});
+			}
 
-			document.getElementById('pyramid-decline-btn').addEventListener('click', () => {
-				showMessage('你決定不進入金字塔，繼續前行。');
-				document.body.removeChild(panel);
-				// 恢復移動按鈕
-				if (mf) mf.disabled = false;
-				if (ml) ml.disabled = false;
-				if (mr) mr.disabled = false;
-			});
+			const declineBtn = document.getElementById('pyramid-decline-btn');
+			if (declineBtn) {
+				addTouchClickEvent(declineBtn, () => {
+					showMessage('你決定不進入金字塔，繼續前行。');
+					document.body.removeChild(panel);
+					// 恢復移動按鈕
+					if (mf) mf.disabled = false;
+					if (ml) ml.disabled = false;
+					if (mr) mr.disabled = false;
+				});
+			}
 		}
 
 		enterPyramid() {
@@ -3247,8 +3259,8 @@ function startAutoSpinLoop() {
 		stopSequentially();
 	});
 
-	// 簡單的輸入處理（保留用戶原本的指令輸入框功能）
-	button.addEventListener('click', function() {
+	// 簡單的輸入處理（保留用戶原本的指令輸入框功能）- 使用觸控友善事件
+	addTouchClickEvent(button, function() {
 		const cmd = input.value.trim();
 		if (!cmd) { showMessage('請輸入指令。'); return; }
 		showMessage(`你輸入了：${cmd}`);

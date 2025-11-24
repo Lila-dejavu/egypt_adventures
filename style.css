@@ -267,9 +267,16 @@ body::after {
     cursor: pointer;
 }
 
+button[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none !important;
+}
+
 #stop-btn[disabled] {
     opacity: 0.5;
     cursor: not-allowed;
+    pointer-events: none !important;
 }
 
 @media (max-width:600px) {
@@ -660,9 +667,25 @@ body::after {
     cursor: pointer;
     background: #d4a855;
     color: white;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+    user-select: none;
+    -webkit-user-select: none;
 }
 .equip-row button:hover {
     background: #b88f42;
+}
+
+/* 面板內按鈕觸控優化 */
+#blackmarket-panel button,
+#equipment-panel button {
+    touch-action: manipulation !important;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+    user-select: none;
+    -webkit-user-select: none;
+    pointer-events: auto !important;
+    position: relative;
+    z-index: 201;
 }
 
 /* 狀態面板左右並列：玩家與敵人 */
