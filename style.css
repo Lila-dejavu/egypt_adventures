@@ -330,7 +330,7 @@ button[disabled] {
     letter-spacing: 18px;
     text-shadow: 0 2px 4px rgba(101, 67, 33, 0.5), 0 0 8px rgba(218, 165, 32, 0.3);
     pointer-events: none;
-    z-index: 10;
+    z-index: 1;
     white-space: nowrap;
 }
 
@@ -347,7 +347,7 @@ button[disabled] {
     letter-spacing: 18px;
     text-shadow: 0 2px 4px rgba(101, 67, 33, 0.5), 0 0 8px rgba(218, 165, 32, 0.3);
     pointer-events: none;
-    z-index: 10;
+    z-index: 1;
     white-space: nowrap;
 }
 
@@ -365,7 +365,7 @@ button[disabled] {
     white-space: pre;
     text-shadow: 0 2px 4px rgba(101, 67, 33, 0.5), 0 0 8px rgba(218, 165, 32, 0.3);
     pointer-events: none;
-    z-index: 10;
+    z-index: 1;
 }
 
 /* 右側垂直象形文字 */
@@ -382,7 +382,7 @@ button[disabled] {
     white-space: pre;
     text-shadow: 0 2px 4px rgba(101, 67, 33, 0.5), 0 0 8px rgba(218, 165, 32, 0.3);
     pointer-events: none;
-    z-index: 10;
+    z-index: 1;
 }
 
 /* 轉盤中心容器已在下方定義 */
@@ -401,7 +401,7 @@ button[disabled] {
     white-space: pre;
     text-shadow: 0 2px 4px rgba(101, 67, 33, 0.5), 0 0 8px rgba(218, 165, 32, 0.3);
     pointer-events: none;
-    z-index: 10;
+    z-index: 1;
 }
 
 /* 右側象形文字 */
@@ -418,7 +418,7 @@ button[disabled] {
     white-space: pre;
     text-shadow: 0 2px 4px rgba(101, 67, 33, 0.5), 0 0 8px rgba(218, 165, 32, 0.3);
     pointer-events: none;
-    z-index: 10;
+    z-index: 1;
 }
 
 .reel {
@@ -468,9 +468,7 @@ button[disabled] {
 }
 
 /* spinning class uses JS to apply continuous translateY animation */
-.reel.spinning {
-    /* Spinning state managed by JavaScript */
-}
+/* Spinning state managed by JavaScript - no CSS needed here */
 
 /* highlight middle visible symbol */
 .reel::after {
@@ -492,7 +490,8 @@ button[disabled] {
     flex-direction: column;
     gap: 8px;
     margin-left: 12px;
-    z-index: 2;
+    z-index: 20;
+    position: relative;
 }
 
 #slot-controls button {
@@ -505,6 +504,8 @@ button[disabled] {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     position: relative;
     overflow: hidden;
+    pointer-events: auto;
+    z-index: 21;
 }
 
 #slot-controls button::before {
@@ -587,7 +588,7 @@ button[disabled] {
     border-left: 5px solid #654321;
     border-right: 5px solid #654321;
     position: relative;
-    z-index: 10;
+    z-index: 1;
     overflow: hidden;
 }
 
@@ -871,6 +872,8 @@ button[disabled] {
     transition: all 0.2s ease;
     position: relative;
     overflow: hidden;
+    pointer-events: auto;
+    z-index: 20;
 }
 
 #move-buttons button::before {
@@ -953,14 +956,14 @@ button[disabled] {
     
     #slot-controls {
         position: relative;
-        z-index: 150;
+        z-index: 200;
     }
     
     #slot-controls button {
         padding: 8px 14px;
         font-size: 0.95em;
         position: relative;
-        z-index: 150;
+        z-index: 201;
         pointer-events: auto !important;
         touch-action: manipulation !important;
     }
@@ -989,6 +992,8 @@ button[disabled] {
         min-height: 40px;
         touch-action: manipulation !important;
         pointer-events: auto !important;
+        position: relative;
+        z-index: 150;
     }
     
     button[disabled] {
@@ -1149,7 +1154,7 @@ button[disabled] {
         align-items: center;
         margin-bottom: 10px;
         position: relative;
-        z-index: 10;
+        z-index: 5;
     }
     
     /* 角色資訊（原本在最前，現在移到第二位並靠左） */
@@ -1255,7 +1260,7 @@ button[disabled] {
         width: 100%;
         max-width: 320px;
         position: relative;
-        z-index: 150;
+        z-index: 200;
     }
     
     #slot-controls button {
@@ -1264,8 +1269,8 @@ button[disabled] {
         min-width: auto;
         width: 100%;
         position: relative;
-        z-index: 150;
-        pointer-events: auto;
+        z-index: 201;
+        pointer-events: auto !important;
         touch-action: manipulation;
     }
     
@@ -1292,7 +1297,7 @@ button[disabled] {
         pointer-events: auto !important;
         touch-action: manipulation !important;
         position: relative;
-        z-index: 150;
+        z-index: 201;
     }
     
     /* 確保按鈕在啟用時可點擊 */
@@ -1384,6 +1389,7 @@ button[disabled] {
         margin-right: 0;
         position: relative;
         z-index: 100;
+        pointer-events: auto !important;
     }
     
     #map-info {
@@ -1409,7 +1415,7 @@ button[disabled] {
         user-select: none;
         -webkit-user-select: none;
         position: relative;
-        z-index: 100;
+        z-index: 150;
         cursor: pointer;
         pointer-events: auto !important;
     }
@@ -1472,7 +1478,7 @@ button[disabled] {
         flex: 0 0 100%;
         width: 100%;
         position: relative;
-        z-index: 10;
+        z-index: 5;
     }
     
     /* 角色和敵人並列 */
@@ -1517,14 +1523,14 @@ button[disabled] {
     #slot-controls {
         max-width: 280px;
         position: relative;
-        z-index: 150;
+        z-index: 200;
     }
     
     #slot-controls button {
         padding: 6px 5px;
         font-size: 0.8em;
         position: relative;
-        z-index: 150;
+        z-index: 201;
         pointer-events: auto !important;
         touch-action: manipulation !important;
     }
