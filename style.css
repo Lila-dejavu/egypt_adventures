@@ -987,6 +987,12 @@ button[disabled] {
     /* 按鈕觸控友善 */
     button {
         min-height: 40px;
+        touch-action: manipulation !important;
+        pointer-events: auto !important;
+    }
+    
+    button[disabled] {
+        pointer-events: none !important;
     }
     
     /* 確保面板在平板也有正確的 z-index */
@@ -1398,13 +1404,19 @@ button[disabled] {
     /* 確保所有按鈕適合觸控 */
     button {
         min-height: 42px;
-        touch-action: manipulation;
+        touch-action: manipulation !important;
         -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
         user-select: none;
         -webkit-user-select: none;
         position: relative;
         z-index: 100;
         cursor: pointer;
+        pointer-events: auto !important;
+    }
+    
+    /* 被禁用的按鈕覆蓋上面的設置 */
+    button[disabled] {
+        pointer-events: none !important;
     }
     
     /* HP/XP 條調整 */
