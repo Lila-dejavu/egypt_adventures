@@ -938,8 +938,15 @@ body::after {
         font-size: 0.95em;
         position: relative;
         z-index: 150;
-        pointer-events: auto;
-        touch-action: manipulation;
+        pointer-events: auto !important;
+        touch-action: manipulation !important;
+    }
+    
+    /* 確保戰鬥按鈕在平板上可點擊 */
+    #spin-btn:not([disabled]), 
+    #auto-spin-btn:not([disabled]) {
+        pointer-events: auto !important;
+        opacity: 1 !important;
     }
     
     /* 側邊欄和狀態框調整 */
@@ -1226,10 +1233,22 @@ body::after {
         font-size: 12px;
     }
     
-    #spin-btn, #stop-btn {
+    #spin-btn, #stop-btn, #auto-spin-btn, #flee-btn {
         padding: 8px 16px;
         font-size: 0.95em;
         width: 100%;
+        pointer-events: auto !important;
+        touch-action: manipulation !important;
+        position: relative;
+        z-index: 150;
+    }
+    
+    /* 確保按鈕在啟用時可點擊 */
+    #spin-btn:not([disabled]), 
+    #auto-spin-btn:not([disabled]) {
+        pointer-events: auto !important;
+        cursor: pointer;
+        opacity: 1 !important;
     }
     
     /* 側邊欄 - 大幅縮小 */
@@ -1448,8 +1467,17 @@ body::after {
         font-size: 0.8em;
         position: relative;
         z-index: 150;
-        pointer-events: auto;
-        touch-action: manipulation;
+        pointer-events: auto !important;
+        touch-action: manipulation !important;
+    }
+    
+    /* 確保所有戰鬥按鈕可點擊 */
+    #spin-btn:not([disabled]), 
+    #auto-spin-btn:not([disabled]),
+    #stop-btn:not([disabled]),
+    #flee-btn:not([disabled]) {
+        pointer-events: auto !important;
+        opacity: 1 !important;
     }
     
     /* 狀態框 - 保持並列，進一步縮小 */

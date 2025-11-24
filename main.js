@@ -1016,20 +1016,17 @@ function genEnemyName(type) {
 		this.consecutivePrimarySymbol = null;
 		this.consecutivePrimaryCount = 0;
 		this.updateStatus();
-		// 戰鬥開始時啟用旋轉按鈕和自動旋轉按鈕
-		setTimeout(() => {
-			spinBtn.disabled = false;
-			const autoBtn = document.getElementById('auto-spin-btn'); 
-			if (autoBtn) {
-				autoBtn.disabled = false;
-				autoBtn.style.pointerEvents = 'auto';
-			}
-			// 確保停止按鈕一開始是禁用的
-			stopBtn.disabled = true;
-		}, 100);
 		// 自動啟動插槽並在短延遲後停止（模擬自動戰鬥）
 		startSpin();
-		setTimeout(()=> stopSequentially(), 900);
+		setTimeout(()=> {
+			stopSequentially();
+			// 在第一次旋轉結束後，使用全局函數啟用按鈕
+			setTimeout(() => {
+				if (typeof window.enableBattleButtons === 'function') {
+					window.enableBattleButtons();
+				}
+			}, 200);
+		}, 900);
 	}		attemptFlee() {
 			if (!this.inBattle) { showMessage('目前不在戰鬥中。'); return; }
 			// 取消自動旋轉
@@ -2744,16 +2741,12 @@ function startAutoSpinLoop() {
 				try { stopAutoSpinLoop(); } catch(e) {}
 			}
 			
-			// 啟用 spin（如果還在戰鬥中）
-			// 使用 setTimeout 確保 game.inBattle 狀態已更新
+			// 啟用 spin（如果還在戰鬥中）- 使用全局函數
 			setTimeout(() => {
-				if (game.inBattle) {
-					spinBtn.disabled = false;
-					const autoBtn = document.getElementById('auto-spin-btn');
-					if (autoBtn) autoBtn.disabled = false;
+				if (typeof window.enableBattleButtons === 'function') {
+					window.enableBattleButtons();
 				}
-				stopBtn.disabled = true;
-			}, 50);
+			}, 150);
 		});
 	}
 
@@ -2773,7 +2766,35 @@ function startAutoSpinLoop() {
 			}
 		});
 	}
+	
+	// 全局函數：強制啟用戰鬥按鈕
+	window.enableBattleButtons = function() {
+		if (game.inBattle) {
+			spinBtn.disabled = false;
+			spinBtn.style.pointerEvents = 'auto';
+			spinBtn.style.opacity = '1';
+			spinBtn.style.touchAction = 'manipulation';
+			const autoBtn = document.getElementById('auto-spin-btn');
+			if (autoBtn) {
+				autoBtn.disabled = false;
+				autoBtn.style.pointerEvents = 'auto';
+				autoBtn.style.opacity = '1';
+				autoBtn.style.touchAction = 'manipulation';
+			}
+			stopBtn.disabled = true;
+			console.log('Battle buttons enabled');
+		}
+	};
 
+	// 確保按鈕初始狀態正確
+	spinBtn.style.pointerEvents = 'auto';
+	spinBtn.style.touchAction = 'manipulation';
+	const autoSpinBtn = document.getElementById('auto-spin-btn');
+	if (autoSpinBtn) {
+		autoSpinBtn.style.pointerEvents = 'auto';
+		autoSpinBtn.style.touchAction = 'manipulation';
+	}
+	
 	// 事件
 	addTouchClickEvent(spinBtn, ()=>{
 		if (!game.inBattle) {
