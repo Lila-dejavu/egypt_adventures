@@ -135,6 +135,31 @@ A4 C2 D2 | E4 F2 E2 | A4 G2 F2 | E4 C2 B,2 |
 A4 C2 E2 | F4 G2 A2 | G4 F2 E2 | A8 ||
 `,
 	
+	// ABC 記譜 - 勝利音樂（埃及風格勝利號角）
+	victoryMusic: `
+X:20
+T:Egypt_Stage_Victory
+M:4/4
+L:1/8
+Q:140
+K:Aphr
+% Voice: Lead (弦樂主旋律 - 高亢勝利號角)
+V:1 clef=treble name="Lead"
+"A"e4 ^d2 e2 | "^A"f4 e2 d2 | "A"c4 B2 A2 | "^A"A6 z2 |
+% Voice: Harmony (豎笛副旋律 - 和聲支撐)
+V:2 clef=treble name="Harmony"
+"A"c4 B2 c2 | "^A"d4 c2 B2 | "A"A4 G2 F2 | "^A"E6 z2 |
+% Voice: Pungi (印度蛇笛 - 埃及特色音色)
+V:3 clef=treble name="Pungi"
+"A"A2 c2 e2 c2 | "^A"A2 f2 e2 d2 | "A"c2 A2 G2 F2 | "^A"E4 z4 |
+% Voice: Bass (低音銅管 - 厚重底層)
+V:4 clef=bass name="Bass"
+"A"A,4 A,2 A,2 | "^A"A,4 A,2 A,2 | "A"A,4 A,2 A,2 | "^A"A,6 z2 |
+% Voice: Drums (勝利鼓點 - 慶祝節奏)
+V:5 clef=percussion name="Drums"
+[F,4C,4] [F,2C,2] [F,2C,2] | [F,4C,4] [F,2C,2] [F,2C,2] | [F,4C,4] [F,2C,2] [F,2C,2] | [F,6C,6] z2 ||
+`,
+	
 	init() {
 		// 初始化 Web Audio API
 		if (!this.audioContext) {
@@ -147,9 +172,10 @@ A4 C2 E2 | F4 G2 A2 | G4 F2 E2 | A8 ||
 		this.isEnabled = saved === 'true';
 		this.volume = savedVolume ? parseFloat(savedVolume) : 0.5;
 		
-		// 解析兩種音樂
+		// 解析三種音樂
 		this.parsedExploration = this.parseABC(this.explorationMusic);
 		this.parsedBattle = this.parseABC(this.battleMusic);
+		this.parsedVictory = this.parseABC(this.victoryMusic);
 		this.parsedMusic = this.parsedExploration; // 預設使用探索音樂
 		
 		this.updateUI();
@@ -168,6 +194,9 @@ A4 C2 E2 | F4 G2 A2 | G4 F2 E2 | A8 ||
 		if (trackName === 'battle') {
 			this.parsedMusic = this.parsedBattle;
 			console.log('🎵 Switched to battle music');
+		} else if (trackName === 'victory') {
+			this.parsedMusic = this.parsedVictory;
+			console.log('🎵 Switched to victory music');
 		} else {
 			this.parsedMusic = this.parsedExploration;
 			console.log('🎵 Switched to exploration music');
@@ -179,6 +208,38 @@ A4 C2 E2 | F4 G2 A2 | G4 F2 E2 | A8 ||
 				this.play();
 			}, 100);
 		}
+	},
+	
+	// 播放勝利音樂（單次播放，結束後切換回探索音樂）
+	playVictory(callback) {
+		if (!this.isEnabled) {
+			if (callback) callback();
+			return;
+		}
+		
+		// 停止當前音樂
+		this.stop();
+		
+		// 設定勝利音樂
+		this.currentTrack = 'victory';
+		this.parsedMusic = this.parsedVictory;
+		this.isPlaying = true;
+		this.currentNoteIndex = 0;
+		
+		console.log('🎵 Playing victory music');
+		
+		// 播放勝利音樂
+		this.playNextNote();
+		
+		// 計算勝利音樂總時長
+		const totalDuration = this.parsedVictory.notes.reduce((sum, note) => sum + note.duration, 0);
+		
+		// 音樂結束後切換回探索音樂
+		setTimeout(() => {
+			this.stop();
+			this.switchTrack('exploration');
+			if (callback) callback();
+		}, totalDuration * 1000 + 500); // 多加0.5秒緩衝
 	},
 	
 	// 音符頻率對照表（基於 A Phrygian Dominant 音階）
@@ -2656,6 +2717,11 @@ function genEnemyName(type) {
 					// 若敵人死亡，結束戰鬥（立即處理）
 					if (this.enemy.hp <= 0) {
 						showMessage('你擊敗了敵人！戰鬥結束，獲得獎勵。');
+						
+						// 播放勝利音樂
+						if (typeof MusicSystem !== 'undefined') {
+							MusicSystem.playVictory();
+						}
 						
 					// 定義 cloneItem 函數來正確處理裝備屬性加成
 					const cloneItem = (base, rarity, isPyramid = false) => {
