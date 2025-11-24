@@ -1065,21 +1065,21 @@ function genEnemyName(type) {
                 	</div>
 					${setBonusHtml}
 					<div class="combo-row ${ (this.inBattle && (this.consecutivePrimaryCount||0) > 1) ? 'combo-active' : '' }">Combo: ${comboText}</div>
-					<div class="equip-row">
-						<div>
+					<div class="equip-row" style="pointer-events: none;">
+						<div style="pointer-events: none;">
 							<div style="margin-bottom: 2px; pointer-events: none;">${currentLanguage === 'zh-TW' ? '武器' : currentLanguage === 'fr' ? 'Arme' : 'Weapon'}: ${this.player.equipment.weapon ? this.formatItem(this.player.equipment.weapon) : (currentLanguage === 'zh-TW' ? '無' : currentLanguage === 'fr' ? 'Aucun' : 'None')}</div>
-							<button class="open-equip-btn" data-slot="weapon" style="pointer-events: auto; position: relative; z-index: 2000;">${currentLanguage === 'zh-TW' ? '裝備' : currentLanguage === 'fr' ? 'Équiper' : 'Equip'}</button>
-							<button class="unequip-btn" data-slot="weapon" style="pointer-events: auto; position: relative; z-index: 2000;">${currentLanguage === 'zh-TW' ? '卸下' : currentLanguage === 'fr' ? 'Enlever' : 'Unequip'}</button>
+							<button class="open-equip-btn" data-slot="weapon" style="pointer-events: auto !important; position: relative; z-index: 2000;">${currentLanguage === 'zh-TW' ? '裝備' : currentLanguage === 'fr' ? 'Équiper' : 'Equip'}</button>
+							<button class="unequip-btn" data-slot="weapon" style="pointer-events: auto !important; position: relative; z-index: 2000;">${currentLanguage === 'zh-TW' ? '卸下' : currentLanguage === 'fr' ? 'Enlever' : 'Unequip'}</button>
 						</div>
-						<div>
+						<div style="pointer-events: none;">
 							<div style="margin-bottom: 2px; pointer-events: none;">${currentLanguage === 'zh-TW' ? '防具' : currentLanguage === 'fr' ? 'Armure' : 'Armor'}: ${this.player.equipment.armor ? this.formatItem(this.player.equipment.armor) : (currentLanguage === 'zh-TW' ? '無' : currentLanguage === 'fr' ? 'Aucun' : 'None')}</div>
-							<button class="open-equip-btn" data-slot="armor" style="pointer-events: auto; position: relative; z-index: 2000;">${currentLanguage === 'zh-TW' ? '裝備' : currentLanguage === 'fr' ? 'Équiper' : 'Equip'}</button>
-							<button class="unequip-btn" data-slot="armor" style="pointer-events: auto; position: relative; z-index: 2000;">${currentLanguage === 'zh-TW' ? '卸下' : currentLanguage === 'fr' ? 'Enlever' : 'Unequip'}</button>
+							<button class="open-equip-btn" data-slot="armor" style="pointer-events: auto !important; position: relative; z-index: 2000;">${currentLanguage === 'zh-TW' ? '裝備' : currentLanguage === 'fr' ? 'Équiper' : 'Equip'}</button>
+							<button class="unequip-btn" data-slot="armor" style="pointer-events: auto !important; position: relative; z-index: 2000;">${currentLanguage === 'zh-TW' ? '卸下' : currentLanguage === 'fr' ? 'Enlever' : 'Unequip'}</button>
 						</div>
-						<div>
+						<div style="pointer-events: none;">
 							<div style="margin-bottom: 2px; pointer-events: none;">${currentLanguage === 'zh-TW' ? '護符' : currentLanguage === 'fr' ? 'Amulette' : 'Amulet'}: ${this.player.equipment.amulet ? this.formatItem(this.player.equipment.amulet) : (currentLanguage === 'zh-TW' ? '無' : currentLanguage === 'fr' ? 'Aucun' : 'None')}</div>
-							<button class="open-equip-btn" data-slot="amulet" style="pointer-events: auto; position: relative; z-index: 2000;">${currentLanguage === 'zh-TW' ? '裝備' : currentLanguage === 'fr' ? 'Équiper' : 'Equip'}</button>
-							<button class="unequip-btn" data-slot="amulet" style="pointer-events: auto; position: relative; z-index: 2000;">${currentLanguage === 'zh-TW' ? '卸下' : currentLanguage === 'fr' ? 'Enlever' : 'Unequip'}</button>
+							<button class="open-equip-btn" data-slot="amulet" style="pointer-events: auto !important; position: relative; z-index: 2000;">${currentLanguage === 'zh-TW' ? '裝備' : currentLanguage === 'fr' ? 'Équiper' : 'Equip'}</button>
+							<button class="unequip-btn" data-slot="amulet" style="pointer-events: auto !important; position: relative; z-index: 2000;">${currentLanguage === 'zh-TW' ? '卸下' : currentLanguage === 'fr' ? 'Enlever' : 'Unequip'}</button>
 						</div>
 					</div>
 				`;
@@ -3160,13 +3160,19 @@ function startAutoSpinLoop() {
 				const targetCycle = 3; // 使用第 3 個循環
 				
 				// 目標位置計算：
-				// 高亮框位置：top: 30px, height: 60px (30-90px範圍)
-				// 要讓符號顯示在高亮框上方，需要將符號頂部對齊到 -30px
-				// 所以 strip 要向上移動到：cycle × 420 + symbolIndex × 60 - 30
-				// 這樣符號會出現在高亮框上方區域（0-60px），而不是高亮框內（30-90px）
-				const targetPos = targetCycle * singleBlock + symbolIndex * SYMBOL_HEIGHT - 30;
+				// 桌面版和手機版統一使用 60px 符號高度
+				// 高亮框：桌面版 top: 30px, 手機版 top: 0px
+				// 要讓符號顯示在高亮框位置（符號頂部對齊到高亮框頂部）
 				
-				console.log(`Reel ${index}: Target=${targetSymbol}, symbolIndex=${symbolIndex}, targetPos=${targetPos}px`);
+				// 偵測是否為手機版（屏幕寬度 <= 600px）
+				const isMobile = window.innerWidth <= 600;
+				
+				// 桌面版：strip 移動到 cycle × 420 + symbolIndex × 60 - 30（高亮框在 30px）
+				// 手機版：strip 移動到 cycle × 420 + symbolIndex × 60 + 0（高亮框在 0px）
+				const highlightOffset = isMobile ? 0 : -30;
+				const targetPos = targetCycle * singleBlock + symbolIndex * SYMBOL_HEIGHT + highlightOffset;
+				
+				console.log(`Reel ${index}: Target=${targetSymbol}, symbolIndex=${symbolIndex}, targetPos=${targetPos}px, mobile=${isMobile}`);
 				
 				if (withAnimation) {
 					// 第一個輪軸：帶動畫

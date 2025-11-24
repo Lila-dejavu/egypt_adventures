@@ -1344,15 +1344,17 @@ button[disabled] {
         border-width: 3px;
     }
     
+    /* 手機版保持符號高度 60px，與判定邏輯一致 */
     .symbol {
-        height: 45px;
-        line-height: 45px;
-        font-size: 24px;
+        height: 60px;
+        line-height: 60px;
+        font-size: 28px;
     }
     
+    /* 手機版高亮框：對齊到符號上方（0-60px區域）*/
     .reel::after {
-        top: 22.5px;
-        height: 45px;
+        top: 0px;
+        height: 60px;
         border-width: 2px;
     }
     
