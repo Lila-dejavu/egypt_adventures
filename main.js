@@ -2565,11 +2565,12 @@ function startAutoSpinLoop() {
 					strip.style.transform = `translateY(-${pos % totalHeight}px)`;
 					if (t < 1) requestAnimationFrame(animateStop);
 					else {
-						// 確保最終位置精確對齊
-						const finalPos = to % totalHeight;
+					// 確保最終位置精確對齊
+					const finalPos = to % totalHeight;
+					// 使用 requestAnimationFrame 確保平滑過渡
+					requestAnimationFrame(() => {
 						strip.style.transform = `translateY(-${finalPos}px)`;
-						
-						// 等待渲染完成後讀取符號
+					});						// 等待渲染完成後讀取符號
 						setTimeout(() => {
 							try {
 								// 使用畫面取樣來判定中間的符號
@@ -2621,8 +2622,13 @@ function startAutoSpinLoop() {
 					// 目標位置：符號頂部對齊到高亮框位置（30px）
 					const finalPos = baseCycle * singleBlock + symbolIndex * SYMBOL_HEIGHT + 30;
 					
-					strip.style.transition = 'transform 0.15s ease-out';
-					strip.style.transform = `translateY(-${finalPos}px)`;
+					// 使用 requestAnimationFrame 確保順序正確，避免閃現
+					requestAnimationFrame(() => {
+						strip.style.transition = 'transform 0.15s ease-out';
+						requestAnimationFrame(() => {
+							strip.style.transform = `translateY(-${finalPos}px)`;
+						});
+					});
 					
 					// 等待動畫完成後讀取實際顯示的符號
 					setTimeout(() => {

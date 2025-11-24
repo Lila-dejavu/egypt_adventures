@@ -438,6 +438,11 @@ body::after {
     width: 100%;
     margin: 0;
     padding: 0;
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
 }
 .symbol {
     height: 60px;
@@ -456,7 +461,9 @@ body::after {
 }
 
 /* spinning class uses JS to apply continuous translateY animation */
-.reel.spinning { }
+.reel.spinning {
+    /* Spinning state managed by JavaScript */
+}
 
 /* highlight middle visible symbol */
 .reel::after {
