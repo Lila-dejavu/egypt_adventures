@@ -1065,21 +1065,27 @@ function genEnemyName(type) {
                 	</div>
 					${setBonusHtml}
 					<div class="combo-row ${ (this.inBattle && (this.consecutivePrimaryCount||0) > 1) ? 'combo-active' : '' }">Combo: ${comboText}</div>
-					<div class="equip-row" style="pointer-events: none;">
-						<div style="pointer-events: none;">
-							<div style="margin-bottom: 2px; pointer-events: none;">${currentLanguage === 'zh-TW' ? '武器' : currentLanguage === 'fr' ? 'Arme' : 'Weapon'}: ${this.player.equipment.weapon ? this.formatItem(this.player.equipment.weapon) : (currentLanguage === 'zh-TW' ? '無' : currentLanguage === 'fr' ? 'Aucun' : 'None')}</div>
-							<button class="open-equip-btn" data-slot="weapon" style="pointer-events: auto !important; position: relative; z-index: 2000;">${currentLanguage === 'zh-TW' ? '裝備' : currentLanguage === 'fr' ? 'Équiper' : 'Equip'}</button>
-							<button class="unequip-btn" data-slot="weapon" style="pointer-events: auto !important; position: relative; z-index: 2000;">${currentLanguage === 'zh-TW' ? '卸下' : currentLanguage === 'fr' ? 'Enlever' : 'Unequip'}</button>
+					<div class="equip-row">
+						<div>
+							<div style="margin-bottom: 4px; pointer-events: none; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${currentLanguage === 'zh-TW' ? '武器' : currentLanguage === 'fr' ? 'Arme' : 'Weapon'}: ${this.player.equipment.weapon ? this.formatItem(this.player.equipment.weapon) : (currentLanguage === 'zh-TW' ? '無' : currentLanguage === 'fr' ? 'Aucun' : 'None')}</div>
+							<div style="display: flex; gap: 4px; pointer-events: none;">
+								<button class="open-equip-btn" data-slot="weapon" style="pointer-events: auto !important; position: relative; z-index: 2000; flex: 1;">${currentLanguage === 'zh-TW' ? '裝備' : currentLanguage === 'fr' ? 'Équiper' : 'Equip'}</button>
+								<button class="unequip-btn" data-slot="weapon" style="pointer-events: auto !important; position: relative; z-index: 2000; flex: 1;">${currentLanguage === 'zh-TW' ? '卸下' : currentLanguage === 'fr' ? 'Enlever' : 'Unequip'}</button>
+							</div>
 						</div>
-						<div style="pointer-events: none;">
-							<div style="margin-bottom: 2px; pointer-events: none;">${currentLanguage === 'zh-TW' ? '防具' : currentLanguage === 'fr' ? 'Armure' : 'Armor'}: ${this.player.equipment.armor ? this.formatItem(this.player.equipment.armor) : (currentLanguage === 'zh-TW' ? '無' : currentLanguage === 'fr' ? 'Aucun' : 'None')}</div>
-							<button class="open-equip-btn" data-slot="armor" style="pointer-events: auto !important; position: relative; z-index: 2000;">${currentLanguage === 'zh-TW' ? '裝備' : currentLanguage === 'fr' ? 'Équiper' : 'Equip'}</button>
-							<button class="unequip-btn" data-slot="armor" style="pointer-events: auto !important; position: relative; z-index: 2000;">${currentLanguage === 'zh-TW' ? '卸下' : currentLanguage === 'fr' ? 'Enlever' : 'Unequip'}</button>
+						<div>
+							<div style="margin-bottom: 4px; pointer-events: none; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${currentLanguage === 'zh-TW' ? '防具' : currentLanguage === 'fr' ? 'Armure' : 'Armor'}: ${this.player.equipment.armor ? this.formatItem(this.player.equipment.armor) : (currentLanguage === 'zh-TW' ? '無' : currentLanguage === 'fr' ? 'Aucun' : 'None')}</div>
+							<div style="display: flex; gap: 4px; pointer-events: none;">
+								<button class="open-equip-btn" data-slot="armor" style="pointer-events: auto !important; position: relative; z-index: 2000; flex: 1;">${currentLanguage === 'zh-TW' ? '裝備' : currentLanguage === 'fr' ? 'Équiper' : 'Equip'}</button>
+								<button class="unequip-btn" data-slot="armor" style="pointer-events: auto !important; position: relative; z-index: 2000; flex: 1;">${currentLanguage === 'zh-TW' ? '卸下' : currentLanguage === 'fr' ? 'Enlever' : 'Unequip'}</button>
+							</div>
 						</div>
-						<div style="pointer-events: none;">
-							<div style="margin-bottom: 2px; pointer-events: none;">${currentLanguage === 'zh-TW' ? '護符' : currentLanguage === 'fr' ? 'Amulette' : 'Amulet'}: ${this.player.equipment.amulet ? this.formatItem(this.player.equipment.amulet) : (currentLanguage === 'zh-TW' ? '無' : currentLanguage === 'fr' ? 'Aucun' : 'None')}</div>
-							<button class="open-equip-btn" data-slot="amulet" style="pointer-events: auto !important; position: relative; z-index: 2000;">${currentLanguage === 'zh-TW' ? '裝備' : currentLanguage === 'fr' ? 'Équiper' : 'Equip'}</button>
-							<button class="unequip-btn" data-slot="amulet" style="pointer-events: auto !important; position: relative; z-index: 2000;">${currentLanguage === 'zh-TW' ? '卸下' : currentLanguage === 'fr' ? 'Enlever' : 'Unequip'}</button>
+						<div>
+							<div style="margin-bottom: 4px; pointer-events: none; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${currentLanguage === 'zh-TW' ? '護符' : currentLanguage === 'fr' ? 'Amulette' : 'Amulet'}: ${this.player.equipment.amulet ? this.formatItem(this.player.equipment.amulet) : (currentLanguage === 'zh-TW' ? '無' : currentLanguage === 'fr' ? 'Aucun' : 'None')}</div>
+							<div style="display: flex; gap: 4px; pointer-events: none;">
+								<button class="open-equip-btn" data-slot="amulet" style="pointer-events: auto !important; position: relative; z-index: 2000; flex: 1;">${currentLanguage === 'zh-TW' ? '裝備' : currentLanguage === 'fr' ? 'Équiper' : 'Equip'}</button>
+								<button class="unequip-btn" data-slot="amulet" style="pointer-events: auto !important; position: relative; z-index: 2000; flex: 1;">${currentLanguage === 'zh-TW' ? '卸下' : currentLanguage === 'fr' ? 'Enlever' : 'Unequip'}</button>
+							</div>
 						</div>
 					</div>
 				`;
