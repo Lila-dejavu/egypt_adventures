@@ -1008,25 +1008,7 @@ function genEnemyName(type) {
 				if (summary) {
 					summary.textContent = `HP:${this.player.hp}/${this.player.max_hp}  體力:${this.player.stamina}/${this.player.max_stamina}  金幣:${this.player.gold}  幸運(戰鬥):${this.player.luck_combat} 金幣幸運:${this.player.luck_gold}`;
 				}
-			// 綁定狀態面板上的裝備按鈕（防止重複綁定）
-			setTimeout(()=>{
-				Array.from(document.querySelectorAll('.unequip-btn')).forEach(b=>{ 
-					if (b._boundUnequip) return;
-					b._boundUnequip = true;
-					b.addEventListener('click', ()=>{ 
-						const slot = b.getAttribute('data-slot'); 
-						this.unequipItem(slot); 
-					}); 
-				});
-				Array.from(document.querySelectorAll('.open-equip-btn')).forEach(b=>{ 
-					if (b._boundEquip) return;
-					b._boundEquip = true;
-					b.addEventListener('click', ()=>{ 
-						const slot = b.getAttribute('data-slot'); 
-						this.showEquipmentPanel(slot); 
-					}); 
-				});
-		}, 10);
+			// 裝備按鈕已通過事件委派處理，無需重複綁定
 		const mapEl = document.getElementById('map-steps');
 		if (mapEl) {
 			if (this.inPyramid) {
@@ -3183,6 +3165,15 @@ function startAutoSpinLoop() {
 		stopSequentially();
 	});
 
+	// 全局函數：啟用戰鬥按鈕
+	window.enableBattleButtons = function() {
+		if (game.inBattle) {
+			spinBtn.disabled = false;
+			const autoBtn = document.getElementById('auto-spin-btn');
+			if (autoBtn) autoBtn.disabled = false;
+		}
+	};
+
 	// 簡單的輸入處理（保留用戶原本的指令輸入框功能）
 	button.addEventListener('click', function() {
 		const cmd = input.value.trim();
@@ -3212,19 +3203,16 @@ function startAutoSpinLoop() {
 		});
 	}
 
-		// 每次更新狀態後會在 updateStatus() 內綁定這些按鈕，但初始也綁一次保險
-		function bindStatusEquipButtons() {
-			// panels generated in updateStatus -> look for these classes
-			Array.from(document.querySelectorAll('.unequip-btn')).forEach(b=>{
-				if (b._bound) return; b._bound = true;
-				b.addEventListener('click', ()=>{ const slot = b.getAttribute('data-slot'); game.unequipItem(slot); });
-			});
-			Array.from(document.querySelectorAll('.open-equip-btn')).forEach(b=>{
-				if (b._bound) return; b._bound = true;
-				b.addEventListener('click', ()=>{ const slot = b.getAttribute('data-slot'); game.showEquipmentPanel(slot); });
-			});
-		}
-		bindStatusEquipButtons();
+		// 使用事件委派處理裝備按鈕，避免重複綁定
+		document.addEventListener('click', function(e) {
+			if (e.target.classList.contains('unequip-btn')) {
+				const slot = e.target.getAttribute('data-slot');
+				if (slot) game.unequipItem(slot);
+			} else if (e.target.classList.contains('open-equip-btn')) {
+				const slot = e.target.getAttribute('data-slot');
+				if (slot) game.showEquipmentPanel(slot);
+			}
+		});
 
 	// 自動旋轉與逃跑按鈕綁定
 	const autoBtn = document.getElementById('auto-spin-btn');
