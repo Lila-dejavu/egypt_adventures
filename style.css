@@ -883,222 +883,436 @@ body::after {
     }
 }
 
-/* ===== 手機/平板響應式設計 ===== */
+/* ===== 平板響應式設計（601px - 900px）===== */
+@media (max-width: 900px) and (min-width: 601px) {
+    #game-container {
+        padding: 20px;
+        width: 96%;
+        margin: 20px auto;
+    }
+    
+    #header-area h1 {
+        font-size: 1.8em;
+    }
+    
+    #game-output {
+        height: 280px;
+        font-size: 1em;
+    }
+    
+    /* 拉霸機適度縮小 */
+    #slot-machine {
+        padding: 40px 50px;
+    }
+    
+    .reel {
+        width: 80px;
+        height: 110px;
+    }
+    
+    .symbol {
+        height: 55px;
+        line-height: 55px;
+        font-size: 28px;
+    }
+    
+    .reel::after {
+        top: 27.5px;
+        height: 55px;
+    }
+    
+    #slot-controls button {
+        padding: 8px 14px;
+        font-size: 0.95em;
+    }
+    
+    /* 側邊欄和狀態框調整 */
+    .status-box-side {
+        flex: 0 0 160px;
+        padding: 12px;
+    }
+    
+    #sidebar {
+        width: 220px;
+        padding: 16px;
+        font-size: 12px;
+    }
+    
+    /* 按鈕觸控友善 */
+    button {
+        min-height: 40px;
+    }
+}
+
+/* ===== 手機響應式設計（最大 600px）===== */
 @media (max-width: 600px) {
     /* 整體容器調整 */
     body {
         font-size: 14px;
     }
     
+    body::after {
+        font-size: 24px;
+        letter-spacing: 20px;
+        line-height: 1.8;
+    }
+    
     #game-container {
-        margin: 8px auto;
-        padding: 8px;
-        width: 98%;
+        margin: 10px auto;
+        padding: 12px;
+        width: 96%;
+    }
+    
+    /* 移除裝飾性元素以節省空間 */
+    #game-container::before,
+    #game-container::after {
+        font-size: 16px;
+        top: -25px;
+        bottom: -25px;
     }
     
     /* 標題區域 */
+    #header-area {
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 12px;
+    }
+    
     #header-area h1 {
-        font-size: 1.4em;
+        font-size: 1.5em;
+        text-align: center;
+    }
+    
+    #header-area h1::before,
+    #header-area h1::after {
+        font-size: 0.7em;
+    }
+    
+    /* 語言選擇器 */
+    #language-selector {
+        margin: 8px 0 !important;
+    }
+    
+    #language-select {
+        padding: 6px 10px !important;
+        font-size: 14px !important;
     }
     
     /* 遊戲輸出區域 */
     #game-output {
         font-size: 0.9em;
-        padding: 8px;
-        height: 200px;
+        padding: 12px;
+        height: 220px;
         overflow-y: auto;
         overflow-x: hidden;
     }
     
-    /* 歡迎面板 */
-    #welcome-panel {
-        font-size: 0.9em;
-        padding: 8px 10px;
+    #game-output::before {
+        font-size: 18px;
+        letter-spacing: 8px;
+        top: -18px;
     }
     
-    /* 戰鬥區域 */
+    /* 歡迎面板 */
+    #welcome-panel {
+        font-size: 0.95em;
+        padding: 12px 20px;
+        letter-spacing: 1px;
+        margin-bottom: 16px;
+    }
+    
+    #welcome-panel::before,
+    #welcome-panel::after {
+        font-size: 1.8em;
+        letter-spacing: 4px;
+    }
+    
+    /* 戰鬥區域垂直排列 */
     #battle-area {
         flex-direction: column;
-        gap: 8px;
-        padding: 8px;
+        gap: 10px;
+        padding: 10px;
     }
     
     /* 角色/敵人狀態框 */
     .status-box-side {
         flex: 1 1 auto;
         width: 100%;
-        padding: 8px;
+        padding: 10px;
+        min-height: auto;
     }
     
     .status-box-side .stat-label {
         font-size: 1em;
+        margin-bottom: 6px;
     }
     
     .stats-row {
-        font-size: 0.85em;
+        font-size: 0.88em;
+        gap: 6px;
     }
     
-    /* 拉霸機區域 */
+    /* 拉霸機區域優化 */
+    #slot-center {
+        width: 100%;
+        gap: 10px;
+    }
+    
     #slot-machine {
-        gap: 4px;
+        gap: 5px;
+        padding: 35px 40px;
         flex-wrap: nowrap;
     }
     
+    #slot-machine::before,
+    #slot-machine::after {
+        font-size: 16px;
+        letter-spacing: 12px;
+    }
+    
+    /* 隱藏拉霸機兩側的垂直象形文字 */
+    #slot-center::before,
+    #slot-center::after,
+    .reel:first-child::before,
+    .reel:last-child::after {
+        display: none;
+    }
+    
     .reel {
-        width: 65px;
-        height: 90px;
+        width: 70px;
+        height: 95px;
         border-width: 3px;
     }
     
     .symbol {
-        height: 45px;
-        line-height: 45px;
-        font-size: 24px;
+        height: 47.5px;
+        line-height: 47.5px;
+        font-size: 26px;
     }
     
     .reel::after {
-        top: 22.5px;
-        height: 45px;
+        top: 23.75px;
+        height: 47.5px;
         border-width: 2px;
     }
     
-    /* 拉霸控制按鈕 */
+    /* 拉霸控制按鈕 - 改為橫向排列兩行 */
     #slot-controls {
-        margin-left: 6px;
-        gap: 6px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        margin-left: 0;
+        margin-top: 10px;
+        width: 100%;
     }
     
     #slot-controls button {
-        padding: 6px 10px;
+        padding: 8px 10px;
         font-size: 0.9em;
-        min-width: 60px;
+        min-width: auto;
+        width: 100%;
     }
     
-    /* 輪盤（如果使用） */
+    /* 輪盤區域（如果使用） */
     #roulette-section {
         flex-direction: column;
         align-items: center;
+        gap: 10px;
     }
     
     #roulette {
-        width: 200px;
-        height: 200px;
+        width: 220px;
+        height: 220px;
     }
     
     .slice-label {
-        font-size: 11px;
+        font-size: 12px;
     }
     
     #spin-btn, #stop-btn {
         padding: 8px 16px;
-        font-size: 0.9em;
+        font-size: 0.95em;
+        width: 100%;
     }
     
     /* 側邊欄 */
     #sidebar {
         width: 100%;
         font-size: 0.9em;
-        padding: 8px;
+        padding: 12px;
     }
     
     #sidebar h2 {
         font-size: 1.1em;
+        margin-bottom: 6px;
     }
     
     #sidebar ul {
-        padding-left: 16px;
+        padding-left: 18px;
     }
     
-    /* 裝備按鈕 */
+    #sidebar li {
+        margin-bottom: 3px;
+    }
+    
+    /* 裝備面板 */
+    #equipment-panel {
+        width: 90% !important;
+        left: 5% !important;
+        right: 5% !important;
+        top: 80px !important;
+    }
+    
+    /* 黑市面板 */
+    #blackmarket-panel {
+        width: 90% !important;
+        left: 5% !important;
+        top: 80px !important;
+    }
+    
     .equip-row {
-        font-size: 0.85em;
+        font-size: 0.88em;
     }
     
     .equip-row button {
-        padding: 3px 8px;
-        font-size: 0.85em;
-        min-width: 40px;
+        padding: 4px 8px;
+        font-size: 0.88em;
+        min-width: 45px;
     }
     
-    /* 移動控制 */
+    /* 移動控制 - 改為網格布局 */
     #move-controls {
-        flex-wrap: wrap;
-        gap: 8px;
+        flex-direction: column;
+        gap: 10px;
+        align-items: stretch;
     }
     
     #move-buttons {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
         width: 100%;
     }
     
     #move-buttons button {
-        padding: 8px 12px;
-        font-size: 0.9em;
-        flex: 1 1 auto;
-        min-width: 80px;
+        padding: 10px 12px;
+        font-size: 0.95em;
+        flex: none;
+        width: 100%;
         margin-right: 0;
     }
     
     #map-info {
         width: 100%;
         text-align: center;
-        font-size: 0.9em;
+        font-size: 0.95em;
+        padding: 8px;
+        background: rgba(244, 228, 193, 0.5);
+        border-radius: 6px;
     }
     
     /* Combo 提示 */
     .combo-row {
-        font-size: 0.85em;
-        padding: 4px 8px;
+        font-size: 0.88em;
+        padding: 5px 10px;
     }
     
     /* 確保所有按鈕適合觸控 */
     button {
-        min-height: 36px;
+        min-height: 42px;
         touch-action: manipulation;
+    }
+    
+    /* HP/XP 條調整 */
+    .hp-bar {
+        height: 12px;
+        margin-bottom: 6px;
+    }
+    
+    .xp-bar {
+        height: 8px;
+        margin-bottom: 6px;
     }
 }
 
-/* 極小螢幕（小於 400px）進一步優化 */
+/* ===== 極小螢幕（最大 400px）進一步優化 ===== */
 @media (max-width: 400px) {
+    body {
+        font-size: 13px;
+    }
+    
     #game-container {
-        padding: 6px;
+        padding: 8px;
+        margin: 8px auto;
     }
     
     #header-area h1 {
-        font-size: 1.2em;
+        font-size: 1.3em;
+    }
+    
+    #game-output {
+        height: 180px;
+        padding: 10px;
+        font-size: 0.85em;
+    }
+    
+    #welcome-panel {
+        font-size: 0.88em;
+        padding: 10px 15px;
+    }
+    
+    /* 拉霸機進一步縮小 */
+    #slot-machine {
+        padding: 30px 25px;
+        gap: 3px;
     }
     
     .reel {
-        width: 55px;
-        height: 80px;
+        width: 60px;
+        height: 85px;
+        border-width: 2px;
     }
     
     .symbol {
-        height: 40px;
-        line-height: 40px;
-        font-size: 20px;
+        height: 42.5px;
+        line-height: 42.5px;
+        font-size: 22px;
     }
     
     .reel::after {
-        top: 20px;
-        height: 40px;
+        top: 21.25px;
+        height: 42.5px;
+        border-width: 2px;
     }
     
     #slot-controls button {
-        padding: 6px 8px;
+        padding: 7px 8px;
         font-size: 0.85em;
-        min-width: 50px;
+    }
+    
+    /* 狀態框 */
+    .status-box-side {
+        padding: 8px;
     }
     
     .stats-row {
-        font-size: 0.8em;
+        font-size: 0.82em;
     }
     
+    /* 移動按鈕 */
     #move-buttons button {
+        font-size: 0.88em;
+        padding: 8px 10px;
+    }
+    
+    /* 側邊欄 */
+    #sidebar {
+        padding: 10px;
         font-size: 0.85em;
-        padding: 6px 10px;
+    }
+    
+    #sidebar h2 {
+        font-size: 1em;
     }
 }
 
