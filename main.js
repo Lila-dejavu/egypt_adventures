@@ -3029,10 +3029,12 @@ function startAutoSpinLoop() {
 		// 禁用 stop 按鈕，依序停止每一軸
 		stopBtn.disabled = true;
 		const results = [];
+		const targetSymbols = []; // 儲存每個輪軸的目標符號
 		const stopOne = (index) => {
 			return new Promise((resolve) => {
 				// 隨機選擇一個符號作為目標
 				const targetSymbol = pickWeightedSymbol();
+				targetSymbols[index] = targetSymbol; // 儲存目標符號
 				const strip = reels[index].querySelector('.strip');
 				// 停止 spinning loop
 				reelState[index].spinning = false;
@@ -3085,31 +3087,10 @@ function startAutoSpinLoop() {
 					// 使用 requestAnimationFrame 確保平滑過渡
 					requestAnimationFrame(() => {
 						strip.style.transform = `translateY(-${finalPos}px)`;
-					});						// 等待渲染完成後讀取符號
+					});						// 等待渲染完成後使用預定的目標符號
 						setTimeout(() => {
-							try {
-								// 直接從 strip 的 transform 讀取符號位置
-								const transformValue = strip.style.transform;
-								const match = transformValue.match(/translateY\(-?([0-9.]+)px\)/);
-								if (match) {
-									const currentOffset = parseFloat(match[1]);
-									// 高亮框中心在 60px，符號高度 60px
-									// 符號索引 = (offset - 30) / 60 來找到對應的符號
-									const adjustedOffset = (currentOffset - 30) % (SYMBOLS.length * SYMBOL_HEIGHT);
-									const symbolIdx = Math.round(adjustedOffset / SYMBOL_HEIGHT) % SYMBOLS.length;
-									const landedSymbol = SYMBOLS[symbolIdx];
-									if (landedSymbol && SYMBOLS.includes(landedSymbol)) {
-										results[index] = landedSymbol;
-									} else {
-										results[index] = targetSymbol;
-									}
-								} else {
-									results[index] = targetSymbol;
-								}
-							} catch (e) {
-								// 如果出錯，直接使用目標符號
-								results[index] = targetSymbol;
-							}
+							// 直接使用預先決定的目標符號，確保顯示與結果一致
+							results[index] = targetSymbol;
 							resolve();
 						}, 50);
 					}
@@ -3124,6 +3105,7 @@ function startAutoSpinLoop() {
 			const stopInstantly = (index) => {
 				return new Promise((resolve) => {
 					const targetSymbol = pickWeightedSymbol();
+					targetSymbols[index] = targetSymbol; // 儲存目標符號
 					const strip = reels[index].querySelector('.strip');
 					reelState[index].spinning = false;
 					if (reelState[index].raf) cancelAnimationFrame(reelState[index].raf);
@@ -3147,33 +3129,11 @@ function startAutoSpinLoop() {
 						});
 					});
 					
-					// 等待動畫完成後讀取實際顯示的符號
+					// 等待動畫完成後直接使用目標符號
 					setTimeout(() => {
 						strip.style.transition = '';
-						
-						// 直接從 strip 的 transform 讀取符號位置
-						try {
-							const transformValue = strip.style.transform;
-							const match = transformValue.match(/translateY\(-?([0-9.]+)px\)/);
-							if (match) {
-								const currentOffset = parseFloat(match[1]);
-								// 高亮框中心在 60px，符號高度 60px
-								// 符號索引 = (offset - 30) / 60 來找到對應的符號
-								const adjustedOffset = (currentOffset - 30) % (SYMBOLS.length * SYMBOL_HEIGHT);
-								const symbolIdx = Math.round(adjustedOffset / SYMBOL_HEIGHT) % SYMBOLS.length;
-								const landedSymbol = SYMBOLS[symbolIdx];
-								if (landedSymbol && SYMBOLS.includes(landedSymbol)) {
-									results[index] = landedSymbol;
-								} else {
-									results[index] = targetSymbol;
-								}
-							} else {
-								results[index] = targetSymbol;
-							}
-						} catch (e) {
-							console.error('Error reading symbol:', e);
-							results[index] = targetSymbol;
-						}
+						// 直接使用預先決定的目標符號，確保顯示與結果一致
+						results[index] = targetSymbol;
 						resolve();
 					}, 250);
 				});
