@@ -3313,18 +3313,74 @@ function startAutoSpinLoop() {
 		});
 	}
 
+		// 手機調試輔助函數
+		function mobileDebug(msg, isError = false) {
+			const debugPanel = document.getElementById('mobile-debug');
+			const debugLog = document.getElementById('debug-log');
+			if (debugPanel && debugLog) {
+				// 確保面板可見
+				debugPanel.style.display = 'block';
+				
+				// 清除「等待操作...」提示
+				if (debugLog.textContent === '等待操作...') {
+					debugLog.innerHTML = '';
+				}
+				
+				const time = new Date().toLocaleTimeString('zh-TW');
+				const color = isError ? '#f00' : '#0f0';
+				const entry = document.createElement('div');
+				entry.style.color = color;
+				entry.style.marginBottom = '2px';
+				entry.textContent = `[${time}] ${msg}`;
+				debugLog.appendChild(entry);
+				
+				// 只保留最新15條
+				while (debugLog.children.length > 15) {
+					debugLog.removeChild(debugLog.firstChild);
+				}
+				debugLog.scrollTop = debugLog.scrollHeight;
+			}
+			console.log(msg);
+		}
+		
+		// 啟動時顯示訊息
+		setTimeout(() => {
+			mobileDebug('🎮 遊戲已載入，調試面板已啟用');
+			mobileDebug('👆 點擊任何按鈕都會記錄在此');
+		}, 500);
+		
 		// 使用事件委派處理裝備按鈕，避免重複綁定
 		document.addEventListener('click', function(e) {
+			// 調試：記錄所有按鈕點擊事件
+			if (e.target.tagName === 'BUTTON') {
+				const btnInfo = `按鈕: ${e.target.textContent.trim().substring(0, 15)} [${Array.from(e.target.classList).join(',')}]`;
+				mobileDebug(btnInfo);
+			}
+			
 			if (e.target.classList.contains('unequip-btn')) {
 				const slot = e.target.getAttribute('data-slot');
-				console.log('Unequip button clicked, slot:', slot);
-				if (slot) game.unequipItem(slot);
+				mobileDebug(`✓ 卸下按鈕 slot=${slot}`);
+				e.preventDefault();
+				e.stopPropagation();
+				if (slot) {
+					game.unequipItem(slot);
+					mobileDebug(`執行卸下: ${slot}`);
+				} else {
+					mobileDebug('錯誤: 卸下按鈕無slot屬性', true);
+				}
 			} else if (e.target.classList.contains('open-equip-btn')) {
 				const slot = e.target.getAttribute('data-slot');
-				console.log('Open equip button clicked, slot:', slot);
-				if (slot) game.showEquipmentPanel(slot);
+				mobileDebug(`✓ 裝備按鈕 slot=${slot}`);
+				e.preventDefault();
+				e.stopPropagation();
+				if (slot) {
+					game.showEquipmentPanel(slot);
+					mobileDebug(`打開裝備面板: ${slot}`);
+				} else {
+					mobileDebug('錯誤: 裝備按鈕無slot屬性', true);
+				}
 			}
-		});
+		}, true);
 
 	// 自動旋轉與逃跑按鈕綁定
 	const autoBtn = document.getElementById('auto-spin-btn');

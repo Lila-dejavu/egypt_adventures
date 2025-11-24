@@ -655,29 +655,40 @@ button[disabled] {
 .equip-row {
     margin-top: 8px;
     font-size: 0.9em;
+    position: relative;
+    z-index: 10;
 }
 .equip-row > div {
     margin-bottom: 4px;
+    position: relative;
+    z-index: 10;
 }
 .equip-row button {
-    font-size: 0.8em;
-    padding: 2px 6px;
+    font-size: 0.85em;
+    padding: 4px 10px;
     margin-left: 4px;
+    margin-top: 2px;
     border: none;
-    border-radius: 3px;
+    border-radius: 4px;
     cursor: pointer !important;
     background: #d4a855;
     color: white;
     touch-action: manipulation !important;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+    -webkit-tap-highlight-color: rgba(212, 168, 85, 0.3);
     user-select: none;
     -webkit-user-select: none;
     pointer-events: auto !important;
     position: relative;
     z-index: 1500 !important;
+    min-height: 28px;
+    min-width: 50px;
 }
 .equip-row button:hover {
     background: #b88f42;
+}
+.equip-row button:active {
+    background: #9a7835;
+    transform: scale(0.98);
 }
 
 /* 面板內按鈕觸控優化 */
@@ -699,10 +710,16 @@ button[disabled] {
 /* 狀態框內的裝備按鈕樣式 */
 .open-equip-btn,
 .unequip-btn {
-    font-size: 0.8em;
-    padding: 2px 6px;
+    font-size: 0.85em;
+    padding: 4px 10px;
     margin-left: 4px;
+    margin-top: 2px;
     border: none;
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    min-height: 28px;
+    min-width: 50px;
     border-radius: 3px;
     cursor: pointer !important;
     background: #4a90e2;
