@@ -3168,15 +3168,17 @@ function startAutoSpinLoop() {
 				// 目標位置計算：
 				// 桌面版和手機版統一使用 60px 符號高度
 				// 高亮框：桌面版 top: 30px (30-90px), 手機版 top: 0px (0-60px)
-				// 目標：讓符號顯示在高亮框**上方**
+				// 目標：讓符號的頂部對齊到高亮框的頂部
 				
 				// 偵測是否為手機版（屏幕寬度 <= 600px）
 				const isMobile = window.innerWidth <= 600;
 				
-				// 桌面版：高亮框在 30-90px，符號要在上方（-30 到 30px），strip = cycle × 420 + index × 60 - 30
-				// 手機版：高亮框在 0-60px，符號要在上方（-60 到 0px），strip = cycle × 420 + index × 60 - 60
-				const symbolOffset = isMobile ? 60 : 30;
-				const targetPos = targetCycle * singleBlock + symbolIndex * SYMBOL_HEIGHT - symbolOffset;
+				// 桌面版：高亮框頂部在 30px，所以 strip 移動到 cycle × 420 + index × 60 - 30
+				//         這樣符號頂部會在 30px 位置，符號範圍 30-90px（正好在高亮框內）
+				// 手機版：高亮框頂部在 0px，所以 strip 移動到 cycle × 420 + index × 60 - 0
+				//         這樣符號頂部會在 0px 位置，符號範圍 0-60px（正好在高亮框內）
+				const highlightTop = isMobile ? 0 : 30;
+				const targetPos = targetCycle * singleBlock + symbolIndex * SYMBOL_HEIGHT - highlightTop;
 				
 				console.log(`Reel ${index}: Target=${targetSymbol}, symbolIndex=${symbolIndex}, targetPos=${targetPos}px, mobile=${isMobile}`);
 				
