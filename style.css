@@ -656,6 +656,29 @@ button[disabled] {
 }
 #status-panel .stat { font-weight:700; }
 
+/* 獨立的裝備容器樣式 */
+.equipment-box {
+    flex: 0 0 200px;
+    background: 
+        repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(139, 69, 19, 0.04) 3px, rgba(139, 69, 19, 0.04) 6px),
+        linear-gradient(180deg, #faf5eb 0%, #f5ead6 50%, #f0dfc8 100%);
+    border-radius: 0;
+    padding: 16px;
+    box-shadow: 
+        0 4px 12px rgba(101, 67, 33, 0.25),
+        0 0 0 2px #d4af37,
+        inset 0 2px 0 rgba(255, 248, 220, 0.6),
+        inset 0 -2px 0 rgba(139, 69, 19, 0.15);
+    display: flex;
+    flex-direction: column;
+    border: 3px solid #8b4513;
+    border-left: 5px solid #654321;
+    border-right: 5px solid #654321;
+    position: relative;
+    z-index: 10;
+    overflow: visible;
+}
+
 /* 裝備標籤樣式 */
 .equip-label {
     display: block;
@@ -712,9 +735,11 @@ button[disabled] {
     transition: all 0.2s ease;
 }
 
-/* 狀態框內的裝備按鈕樣式 */
-.open-equip-btn,
-.unequip-btn {
+/* 裝備容器和狀態框內的裝備按鈕樣式 */
+.equipment-box .open-equip-btn,
+.equipment-box .unequip-btn,
+.status-box-side .open-equip-btn,
+.status-box-side .unequip-btn {
     font-size: 0.85em;
     padding: 4px 10px;
     margin-left: 4px;
@@ -738,8 +763,10 @@ button[disabled] {
     z-index: 100 !important;
 }
 
-.open-equip-btn:hover,
-.unequip-btn:hover {
+.equipment-box .open-equip-btn:hover,
+.equipment-box .unequip-btn:hover,
+.status-box-side .open-equip-btn:hover,
+.status-box-side .unequip-btn:hover {
     background: #357abd;
 }
 
