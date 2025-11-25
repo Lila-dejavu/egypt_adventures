@@ -676,7 +676,8 @@ button[disabled] {
     position: relative;
     z-index: 100;
 }
-.equip-row > div > div {
+.equip-row > div > div:first-child {
+    /* 只讓第一個內層 div（純文字）忽略指標事件，避免影響按鈕容器 */
     pointer-events: none !important;
 }
 .equip-row button {
