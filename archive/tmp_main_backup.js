@@ -457,9 +457,21 @@ function genEnemyName(type) {
 			function cloneItem(base, rarity){
 				const it = Object.assign({}, base);
 				it.rarity = rarity;
-				// 調整屬性幅度：rare +~1.5, epic +~2.2
-				if (it.atk) it.atk = Math.max(1, Math.round(it.atk * (rarity==='rare'?1.5: (rarity==='epic'?2.2:1))));
-				if (it.def) it.def = Math.max(1, Math.round(it.def * (rarity==='rare'?1.5: (rarity==='epic'?2.2:1))));
+				const scaleMap = { common: 1, rare: 1.8, excellent: 1.5, epic: 2.2, legendary: 3.0 };
+				const _scale = scaleMap[rarity] || 1;
+				if (it.atk) it.atk = Math.max(1, Math.round(it.atk * _scale));
+				if (it.def) it.def = Math.max(1, Math.round(it.def * _scale));
+
+				const bonusCountByRarity = { common: 0, rare: 2, excellent: 1, epic: 3, legendary: 4 };
+				const bonusCount = bonusCountByRarity[rarity] || 0;
+				if (bonusCount > 0 && QUALITY_BONUS[it.slot] && QUALITY_BONUS[it.slot][rarity]) {
+					const pool = QUALITY_BONUS[it.slot][rarity].slice();
+					for (let k = 0; k < bonusCount && pool.length > 0; k++) {
+						const idx = Math.floor(Math.random() * pool.length);
+						const bonus = pool.splice(idx, 1)[0];
+						Object.assign(it, bonus);
+					}
+				}
 				return it;
 			}
 			const offers = [];

@@ -869,6 +869,17 @@ function genEnemyName(type) {
 			if (!setBonus || !setBonus.effects) return 0;
 			return setBonus.effects[attrName] || 0;
 		}
+        
+		// 計算閃避機率
+		calculateDodgeChance(armorDodge) {
+			const dodgeChance = Math.min(0.5, 0.03 + 0.02 * this.player.luck_combat + armorDodge / 100); // 最多 50% 閃避
+			showMessage(`你閃避了敵人的自動普攻！(戰鬥幸運 ${this.player.luck_combat})`);
+			// 成功閃避後消耗一些戰鬥幸運，避免永久累積
+			if (this.player.luck_combat && this.player.luck_combat > 0) {
+				this.player.luck_combat = Math.max(0, this.player.luck_combat - 1);
+				showMessage(`戰鬥幸運 -1（剩餘 ${this.player.luck_combat}）。`);
+			}
+		}
 
 		// Helper: 格式化物品屬性顯示
 		formatItem(it) {
@@ -1551,9 +1562,10 @@ function genEnemyName(type) {
 			const mr = document.getElementById('move-right'); if (mr) mr.disabled = true;
 			// 根據類型調整敵人血量與普攻力
 			// 金字塔內敵人隨地圖難度增強：HP x(3+難度*0.5), ATK x(2.5+難度*0.3), 強度x(1.5+難度*0.2)
-			let hpMultiplier = this.inPyramid ? (3.0 + this.difficulty * 0.5) : 1.0;
+			// 非金字塔：按使用者要求提升強度（strength +0.5）與血量加倍（HP x2）
+			let hpMultiplier = this.inPyramid ? (3.0 + this.difficulty * 0.5) : 2.0;
 			let atkMultiplier = this.inPyramid ? (2.5 + this.difficulty * 0.3) : 1.0;
-			let strengthBonus = this.inPyramid ? (1.5 + this.difficulty * 0.2) : 1.0;
+			let strengthBonus = this.inPyramid ? (1.5 + this.difficulty * 0.2) : 1.5;
 			
 		if (type === 'elite') {
 			this.enemy.max_hp = Math.floor((150 + 20 * this.difficulty) * hpMultiplier);
@@ -1631,6 +1643,11 @@ function genEnemyName(type) {
 			const dodgeChance = Math.min(0.5, 0.03 + 0.02 * this.player.luck_combat + armorDodge / 100); // 最多 50% 閃避
 			if (Math.random() < dodgeChance) {
 				showMessage(`你閃避了敵人的自動普攻！(戰鬥幸運 ${this.player.luck_combat})`);
+				// 成功閃避後消耗一些戰鬥幸運，避免永久累積
+				if (this.player.luck_combat && this.player.luck_combat > 0) {
+					this.player.luck_combat = Math.max(0, this.player.luck_combat - 1);
+					showMessage(`戰鬥幸運 -1（剩餘 ${this.player.luck_combat}）。`);
+				}
 			} else {
 				const consumedShield = Math.min(this.player.shield, dmg);
 				const mitigated = Math.max(0, dmg - this.player.shield);
@@ -1683,11 +1700,14 @@ function genEnemyName(type) {
 						if (it.luck_combat) it.luck_combat = Math.max(1, Math.round(it.luck_combat * _scale));
 						if (it.max_hp_bonus) it.max_hp_bonus = Math.max(1, Math.round(it.max_hp_bonus * _scale));
 				
-				// 根據品質添加額外屬性
-				if (rarity !== 'common' && QUALITY_BONUS[it.slot] && QUALITY_BONUS[it.slot][rarity]) {
-					const bonusPool = QUALITY_BONUS[it.slot][rarity];
-					if (bonusPool.length > 0) {
-						const bonus = bonusPool[Math.floor(Math.random() * bonusPool.length)];
+				// 根據品質添加額外屬性（依使用者要求：rare 應高於 excellent）
+				const bonusCountByRarity = { common: 0, rare: 2, excellent: 1, epic: 3, legendary: 4 };
+				const bonusCount = bonusCountByRarity[rarity] || 0;
+				if (bonusCount > 0 && QUALITY_BONUS[it.slot] && QUALITY_BONUS[it.slot][rarity]) {
+					const pool = QUALITY_BONUS[it.slot][rarity].slice(); // copy to avoid mutating source
+					for (let n = 0; n < bonusCount && pool.length > 0; n++) {
+						const idx = Math.floor(Math.random() * pool.length);
+						const bonus = pool.splice(idx, 1)[0];
 						Object.assign(it, bonus);
 					}
 				}
@@ -2397,7 +2417,7 @@ function genEnemyName(type) {
 				<div style="display: flex; flex-direction: column; gap: 6px;">
 					<div style="display: flex; justify-content: space-between; align-items: center; padding: 6px; background: #f8f8f8; border-radius: 4px; font-size: 0.9em;">
 						<span>🧪 藥水 x1</span>
-						<button class="tp-buy-btn" data-item="potion" data-price="50" style="padding: 5px 10px; background: #2ecc71; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9em; white-space: nowrap;">50金幣</button>
+						<button class="tp-buy-btn" data-item="potion" data-price="200" style="padding: 5px 10px; background: #2ecc71; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9em; white-space: nowrap;">200金幣</button>
 					</div>
 					<div style="display: flex; justify-content: space-between; align-items: center; padding: 6px; background: #f8f8f8; border-radius: 4px; font-size: 0.85em;">
 						<span>🍖 食物（恢復30HP+15體力）</span>
@@ -2772,6 +2792,11 @@ function genEnemyName(type) {
 					const dodgeChanceSkull = Math.min(0.5, 0.03 + 0.02 * this.player.luck_combat + armorDodgeSkull / 100);
 					if (Math.random() < dodgeChanceSkull) {
 						showMessage(`你閃避了敵人符號攻擊（戰鬥幸運 ${this.player.luck_combat}）！`);
+						// 成功閃避後消耗一些戰鬥幸運，避免永久累積
+						if (this.player.luck_combat && this.player.luck_combat > 0) {
+							this.player.luck_combat = Math.max(0, this.player.luck_combat - 1);
+							showMessage(`戰鬥幸運 -1（剩餘 ${this.player.luck_combat}）。`);
+						}
 					} else {
 						const consumedShield = Math.min(this.player.shield, rawDmg);
 						const mitigated = Math.max(0, rawDmg - this.player.shield);
@@ -2835,19 +2860,23 @@ function genEnemyName(type) {
 					const cloneItem = (base, rarity, isPyramid = false) => {
 						const it = Object.assign({}, base);
 						it.rarity = rarity;
-						// 調整屬性幅度：rare +~1.5, epic +~2.2
-						if (it.atk) it.atk = Math.max(1, Math.round(it.atk * (rarity==='rare'?1.5: (rarity==='epic'?2.2:1))));
-						if (it.def) it.def = Math.max(1, Math.round(it.def * (rarity==='rare'?1.5: (rarity==='epic'?2.2:1))));
-						if (it.luck_gold) it.luck_gold = Math.max(1, Math.round(it.luck_gold * (rarity==='rare'?1.5: (rarity==='epic'?2.2:1))));
-						if (it.luck_combat) it.luck_combat = Math.max(1, Math.round(it.luck_combat * (rarity==='rare'?1.5: (rarity==='epic'?2.2:1))));
-						if (it.max_hp_bonus) it.max_hp_bonus = Math.max(1, Math.round(it.max_hp_bonus * (rarity==='rare'?1.5: (rarity==='epic'?2.2:1))));
+						// 調整屬性幅度（明確 mapping，確保 rare > excellent）
+						const _scale = rarity === 'rare' ? 1.8 : (rarity === 'excellent' ? 1.5 : (rarity === 'epic' ? 2.2 : (rarity === 'legendary' ? 3.0 : 1)));
+						if (it.atk) it.atk = Math.max(1, Math.round(it.atk * _scale));
+						if (it.def) it.def = Math.max(1, Math.round(it.def * _scale));
+						if (it.luck_gold) it.luck_gold = Math.max(1, Math.round(it.luck_gold * _scale));
+						if (it.luck_combat) it.luck_combat = Math.max(1, Math.round(it.luck_combat * _scale));
+						if (it.max_hp_bonus) it.max_hp_bonus = Math.max(1, Math.round(it.max_hp_bonus * _scale));
 						
-						// 根據品質添加額外屬性
-						if (rarity !== 'common' && QUALITY_BONUS[it.slot] && QUALITY_BONUS[it.slot][rarity]) {
-							const bonusPool = QUALITY_BONUS[it.slot][rarity];
-							if (bonusPool.length > 0) {
-								const bonus = bonusPool[Math.floor(Math.random() * bonusPool.length)];
-								Object.assign(it, bonus);
+						// 根據品質添加額外屬性（可抽取多個不重複加成，數量依稀有度而定）
+						const bonusCountByRarity_inner = { common: 0, rare: 2, excellent: 1, epic: 3, legendary: 4 };
+						const bonusCount_inner = bonusCountByRarity_inner[rarity] || 0;
+						if (bonusCount_inner > 0 && QUALITY_BONUS[it.slot] && QUALITY_BONUS[it.slot][rarity]) {
+							const pool2 = QUALITY_BONUS[it.slot][rarity].slice();
+							for (let n = 0; n < bonusCount_inner && pool2.length > 0; n++) {
+								const idx2 = Math.floor(Math.random() * pool2.length);
+								const bonus2 = pool2.splice(idx2, 1)[0];
+								Object.assign(it, bonus2);
 							}
 						}
 						

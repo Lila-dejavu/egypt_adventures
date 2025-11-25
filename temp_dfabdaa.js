@@ -1033,7 +1033,7 @@ function genEnemyName(type) {
 			const mr = document.getElementById('move-right'); if (mr) mr.disabled = true;
 			// µá╣µôÜΘí₧σ₧ïΦ¬┐µò┤µò╡Σ║║ΦíÇΘçÅΦêçµÖ«µö╗σè¢
 			// Θçæσ¡ùσíöσàºµò╡Σ║║ΘÜ¿σ£░σ£ûΘ¢úσ║ªσó₧σ╝╖∩╝ÜHP x(3+Θ¢úσ║ª*0.5), ATK x(2.5+Θ¢úσ║ª*0.3), σ╝╖σ║ªx(1.5+Θ¢úσ║ª*0.2)
-			let hpMultiplier = this.inPyramid ? (3.0 + this.difficulty * 0.5) : 1.0;
+			let hpMultiplier = this.inPyramid ? (3.0 + this.difficulty * 0.5) : 2.0;
 			let atkMultiplier = this.inPyramid ? (2.5 + this.difficulty * 0.3) : 1.0;
 			let strengthBonus = this.inPyramid ? (1.5 + this.difficulty * 0.2) : 1.0;
 			
@@ -1104,6 +1104,10 @@ function genEnemyName(type) {
 			const dodgeChance = Math.min(0.5, 0.03 + 0.02 * this.player.luck_combat + armorDodge / 100); // µ£ÇσñÜ 50% ΘûâΘü┐
 			if (Math.random() < dodgeChance) {
 				showMessage(`Σ╜áΘûâΘü┐Σ║åµò╡Σ║║τÜäΦç¬σïòµÖ«µö╗∩╝ü(µê░Θ¼Ñσ╣╕Θüï ${this.player.luck_combat})`);
+				if (this.player.luck_combat && this.player.luck_combat > 0) {
+					this.player.luck_combat = Math.max(0, this.player.luck_combat - 1);
+					showMessage(`戰鬥幸運 -1（剩餘 ${this.player.luck_combat}）。`);
+				}
 			} else {
 				const consumedShield = Math.min(this.player.shield, dmg);
 				const mitigated = Math.max(0, dmg - this.player.shield);
@@ -1149,17 +1153,21 @@ function genEnemyName(type) {
 				const it = Object.assign({}, base);
 				it.rarity = rarity;
 				// Φ¬┐µò┤σ▒¼µÇºσ╣àσ║ª∩╝Ürare +~1.5, epic +~2.2
-				if (it.atk) it.atk = Math.max(1, Math.round(it.atk * (rarity==='rare'?1.5: (rarity==='epic'?2.2:1))));
-				if (it.def) it.def = Math.max(1, Math.round(it.def * (rarity==='rare'?1.5: (rarity==='epic'?2.2:1))));
-				if (it.luck_gold) it.luck_gold = Math.max(1, Math.round(it.luck_gold * (rarity==='rare'?1.5: (rarity==='epic'?2.2:1))));
-				if (it.luck_combat) it.luck_combat = Math.max(1, Math.round(it.luck_combat * (rarity==='rare'?1.5: (rarity==='epic'?2.2:1))));
-				if (it.max_hp_bonus) it.max_hp_bonus = Math.max(1, Math.round(it.max_hp_bonus * (rarity==='rare'?1.5: (rarity==='epic'?2.2:1))));
+					const _scale = rarity === 'rare' ? 1.8 : (rarity === 'excellent' ? 1.5 : (rarity === 'epic' ? 2.2 : (rarity === 'legendary' ? 3.0 : 1)));
+					if (it.atk) it.atk = Math.max(1, Math.round(it.atk * _scale));
+					if (it.def) it.def = Math.max(1, Math.round(it.def * _scale));
+					if (it.luck_gold) it.luck_gold = Math.max(1, Math.round(it.luck_gold * _scale));
+					if (it.luck_combat) it.luck_combat = Math.max(1, Math.round(it.luck_combat * _scale));
+					if (it.max_hp_bonus) it.max_hp_bonus = Math.max(1, Math.round(it.max_hp_bonus * _scale));
 				
-				// µá╣µôÜσôüΦ│¬µ╖╗σèáΘíìσñûσ▒¼µÇº
-				if (rarity !== 'common' && QUALITY_BONUS[it.slot] && QUALITY_BONUS[it.slot][rarity]) {
-					const bonusPool = QUALITY_BONUS[it.slot][rarity];
-					if (bonusPool.length > 0) {
-						const bonus = bonusPool[Math.floor(Math.random() * bonusPool.length)];
+				// µá╣µôÜσôüΦ│¬µ╖╗σèáΘíìσñûσ▒¼µÇº（依稀有度抽多個不重複加成）
+				const bonusCountByRarity = { common: 0, rare: 2, excellent: 1, epic: 3, legendary: 4 };
+				const bonusCount = bonusCountByRarity[rarity] || 0;
+				if (bonusCount > 0 && QUALITY_BONUS[it.slot] && QUALITY_BONUS[it.slot][rarity]) {
+					const pool = QUALITY_BONUS[it.slot][rarity].slice();
+					for (let n = 0; n < bonusCount && pool.length > 0; n++) {
+						const idx = Math.floor(Math.random() * pool.length);
+						const bonus = pool.splice(idx, 1)[0];
 						Object.assign(it, bonus);
 					}
 				}
@@ -1828,7 +1836,7 @@ function genEnemyName(type) {
 				<div style="display: flex; flex-direction: column; gap: 8px;">
 					<div style="display: flex; justify-content: space-between; align-items: center; padding: 8px; background: #f8f8f8; border-radius: 4px;">
 						<span>≡ƒº¬ ΦùÑµ░┤ x1</span>
-						<button class="tp-buy-btn" data-item="potion" data-price="50" style="padding: 6px 12px; background: #2ecc71; color: white; border: none; border-radius: 4px; cursor: pointer;">50Θçæσ╣ú</button>
+						<button class="tp-buy-btn" data-item="potion" data-price="200" style="padding: 6px 12px; background: #2ecc71; color: white; border: none; border-radius: 4px; cursor: pointer;">200金幣</button>
 					</div>
 					<div style="display: flex; justify-content: space-between; align-items: center; padding: 8px; background: #f8f8f8; border-radius: 4px;">
 						<span>≡ƒìû Θúƒτë⌐∩╝êµüóσ╛⌐30HP+15Θ½öσè¢∩╝ë</span>
@@ -2187,6 +2195,10 @@ function genEnemyName(type) {
 					const dodgeChanceSkull = Math.min(0.5, 0.03 + 0.02 * this.player.luck_combat + armorDodgeSkull / 100);
 					if (Math.random() < dodgeChanceSkull) {
 						showMessage(`Σ╜áΘûâΘü┐Σ║åµò╡Σ║║τ¼ªΦÖƒµö╗µôè∩╝êµê░Θ¼Ñσ╣╕Θüï ${this.player.luck_combat}∩╝ë∩╝ü`);
+						if (this.player.luck_combat && this.player.luck_combat > 0) {
+							this.player.luck_combat = Math.max(0, this.player.luck_combat - 1);
+							showMessage(`戰鬥幸運 -1（剩餘 ${this.player.luck_combat}）。`);
+						}
 					} else {
 						const consumedShield = Math.min(this.player.shield, rawDmg);
 						const mitigated = Math.max(0, rawDmg - this.player.shield);
@@ -2246,18 +2258,22 @@ function genEnemyName(type) {
 						const it = Object.assign({}, base);
 						it.rarity = rarity;
 						// Φ¬┐µò┤σ▒¼µÇºσ╣àσ║ª∩╝Ürare +~1.5, epic +~2.2
-						if (it.atk) it.atk = Math.max(1, Math.round(it.atk * (rarity==='rare'?1.5: (rarity==='epic'?2.2:1))));
-						if (it.def) it.def = Math.max(1, Math.round(it.def * (rarity==='rare'?1.5: (rarity==='epic'?2.2:1))));
-						if (it.luck_gold) it.luck_gold = Math.max(1, Math.round(it.luck_gold * (rarity==='rare'?1.5: (rarity==='epic'?2.2:1))));
-						if (it.luck_combat) it.luck_combat = Math.max(1, Math.round(it.luck_combat * (rarity==='rare'?1.5: (rarity==='epic'?2.2:1))));
-						if (it.max_hp_bonus) it.max_hp_bonus = Math.max(1, Math.round(it.max_hp_bonus * (rarity==='rare'?1.5: (rarity==='epic'?2.2:1))));
+							const _scale = rarity === 'rare' ? 1.8 : (rarity === 'excellent' ? 1.5 : (rarity === 'epic' ? 2.2 : (rarity === 'legendary' ? 3.0 : 1)));
+							if (it.atk) it.atk = Math.max(1, Math.round(it.atk * _scale));
+							if (it.def) it.def = Math.max(1, Math.round(it.def * _scale));
+							if (it.luck_gold) it.luck_gold = Math.max(1, Math.round(it.luck_gold * _scale));
+							if (it.luck_combat) it.luck_combat = Math.max(1, Math.round(it.luck_combat * _scale));
+							if (it.max_hp_bonus) it.max_hp_bonus = Math.max(1, Math.round(it.max_hp_bonus * _scale));
 						
-						// µá╣µôÜσôüΦ│¬µ╖╗σèáΘíìσñûσ▒¼µÇº
-						if (rarity !== 'common' && QUALITY_BONUS[it.slot] && QUALITY_BONUS[it.slot][rarity]) {
-							const bonusPool = QUALITY_BONUS[it.slot][rarity];
-							if (bonusPool.length > 0) {
-								const bonus = bonusPool[Math.floor(Math.random() * bonusPool.length)];
-								Object.assign(it, bonus);
+						// µá╣µôÜσôüΦ│¬µ╖╗σèáΘíìσñûσ▒¼µÇº（依稀有度抽多個不重複加成）
+						const bonusCountByRarity_inner = { common: 0, rare: 2, excellent: 1, epic: 3, legendary: 4 };
+						const bonusCount_inner = bonusCountByRarity_inner[rarity] || 0;
+						if (bonusCount_inner > 0 && QUALITY_BONUS[it.slot] && QUALITY_BONUS[it.slot][rarity]) {
+							const pool2 = QUALITY_BONUS[it.slot][rarity].slice();
+							for (let n = 0; n < bonusCount_inner && pool2.length > 0; n++) {
+								const idx2 = Math.floor(Math.random() * pool2.length);
+								const bonus2 = pool2.splice(idx2, 1)[0];
+								Object.assign(it, bonus2);
 							}
 						}
 						
