@@ -595,7 +595,19 @@ function chooseEvent() {
 		return pool[Math.floor(Math.random() * pool.length)];
 	}
 	const VISIBLE = 2; // 中間顯示1個，實作上每個 symbol 高度為 60px，reel 高度 120px
-	const SYMBOL_HEIGHT = 60; // 與 CSS 同步
+	// 動態獲取符號高度，根據螢幕寬度適配（與 CSS 同步）
+	function getSymbolHeight() {
+		const width = window.innerWidth;
+		if (width <= 400) return 41; // 極小螢幕
+		if (width <= 600) return 60; // 手機版
+		return 60; // 桌面版
+	}
+	// 動態獲取高亮框頂部位置（與 CSS 同步）
+	function getHighlightTop() {
+		const width = window.innerWidth;
+		if (width <= 400) return 20.5; // 極小螢幕：41px 符號的一半減去一半
+		return 30; // 其他：60px 符號的一半
+	}
 
 // 裝備與掉落樣本（基礎屬性，品質會在生成時添加）
 const ITEMS = [
@@ -735,9 +747,9 @@ function genEnemyName(type) {
 		reels[r].innerHTML = '';
 		reels[r].appendChild(strip);
 		// 初始位置：從中間組開始
-		// 高亮框在 top: 30px (中心在 60px)，要讓符號對齊，需要讓某個符號的中心對齊到 60px
-		// strip 往上移動到讓第 N 個符號的頂部在 30px 處
-		const initialOffset = SYMBOL_HEIGHT * SYMBOLS.length * 2;
+		// 使用動態符號高度和高亮框位置
+		const symbolHeight = getSymbolHeight();
+		const initialOffset = symbolHeight * SYMBOLS.length * 2;
 		strip.style.transform = `translateY(-${initialOffset}px)`;
 		}
 	}
@@ -3113,6 +3125,8 @@ function startAutoSpinLoop() {
 
 	function startSpin() {
 		// 以快速改變 translateY 來模擬連續旋轉
+		// 使用動態符號高度以適配不同螢幕尺寸
+		const symbolHeight = getSymbolHeight();
 		for (let i = 0; i < reels.length; i++) {
 			const strip = reels[i].querySelector('.strip');
 			if (!strip) continue;
@@ -3123,8 +3137,8 @@ function startAutoSpinLoop() {
 			const loop = () => {
 				if (!reelState[i].spinning) return;
 				reelState[i].anim.pos += reelState[i].anim.speed;
-				// 當 pos 超過一整組長度，回繞
-				const totalHeight = SYMBOLS.length * SYMBOL_HEIGHT * 8; // repeats
+				// 當 pos 超過一整組長度，回繞（使用動態符號高度）
+				const totalHeight = SYMBOLS.length * symbolHeight * 8; // repeats
 				if (reelState[i].anim.pos >= totalHeight) reelState[i].anim.pos -= totalHeight;
 				strip.style.transform = `translateY(-${reelState[i].anim.pos}px)`;
 				reelState[i].raf = requestAnimationFrame(loop);
@@ -3157,27 +3171,24 @@ function startAutoSpinLoop() {
 					return;
 				}
 				
-				// 計算目標位置
+				// 計算目標位置（動態適配不同螢幕尺寸）
 				// strip 中有 8 個重複的 SYMBOLS 陣列
 				// 使用第 3 個循環（中間位置）來確保符號在可視範圍內
-				const singleBlock = SYMBOLS.length * SYMBOL_HEIGHT; // 420px (7 symbols × 60px)
+				const symbolHeight = getSymbolHeight();
+				const highlightTop = getHighlightTop();
+				const singleBlock = SYMBOLS.length * symbolHeight; // 動態計算單個循環長度
 				const targetCycle = 3; // 使用第 3 個循環
 				
-				// 目標位置計算：
-				// 桌面版和手機版統一使用 60px 符號高度
-				// 高亮框：桌面版 top: 30px (30-90px), 手機版 top: 0px (0-60px)
-				// 問題：從調試看手機版多偏移了30px，說明CSS的高亮框可能實際還在30px
-				// 解決：統一使用 30px 偏移，讓符號頂部對齊到高亮框頂部
+				// 目標位置計算：符號頂部對齊到高亮框頂部
+				// strip 移動到 cycle × singleBlock + index × symbolHeight - highlightTop
+				const targetPos = targetCycle * singleBlock + symbolIndex * symbolHeight - highlightTop;
 				
-				// 偵測是否為手機版（屏幕寬度 <= 600px）
-				const isMobile = window.innerWidth <= 600;
+				// 偵測螢幕資訊
+				const screenWidth = window.innerWidth;
+				const isMobile = screenWidth <= 600;
+				const isTinyScreen = screenWidth <= 400;
 				
-				// 統一邏輯：符號頂部對齊到高亮框頂部（30px）
-				// strip 移動到 cycle × 420 + index × 60 - 30
-				// 這樣符號範圍是 30-90px（在高亮框內）
-				const targetPos = targetCycle * singleBlock + symbolIndex * SYMBOL_HEIGHT - 30;
-				
-				console.log(`Reel ${index}: Target=${targetSymbol}, symbolIndex=${symbolIndex}, targetPos=${targetPos}px, mobile=${isMobile}, screenWidth=${window.innerWidth}`);
+				console.log(`Reel ${index}: Target=${targetSymbol}, symbolIndex=${symbolIndex}, targetPos=${targetPos}px, symbolHeight=${symbolHeight}px, highlightTop=${highlightTop}px, mobile=${isMobile}, tiny=${isTinyScreen}, screenWidth=${screenWidth}`);
 				
 				if (withAnimation) {
 					// 第一個輪軸：帶動畫
@@ -3264,21 +3275,24 @@ function startAutoSpinLoop() {
 						}
 					}
 					
-					// 計算符號在高亮框上方的位置
-					// 修正後：符號應該在 0-60px 區域（高亮框上方）
-					// strip 位置 = cycle × 420 + symbolIndex × 60 - 30
-					// 計算符號在高亮框上方的位置（允許一些誤差）
-					const symbolIndexInView = (Math.round((currentPos + 30) / 60) % SYMBOLS.length + SYMBOLS.length) % SYMBOLS.length;
+					// 動態獲取當前螢幕的符號高度和高亮框位置
+					const symbolHeight = getSymbolHeight();
+					const highlightTop = getHighlightTop();
+					
+					// 計算符號在高亮框中的索引
+					// strip 位置 = cycle × singleBlock + symbolIndex × symbolHeight - highlightTop
+					// 反推：symbolIndex = ((currentPos + highlightTop) / symbolHeight) % SYMBOLS.length
+					const symbolIndexInView = (Math.round((currentPos + highlightTop) / symbolHeight) % SYMBOLS.length + SYMBOLS.length) % SYMBOLS.length;
 					const expectedSymbol = SYMBOLS[symbolIndexInView];
 					
-					console.log(`Reel ${i}: pos=${currentPos}px, symbolIndex=${symbolIndexInView}, expected=${expectedSymbol}, actual=${results[i]}`);
-					positionInfo += `\n輪${i+1}: ${currentPos}px → ${results[i]}`;
+					console.log(`Reel ${i}: pos=${currentPos}px, symbolHeight=${symbolHeight}px, highlightTop=${highlightTop}px, symbolIndex=${symbolIndexInView}, expected=${expectedSymbol}, actual=${results[i]}`);
+					positionInfo += `\n輪${i+1}: ${currentPos}px (H:${symbolHeight}) → ${results[i]}`;
 					
-					// 檢查對齊（修正後的對齊位置）
-					const alignedPos = Math.round((currentPos + 30) / 60) * 60 - 30;
+					// 檢查對齊（使用動態符號高度）
+					const alignedPos = Math.round((currentPos + highlightTop) / symbolHeight) * symbolHeight - highlightTop;
 					// 在行動裝置上允許更大的容差（3px），以避免子像素或 matrix 計算誤差導致誤判
 					if (Math.abs(currentPos - alignedPos) > 3) {
-						console.warn(`Reel ${i}: Misaligned! Current=${currentPos}, should be=${alignedPos}`);
+						console.warn(`Reel ${i}: Misaligned! Current=${currentPos}, should be=${alignedPos}, symbolHeight=${symbolHeight}`);
 					}
 				}
 			}
