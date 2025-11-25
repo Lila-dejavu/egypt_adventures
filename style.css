@@ -664,6 +664,7 @@ button[disabled] {
     flex-direction: column;
     margin-top: 8px;
     margin-bottom: 4px;
+    pointer-events: none;
 }
 
 /* 裝備標籤樣式 */
@@ -683,6 +684,7 @@ button[disabled] {
     display: flex;
     gap: 4px;
     flex-wrap: wrap;
+    pointer-events: none;
 }
 
 /* 裝備按鈕基礎樣式 */
@@ -697,13 +699,13 @@ button[disabled] {
     cursor: pointer;
     background: #d4a855;
     color: white;
-    touch-action: manipulation;
+    touch-action: manipulation !important;
     -webkit-tap-highlight-color: rgba(212, 168, 85, 0.3);
     user-select: none;
     -webkit-user-select: none;
     pointer-events: auto !important;
     position: relative;
-    z-index: 20;
+    z-index: 200 !important;
     min-height: 24px;
     min-width: 45px;
     transition: all 0.2s ease;
@@ -1508,6 +1510,7 @@ button[disabled] {
     .equip-row {
         margin-top: 6px;
         margin-bottom: 3px;
+        pointer-events: none !important;
     }
     
     .equip-label {
@@ -1517,6 +1520,7 @@ button[disabled] {
     
     .equip-buttons {
         gap: 3px;
+        pointer-events: none !important;
     }
     
     .status-box-side button {

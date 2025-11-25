@@ -3405,37 +3405,47 @@ function startAutoSpinLoop() {
 		
 		// 使用事件委派處理裝備按鈕，避免重複綁定
 		document.addEventListener('click', function(e) {
+			// 使用 closest() 向上查找按鈕，解決手機觸控時點擊到子元素的問題
+			let target = e.target;
+			
 			// 調試：記錄所有點擊事件
-			const tagName = e.target.tagName;
-			const classes = Array.from(e.target.classList).join(',');
-			const text = e.target.textContent.trim().substring(0, 20);
+			const tagName = target.tagName;
+			const classes = Array.from(target.classList).join(',');
+			const text = target.textContent.trim().substring(0, 20);
 			mobileDebug(`點擊: <${tagName}> "${text}" [${classes}]`);
 			
 			// 如果是按鈕，顯示詳細資訊
 			if (tagName === 'BUTTON') {
-				const rect = e.target.getBoundingClientRect();
+				const rect = target.getBoundingClientRect();
 				mobileDebug(`  位置: x=${Math.round(rect.left)}, y=${Math.round(rect.top)}, 寬=${Math.round(rect.width)}, 高=${Math.round(rect.height)}`);
 			}
 			
-			if (e.target.classList.contains('unequip-btn')) {
-				const slot = e.target.getAttribute('data-slot');
-				mobileDebug(`✓ 卸下按鈕 slot=${slot}`);
+			// 向上查找最近的按鈕元素（處理點擊到按鈕內部元素的情況）
+			const button = target.closest('.unequip-btn, .open-equip-btn');
+			
+			if (button) {
+				mobileDebug(`✓ 找到按鈕: ${button.className}`);
 				e.stopPropagation();
-				if (slot) {
-					game.unequipItem(slot);
-					mobileDebug(`執行卸下: ${slot}`);
-				} else {
-					mobileDebug('錯誤: 卸下按鈕無slot屬性', true);
-				}
-			} else if (e.target.classList.contains('open-equip-btn')) {
-				const slot = e.target.getAttribute('data-slot');
-				mobileDebug(`✓ 裝備按鈕 slot=${slot}`);
-				e.stopPropagation();
-				if (slot) {
-					game.showEquipmentPanel(slot);
-					mobileDebug(`打開裝備面板: ${slot}`);
-				} else {
-					mobileDebug('錯誤: 裝備按鈕無slot屬性', true);
+				e.preventDefault();
+				
+				const slot = button.getAttribute('data-slot');
+				
+				if (button.classList.contains('unequip-btn')) {
+					mobileDebug(`✓ 卸下按鈕 slot=${slot}`);
+					if (slot) {
+						game.unequipItem(slot);
+						mobileDebug(`執行卸下: ${slot}`);
+					} else {
+						mobileDebug('錯誤: 卸下按鈕無slot屬性', true);
+					}
+				} else if (button.classList.contains('open-equip-btn')) {
+					mobileDebug(`✓ 裝備按鈕 slot=${slot}`);
+					if (slot) {
+						game.showEquipmentPanel(slot);
+						mobileDebug(`打開裝備面板: ${slot}`);
+					} else {
+						mobileDebug('錯誤: 裝備按鈕無slot屬性', true);
+					}
 				}
 			}
 		}, true);
