@@ -1857,3 +1857,43 @@ button[disabled] {
     50% { box-shadow: 0 0 18px rgba(255,180,50,0.9); transform: scale(1.04); }
     100% { box-shadow: 0 0 6px rgba(255,180,50,0.35); transform: scale(1); }
 }
+
+/* Fix: keep panel footer / close buttons visible when inner content scrolls */
+/* Many panels are created dynamically with inline overflow; make the footer sticky inside the panel */
+#trading-post-panel,
+#equipment-panel,
+#blackmarket-panel,
+#pyramid-choice-panel,
+#debug-panel {
+    /* allow panels to remain scrollable but manage footer visibility */
+    display: block;
+    max-height: 80vh;
+}
+
+/* Make the last direct child (usually the footer with close button) sticky at the bottom */
+#trading-post-panel > div:last-child,
+#equipment-panel > div:last-child,
+#blackmarket-panel > div:last-child,
+#pyramid-choice-panel > div:last-child,
+#debug-panel > div:last-child {
+    position: sticky;
+    bottom: 0;
+    z-index: 1200;
+    background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.9));
+    padding: 10px 16px;
+    box-shadow: 0 -6px 18px rgba(0,0,0,0.08);
+}
+
+/* Ensure the inventory area inside trading post can scroll independently */
+#trading-post-panel #tp-inventory {
+    overflow-y: auto;
+    max-height: calc(80vh - 240px); /* leave room for header and footer */
+}
+
+/* For equipment/blackmarket panels ensure inner list scrolls if present */
+#equipment-panel .panel-body,
+#blackmarket-panel .panel-body,
+#pyramid-choice-panel .panel-body {
+    overflow-y: auto;
+    max-height: calc(80vh - 180px);
+}
