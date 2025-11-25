@@ -656,27 +656,9 @@ button[disabled] {
 }
 #status-panel .stat { font-weight:700; }
 
-/* 獨立的裝備容器樣式 */
+/* 獨立的裝備容器樣式 - 桃面版隱藏 */
 .equipment-box {
-    flex: 0 0 200px;
-    background: 
-        repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(139, 69, 19, 0.04) 3px, rgba(139, 69, 19, 0.04) 6px),
-        linear-gradient(180deg, #faf5eb 0%, #f5ead6 50%, #f0dfc8 100%);
-    border-radius: 0;
-    padding: 16px;
-    box-shadow: 
-        0 4px 12px rgba(101, 67, 33, 0.25),
-        0 0 0 2px #d4af37,
-        inset 0 2px 0 rgba(255, 248, 220, 0.6),
-        inset 0 -2px 0 rgba(139, 69, 19, 0.15);
-    display: flex;
-    flex-direction: column;
-    border: 3px solid #8b4513;
-    border-left: 5px solid #654321;
-    border-right: 5px solid #654321;
-    position: relative;
-    z-index: 10;
-    overflow: visible;
+    display: none;
 }
 
 /* 裝備標籤樣式 */
@@ -1127,6 +1109,36 @@ button[disabled] {
 
 /* ===== 手機響應式設計（最大 600px）===== */
 @media (max-width: 600px) {
+    /* 顯示獨立裝備容器 */
+    .equipment-box {
+        display: flex !important;
+        flex: 0 0 200px;
+        background: 
+            repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(139, 69, 19, 0.04) 3px, rgba(139, 69, 19, 0.04) 6px),
+            linear-gradient(180deg, #faf5eb 0%, #f5ead6 50%, #f0dfc8 100%);
+        border-radius: 0;
+        padding: 16px;
+        box-shadow: 
+            0 4px 12px rgba(101, 67, 33, 0.25),
+            0 0 0 2px #d4af37,
+            inset 0 2px 0 rgba(255, 248, 220, 0.6),
+            inset 0 -2px 0 rgba(139, 69, 19, 0.15);
+        flex-direction: column;
+        border: 3px solid #8b4513;
+        border-left: 5px solid #654321;
+        border-right: 5px solid #654321;
+        position: relative;
+        z-index: 10;
+        overflow: visible;
+    }
+    
+    /* 手機版隱藏 player-status 裡的裝備區塊 */
+    #player-status .equip-label,
+    #player-status .open-equip-btn,
+    #player-status .unequip-btn {
+        display: none !important;
+    }
+    
     /* 整體容器調整 */
     body {
         font-size: 14px;
