@@ -7,6 +7,8 @@ html {
     padding: 0;
     width: 100%;
     overflow-x: hidden;
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
 }
 
 body {
@@ -21,6 +23,7 @@ body {
     overflow-x: hidden;
     position: relative;
     min-height: 100vh;
+    overscroll-behavior-y: contain;
 }
 
 /* 莎草紙紋理效果 - 加強版 */
@@ -664,24 +667,17 @@ button[disabled] {
 }
 #status-panel .stat { font-weight:700; }
 
-/* 裝備行樣式 */
-.equip-row {
-    margin-top: 8px;
-    font-size: 0.9em;
-    position: relative;
-    z-index: 10;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
+/* 裝備標籤樣式 */
 .equip-label {
-    /* 裝備名稱文字 */
     display: block;
     pointer-events: none !important;
     margin-bottom: 2px;
-    margin-top: 4px;
+    margin-top: 8px;
+    font-size: 0.9em;
 }
-.equip-row button {
+
+/* 裝備按鈕基礎樣式 */
+.status-box-side button {
     font-size: 0.85em;
     padding: 4px 10px;
     margin-left: 4px;
@@ -1489,11 +1485,12 @@ button[disabled] {
         overflow-y: auto !important;
     }
     
-    .equip-row {
+    .equip-label {
         font-size: 0.88em;
+        margin-top: 6px;
     }
     
-    .equip-row button {
+    .status-box-side button {
         padding: 4px 8px;
         font-size: 0.88em;
         min-width: 45px;
