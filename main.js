@@ -3168,19 +3168,18 @@ function startAutoSpinLoop() {
 				// 目標位置計算：
 				// 桌面版和手機版統一使用 60px 符號高度
 				// 高亮框：桌面版 top: 30px (30-90px), 手機版 top: 0px (0-60px)
-				// 目標：讓符號的頂部對齊到高亮框的頂部
+				// 問題：從調試看手機版多偏移了30px，說明CSS的高亮框可能實際還在30px
+				// 解決：統一使用 30px 偏移，讓符號頂部對齊到高亮框頂部
 				
 				// 偵測是否為手機版（屏幕寬度 <= 600px）
 				const isMobile = window.innerWidth <= 600;
 				
-				// 桌面版：高亮框頂部在 30px，所以 strip 移動到 cycle × 420 + index × 60 - 30
-				//         這樣符號頂部會在 30px 位置，符號範圍 30-90px（正好在高亮框內）
-				// 手機版：高亮框頂部在 0px，所以 strip 移動到 cycle × 420 + index × 60 - 0
-				//         這樣符號頂部會在 0px 位置，符號範圍 0-60px（正好在高亮框內）
-				const highlightTop = isMobile ? 0 : 30;
-				const targetPos = targetCycle * singleBlock + symbolIndex * SYMBOL_HEIGHT - highlightTop;
+				// 統一邏輯：符號頂部對齊到高亮框頂部（30px）
+				// strip 移動到 cycle × 420 + index × 60 - 30
+				// 這樣符號範圍是 30-90px（在高亮框內）
+				const targetPos = targetCycle * singleBlock + symbolIndex * SYMBOL_HEIGHT - 30;
 				
-				console.log(`Reel ${index}: Target=${targetSymbol}, symbolIndex=${symbolIndex}, targetPos=${targetPos}px, mobile=${isMobile}`);
+				console.log(`Reel ${index}: Target=${targetSymbol}, symbolIndex=${symbolIndex}, targetPos=${targetPos}px, mobile=${isMobile}, screenWidth=${window.innerWidth}`);
 				
 				if (withAnimation) {
 					// 第一個輪軸：帶動畫

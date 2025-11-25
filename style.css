@@ -1351,9 +1351,9 @@ button[disabled] {
         font-size: 28px;
     }
     
-    /* 手機版高亮框：對齊到符號上方（0-60px區域）*/
+    /* 手機版高亮框：統一使用 30px，與桌面版一致，避免瀏覽器兼容問題 */
     .reel::after {
-        top: 0px;
+        top: 30px;
         height: 60px;
         border-width: 2px;
     }
