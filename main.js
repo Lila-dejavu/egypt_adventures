@@ -5166,7 +5166,22 @@ function startAutoSpinLoop() {
 		const item = ITEMS[Math.floor(Math.random() * ITEMS.length)];
 		const rarities = ['common', 'rare', 'excellent', 'epic', 'legendary'];
 		const rarity = rarities[Math.floor(Math.random() * rarities.length)];
-		const newItem = Object.assign({}, item, { rarity });
+
+		// 根據稀有度附加額外屬性
+		const bonusPool = QUALITY_BONUS[item.slot]?.[rarity] || [];
+		const extraAttributes = {};
+		if (bonusPool.length > 0) {
+			const bonusCount = rarity === 'rare' ? 2 : rarity === 'epic' ? 2 : 0; // 稀有和史詩有2個屬性
+			for (let i = 0; i < bonusCount; i++) {
+				const bonus = bonusPool[Math.floor(Math.random() * bonusPool.length)];
+				Object.assign(extraAttributes, bonus);
+			}
+		}
+
+		// 加入強化等級
+		const enhanceLevel = Math.floor(Math.random() * 10) + 1; // 隨機強化等級 1-10
+
+		const newItem = Object.assign({}, item, { rarity, enhanceLevel }, extraAttributes);
 		game.player.inventory.push(newItem);
 		showMessage(`🛠️ Debug: 獲得 ${game.formatItem(newItem)}`);
 	});
