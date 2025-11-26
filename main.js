@@ -887,6 +887,7 @@ function genEnemyName(type) {
 				const parts = [];
 				if (it.atk) parts.push(`攻+${it.atk}`);
 				if (it.def) parts.push(`防+${it.def}`);
+				if (it.enhanceLevel) parts.unshift(`強化+${it.enhanceLevel}`);
 				if (it.luck_gold) parts.push(`金運+${it.luck_gold}`);
 				if (it.luck_combat) parts.push(`戰運+${it.luck_combat}`);
 				if (it.max_hp_bonus) parts.push(`HP+${it.max_hp_bonus}`);
@@ -2471,10 +2472,13 @@ function genEnemyName(type) {
 				html += `
 					<div style="display: flex; justify-content: space-between; align-items: center; padding: 6px; background: #f8f8f8; border-radius: 4px; margin-bottom: 5px; border-left: 3px solid ${rarityColor};">
 						<div style="flex: 1; min-width: 0;">
-							<div style="font-weight: bold; font-size: 0.9em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${item.name}</div>
-							<div style="font-size: 0.75em; color: #666;">${item.rarity}</div>
+							<div style="font-weight: bold; font-size: 0.9em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${item.name}${item.enhanceLevel ? ' +' + item.enhanceLevel : ''}</div>
+							<div style="font-size: 0.75em; color: #666;">${item.rarity}${item.isPyramid ? ' 🔺' : ''}</div>
 						</div>
-						<button class="tp-sell-btn" data-idx="${idx}" data-price="${basePrice}" style="padding: 5px 10px; background: #e74c3c; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.85em; white-space: nowrap; margin-left: 6px;">賣出 ${basePrice}金</button>
+						<div style="display:flex; gap:6px; align-items:center;">
+							<button class="tp-enhance-btn" data-idx="${idx}" style="padding: 5px 10px; background: #f39c12; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.85em; white-space: nowrap;">強化</button>
+							<button class="tp-sell-btn" data-idx="${idx}" data-price="${basePrice}" style="padding: 5px 10px; background: #e74c3c; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.85em; white-space: nowrap;">賣出 ${basePrice}金</button>
+						</div>
 					</div>
 				`;
 			});
@@ -2495,6 +2499,47 @@ function genEnemyName(type) {
 						updateInventory();
 						this.updateStatus();
 					}
+				});
+			});
+
+			// 綁定強化按鈕
+			Array.from(invDiv.querySelectorAll('.tp-enhance-btn')).forEach(btn => {
+				btn.addEventListener('click', () => {
+					const idx = parseInt(btn.getAttribute('data-idx'));
+					const item = this.player.inventory[idx];
+					if (!item) return;
+					// 設定基礎屬性以便回復/重新計算
+					if (typeof item._enhance_base_atk === 'undefined') item._enhance_base_atk = item.atk || 0;
+					if (typeof item._enhance_base_def === 'undefined') item._enhance_base_def = item.def || 0;
+					const currentLevel = item.enhanceLevel || 0;
+					const targetLevel = currentLevel + 1;
+					// 計算消耗（隨等級成長）
+					const cost = Math.floor(100 * Math.pow(1.6, currentLevel));
+					if (this.player.gold < cost) { showMessage('❌ 金幣不足，無法強化。'); return; }
+					this.player.gold -= cost;
+					document.getElementById('tp-gold').textContent = this.player.gold;
+					// 成功機率：1~3 級必成功；4~12 降低（最小 5%）
+					let success = false;
+					if (targetLevel <= 3) success = true;
+					else {
+						const prob = Math.max(0.05, 1 - (targetLevel - 3) * 0.12);
+						success = Math.random() < prob;
+					}
+					const atkPer = 2; const defPer = 1;
+					if (success) {
+						item.enhanceLevel = targetLevel;
+						item.atk = (item._enhance_base_atk || 0) + item.enhanceLevel * atkPer;
+						item.def = (item._enhance_base_def || 0) + item.enhanceLevel * defPer;
+						showMessage(`✨ 強化成功！${item.name} 強化等級 +1（目前 +${item.enhanceLevel}）`);
+					} else {
+						// 失敗則減 1 等，但不低於 0
+						item.enhanceLevel = Math.max(0, currentLevel - 1);
+						item.atk = (item._enhance_base_atk || 0) + item.enhanceLevel * atkPer;
+						item.def = (item._enhance_base_def || 0) + item.enhanceLevel * defPer;
+						showMessage(`💥 強化失敗，${item.name} 強化等級 -1（目前 +${item.enhanceLevel}）`);
+					}
+					updateInventory();
+					this.updateStatus();
 				});
 			});
 		};
