@@ -517,6 +517,12 @@ document.addEventListener('DOMContentLoaded', function() {
 	const button = document.getElementById('submit-btn');
 	const spinBtn = document.getElementById('spin-btn');
 	const stopBtn = document.getElementById('stop-btn');
+
+	// 讀取並暴露版本號（從 index.html 的 #version-display）
+	const _versionEl = document.getElementById('version-display');
+	const APP_VERSION = _versionEl ? _versionEl.textContent.trim() : 'Version 1.0.0';
+	window.APP_VERSION = APP_VERSION; // 全域可取用
+	console.log('App Version:', APP_VERSION);
 	
 	// 初始化音樂系統
 	MusicSystem.init();
@@ -873,7 +879,7 @@ function genEnemyName(type) {
 		// 計算閃避機率
 		calculateDodgeChance(armorDodge) {
 			const dodgeChance = Math.min(0.5, 0.03 + 0.02 * this.player.luck_combat + armorDodge / 100); // 最多 50% 閃避
-			showMessage(`你閃避了敵人的自動普攻！(戰鬥幸運 ${this.player.luck_combat})`);
+			showMessage(`你閃避了敵人的自動攻擊！(戰鬥幸運 ${this.player.luck_combat})`);
 			// 成功閃避後消耗一些戰鬥幸運，避免永久累積
 			if (this.player.luck_combat && this.player.luck_combat > 0) {
 				this.player.luck_combat = Math.max(0, this.player.luck_combat - 1);
@@ -887,6 +893,7 @@ function genEnemyName(type) {
 				const parts = [];
 				if (it.atk) parts.push(`攻+${it.atk}`);
 				if (it.def) parts.push(`防+${it.def}`);
+				if (it.enhanceLevel) parts.unshift(`強化+${it.enhanceLevel}`);
 				if (it.luck_gold) parts.push(`金運+${it.luck_gold}`);
 				if (it.luck_combat) parts.push(`戰運+${it.luck_combat}`);
 				if (it.max_hp_bonus) parts.push(`HP+${it.max_hp_bonus}`);
@@ -1147,7 +1154,7 @@ function genEnemyName(type) {
 				const enemyPct = this.enemy && this.enemy.max_hp ? Math.max(0, Math.min(100, Math.floor((this.enemy.hp / this.enemy.max_hp) * 100))) : 0;
 				const enemyLabel = currentLanguage === 'zh-TW' ? '敵人' : currentLanguage === 'fr' ? 'Ennemi' : 'Enemy';
 				const noneLabel = currentLanguage === 'zh-TW' ? '無' : currentLanguage === 'fr' ? 'Aucun' : 'None';
-				const attackCountdown = currentLanguage === 'zh-TW' ? '普攻倒數' : currentLanguage === 'fr' ? 'Attaque dans' : 'Attack in';
+				const attackCountdown = currentLanguage === 'zh-TW' ? '攻擊倒數' : currentLanguage === 'fr' ? 'Attaque dans' : 'Attack in';
 				const strength = currentLanguage === 'zh-TW' ? '強度' : currentLanguage === 'fr' ? 'Force' : 'Strength';
 				
 				// 根據敵人類型選擇對應圖片
@@ -1232,11 +1239,11 @@ function genEnemyName(type) {
 			'caravan_rest': [t('hintCaravanRest'), t('hintLaughter'), t('hintCampfire'), t('hintFood')],
 			// 針對「空」事件使用具體描述文字（避免顯示『什麼都沒有』）
 			'empty': [
-				'前方只見無盡沙丘，風聲輕拂。',
-				'四周一片寧靜，遠處傳來微弱的風聲。',
-				'空曠的沙地，偶爾有鳥影掠過天空。',
-				'遠處地平線上有微弱光影，或許值得靠近查看。',
-				'沙面有稀疏腳印，顯示有人經過，但此處看似平靜。'
+				t('hintEmpty1'),
+				t('hintEmpty2'),
+				t('hintEmpty3'),
+				t('hintEmpty4'),
+				t('hintEmpty5')
 			]
 		};
 		
@@ -1267,9 +1274,9 @@ function genEnemyName(type) {
 			});
 			// 若過濾後沒有任何可用提示，使用具體備援提示（中文句子）
 			const finalPool = (filteredPool.length > 0) ? filteredPool : [
-				'前方平靜無驚，只有沙與風。',
-				'這一帶看似空曠，但仍需保持警覺。',
-				'沙丘連綿，看似平凡的一段路程。'
+				t('hintEmptyFallback1'),
+				t('hintEmptyFallback2'),
+				t('hintEmptyFallback3')
 			];
 			const hint = finalPool[Math.floor(Math.random() * finalPool.length)];
 			
@@ -1584,7 +1591,7 @@ function genEnemyName(type) {
 			const mf = document.getElementById('move-front'); if (mf) mf.disabled = true;
 			const ml = document.getElementById('move-left'); if (ml) ml.disabled = true;
 			const mr = document.getElementById('move-right'); if (mr) mr.disabled = true;
-			// 根據類型調整敵人血量與普攻力
+			// 根據類型調整敵人血量與攻擊力
 			// 金字塔內敵人隨地圖難度增強：HP x(3+難度*0.5), ATK x(2.5+難度*0.3), 強度x(1.5+難度*0.2)
 			// 非金字塔：按使用者要求提升強度（strength +0.5）與血量加倍（HP x2）
 			let hpMultiplier = this.inPyramid ? (3.0 + this.difficulty * 0.5) : 2.0;
@@ -1655,7 +1662,7 @@ function genEnemyName(type) {
 			}
 		}
 
-		// 敵人自動普攻
+		// 敵人自動攻擊
 		enemyAutoAttack() {
 			// 計算基本攻擊並降低基礎傷害（較適合新手）
 			const raw = this.enemy.baseAttack; // baseAttack 已依難度調整
@@ -1666,7 +1673,7 @@ function genEnemyName(type) {
 			const armorDodge = this.player.equipment.armor ? (this.player.equipment.armor.dodge_rate || 0) : 0;
 			const dodgeChance = Math.min(0.5, 0.03 + 0.02 * this.player.luck_combat + armorDodge / 100); // 最多 50% 閃避
 			if (Math.random() < dodgeChance) {
-				showMessage(`你閃避了敵人的自動普攻！(戰鬥幸運 ${this.player.luck_combat})`);
+				showMessage(`你閃避了敵人的自動攻擊！(戰鬥幸運 ${this.player.luck_combat})`);
 				// 成功閃避後消耗一些戰鬥幸運，避免永久累積
 				if (this.player.luck_combat && this.player.luck_combat > 0) {
 					this.player.luck_combat = Math.max(0, this.player.luck_combat - 1);
@@ -1677,7 +1684,7 @@ function genEnemyName(type) {
 				const mitigated = Math.max(0, dmg - this.player.shield);
 				this.player.shield -= consumedShield;
 				this.player.hp -= mitigated;
-				showMessage(`敵人自動普攻，造成 ${dmg} 傷害（護盾吸收 ${consumedShield}），玩家 HP -${mitigated}。`);
+				showMessage(`敵人自動攻擊，造成 ${dmg} 傷害（護盾吸收 ${consumedShield}），玩家 HP -${mitigated}。`);
 			}
 			// 重置攻擊倒數
 			this.enemy.turnsToAttack = 3;
@@ -2471,10 +2478,13 @@ function genEnemyName(type) {
 				html += `
 					<div style="display: flex; justify-content: space-between; align-items: center; padding: 6px; background: #f8f8f8; border-radius: 4px; margin-bottom: 5px; border-left: 3px solid ${rarityColor};">
 						<div style="flex: 1; min-width: 0;">
-							<div style="font-weight: bold; font-size: 0.9em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${item.name}</div>
-							<div style="font-size: 0.75em; color: #666;">${item.rarity}</div>
+							<div style="font-weight: bold; font-size: 0.9em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${item.name}${item.enhanceLevel ? ' +' + item.enhanceLevel : ''}</div>
+							<div style="font-size: 0.75em; color: #666;">${item.rarity}${item.isPyramid ? ' 🔺' : ''}</div>
 						</div>
-						<button class="tp-sell-btn" data-idx="${idx}" data-price="${basePrice}" style="padding: 5px 10px; background: #e74c3c; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.85em; white-space: nowrap; margin-left: 6px;">賣出 ${basePrice}金</button>
+						<div style="display:flex; gap:6px; align-items:center;">
+							<button class="tp-enhance-btn" data-idx="${idx}" style="padding: 5px 10px; background: #f39c12; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.85em; white-space: nowrap;">強化</button>
+							<button class="tp-sell-btn" data-idx="${idx}" data-price="${basePrice}" style="padding: 5px 10px; background: #e74c3c; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.85em; white-space: nowrap;">賣出 ${basePrice}金</button>
+						</div>
 					</div>
 				`;
 			});
@@ -2495,6 +2505,47 @@ function genEnemyName(type) {
 						updateInventory();
 						this.updateStatus();
 					}
+				});
+			});
+
+			// 綁定強化按鈕
+			Array.from(invDiv.querySelectorAll('.tp-enhance-btn')).forEach(btn => {
+				btn.addEventListener('click', () => {
+					const idx = parseInt(btn.getAttribute('data-idx'));
+					const item = this.player.inventory[idx];
+					if (!item) return;
+					// 設定基礎屬性以便回復/重新計算
+					if (typeof item._enhance_base_atk === 'undefined') item._enhance_base_atk = item.atk || 0;
+					if (typeof item._enhance_base_def === 'undefined') item._enhance_base_def = item.def || 0;
+					const currentLevel = item.enhanceLevel || 0;
+					const targetLevel = currentLevel + 1;
+					// 計算消耗（隨等級成長）
+					const cost = Math.floor(100 * Math.pow(1.6, currentLevel));
+					if (this.player.gold < cost) { showMessage('❌ 金幣不足，無法強化。'); return; }
+					this.player.gold -= cost;
+					document.getElementById('tp-gold').textContent = this.player.gold;
+					// 成功機率：1~3 級必成功；4~12 降低（最小 5%）
+					let success = false;
+					if (targetLevel <= 3) success = true;
+					else {
+						const prob = Math.max(0.05, 1 - (targetLevel - 3) * 0.12);
+						success = Math.random() < prob;
+					}
+					const atkPer = 2; const defPer = 1;
+					if (success) {
+						item.enhanceLevel = targetLevel;
+						item.atk = (item._enhance_base_atk || 0) + item.enhanceLevel * atkPer;
+						item.def = (item._enhance_base_def || 0) + item.enhanceLevel * defPer;
+						showMessage(`✨ 強化成功！${item.name} 強化等級 +1（目前 +${item.enhanceLevel}）`);
+					} else {
+						// 失敗則減 1 等，但不低於 0
+						item.enhanceLevel = Math.max(0, currentLevel - 1);
+						item.atk = (item._enhance_base_atk || 0) + item.enhanceLevel * atkPer;
+						item.def = (item._enhance_base_def || 0) + item.enhanceLevel * defPer;
+						showMessage(`💥 強化失敗，${item.name} 強化等級 -1（目前 +${item.enhanceLevel}）`);
+					}
+					updateInventory();
+					this.updateStatus();
 				});
 			});
 		};
@@ -2838,7 +2889,7 @@ function genEnemyName(type) {
 					// 敵人回合倒數（若敵人尚未死亡）
 					this.enemy.turnsToAttack -= 1;
 					if (this.enemy.turnsToAttack <= 0 && this.enemy.hp > 0) {
-						// 延遲觸發敵人普攻，讓插槽效果與訊息先完整呈現
+						// 延遲觸發敵人攻擊，讓插槽效果與訊息先完整呈現
 						setTimeout(() => {
 							// 檢查戰鬥仍在進行且敵人未死亡
 							if (this.inBattle && this.enemy.hp > 0) this.enemyAutoAttack();
