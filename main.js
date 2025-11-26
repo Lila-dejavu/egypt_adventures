@@ -689,7 +689,7 @@ const QUALITY_BONUS = {
 	weapon: {
 		// 武器額外屬性：暴擊率、連擊率、技能增幅
 		common: [], // 普通無額外屬性
-		rare: [ // 稀有：1個額外屬性
+		rare: [ // 稀有：2個額外屬性
 			{ crit_rate: 5 }, // +5% 暴擊率
 			{ crit_rate: 8 },
 			{ combo_rate: 8 }, // +8% 連擊維持率
@@ -707,7 +707,7 @@ const QUALITY_BONUS = {
 	},
 	armor: {
 		common: [],
-		rare: [ // 稀有：1個額外屬性
+		rare: [ // 稀有：2個額外屬性
 			{ max_hp_bonus: 15 }, // +15 最大生命
 			{ max_hp_bonus: 20 },
 			{ stamina_bonus: 10 }, // +10 最大體力
@@ -725,7 +725,7 @@ const QUALITY_BONUS = {
 	},
 	amulet: {
 		common: [],
-		rare: [ // 稀有：1個額外屬性
+		rare: [ // 稀有：2個額外屬性
 			{ luck_combat: 1 },
 			{ luck_gold: 1 },
 			{ max_hp_bonus: 15 },
