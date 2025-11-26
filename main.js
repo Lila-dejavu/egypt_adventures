@@ -5172,8 +5172,16 @@ function startAutoSpinLoop() {
 		const extraAttributes = {};
 		if (bonusPool.length > 0) {
 			const bonusCount = rarity === 'rare' ? 2 : rarity === 'epic' ? 2 : rarity === 'legendary' ? 4 : 0; // 傳說有4個屬性
+			const usedIndices = new Set();
 			for (let i = 0; i < bonusCount; i++) {
-				const bonus = bonusPool[Math.floor(Math.random() * bonusPool.length)];
+				let bonus;
+				do {
+					const randomIndex = Math.floor(Math.random() * bonusPool.length);
+					if (!usedIndices.has(randomIndex)) {
+						bonus = bonusPool[randomIndex];
+						usedIndices.add(randomIndex);
+					}
+				} while (!bonus);
 				Object.assign(extraAttributes, bonus);
 			}
 		}
