@@ -333,10 +333,13 @@ const BattleMixin = {
 				break;
 			}
 			case '💀': {
-				// Calculate base damage with enemy strength and other multipliers
-				const baseDmg = 10 * matchCount * tripleBonus;
-				const strengthMultiplier = this.enemy.strength || 1; // Default to 1 if strength is undefined
-				const adjustedDmg = Math.round(baseDmg * strengthMultiplier);
+				// Calculate damage based on enemy auto-attack formula
+                const baseAttack = this.enemy.baseAttack || 10; // Default base attack if undefined
+                const comboBonus = Math.max(0, this.consecutivePrimaryCount - 1) * 0.3; // 30% per combo
+                const adjustedDmg = Math.floor(baseAttack * (1 + comboBonus) * matchCount * tripleBonus);
+
+                // Log calculation details for debugging
+                console.log(`💀 Skull Symbol Damage: baseAttack=${baseAttack}, comboBonus=${comboBonus}, matchCount=${matchCount}, tripleBonus=${tripleBonus}, adjustedDmg=${adjustedDmg}`);
 
 				if (Math.random() < this._calcDodgeChance()) {
 					showMessage(t('dodgedSymbolAttack', { luck: this.player.luck_combat }));
