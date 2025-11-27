@@ -23,7 +23,25 @@ function genEnemyName(type, lang = typeof currentLanguage !== 'undefined' ? curr
 				adjectives: ['不朽','永恆','至高','無上','毀滅','末日','深淵','煉獄','天罰','滅世','弒神','破天','裂地','魔化','墮落'],
 				epithets: ['不死者','永生者','吞噬者','覺醒者','統治者','終結者','君王','暴君']
 			},
-			title: { monster: '敵人', elite: '精英', mini_boss: '小頭目' }
+			boss: {
+				prefixes: ['Amon-Ra','Set-Null','Osirion','Khamet','Pharok','Neferu','Tutmar','Ramesh','Khent','Apophis'],
+				suffixes: ['Le Destructeur','Le Souverain','Le Jugement','LAnnihilateur','Le Tyran','Le Seigneur','Le Faucheur','Le Dominant','Le Roy','Le Maître'],
+				adjectives: ['Sans-Fin','Tout-Puissant','Apocalyptique','Terminal','Absolu','Éternel','Fléau','Ténébreux','Ardent','Abyssal'],
+				epithets: ['Annihilation','Jugement','Domination','Destruction','Colère','Arrivée','Immortel','Silence']
+			},
+			boss: {
+				prefixes: ['Amon-Ra','Set-Null','Osirion','Khamet','Pharok','Neferu','Tutmar','Ramesh','Khent','Apophis'],
+				suffixes: ['The Destroyer','The Sovereign','The Judicator','The Annihilator','The Tyrant','The Lord','The Reaper','The Dominant','The King','The Master'],
+				adjectives: ['Endless','Almighty','Apocalyptic','Terminal','Absolute','Eternal','Harbinger','Silent','Blazing','Abyssal'],
+				epithets: ['Annihilation','Judgement','Domination','Destruction','Wrath','Arrival','Immortal','Silence']
+			},
+			boss: {
+				prefixes: ['阿蒙拉','塞特拉克','歐賽里','卡門','賽孚克斯','帕肯','努特卡','阿蒙特','赫利烏斯','泰拉克'],
+				suffixes: ['終焉者','主宰','審判者','滅世者','最終之王','巨靈','死神','暴君之主','王之怒','支配者'],
+				adjectives: ['無盡','全能','破滅之','終末','絕對','永劫','天啟','寂滅','炙焰','深淵'],
+				epithets: ['終焉','審判','統御','破壞','狂怒','降臨','不朽','寂滅']
+			},
+			title: { monster: '敵人', elite: '精英', mini_boss: '小頭目', boss: '頭目' }
 		},
 		'en': {
 			monster: {
@@ -44,7 +62,7 @@ function genEnemyName(type, lang = typeof currentLanguage !== 'undefined' ? curr
 				adjectives: ['Immortal','Eternal','Supreme','Ultimate','Doom','Apocalypse','Abyssal','Infernal','Divine Wrath','World-ender','Godslayer','Heaven-breaker','Earth-shatterer','Corrupted','Fallen'],
 				epithets: ['Undying','Everlasting','Devourer','Awakened','Sovereign','Ender','Monarch','Despot']
 			},
-			title: { monster: 'Enemy', elite: 'Elite', mini_boss: 'Mini-Boss' }
+			title: { monster: 'Enemy', elite: 'Elite', mini_boss: 'Mini-Boss', boss: 'Boss' }
 		},
 		'fr': {
 			monster: {
@@ -65,7 +83,7 @@ function genEnemyName(type, lang = typeof currentLanguage !== 'undefined' ? curr
 				adjectives: ['Immortel','Éternel','Suprême','Ultime','Fléau','Apocalypse','Abyssal','Infernal','Colère-divine','Fin-monde','Tueur-dieu','Briseur-ciel','Fracasseur-terre','Corrompu','Déchu'],
 				epithets: ['Immortel','Éternel','Dévoreur','Éveillé','Souverain','Finisseur','Monarque','Despote']
 			},
-			title: { monster: 'Ennemi', elite: 'Élite', mini_boss: 'Mini-boss' }
+			title: { monster: 'Ennemi', elite: 'Élite', mini_boss: 'Mini-boss', boss: 'Boss' }
 		}
 	};
 

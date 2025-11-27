@@ -38,6 +38,13 @@ const UIMixin = {
 				const rarityText = this._getRarityText(setBonus.rarity);
 				setBonusHtml = `<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 4px 8px; border-radius: 4px; color: white; font-size: 11px; margin: 4px 0;">⚡ ${setBonus.name} (${rarityText})</div>`;
 			}
+			
+			// Show active debuffs (e.g., 屍毒)
+			let debuffHtml = '';
+			if (this.player.debuffs && this.player.debuffs.corpse_poison) {
+				const cp = this.player.debuffs.corpse_poison;
+				debuffHtml = `<div style="margin-top:6px;color:#b03030;font-weight:bold;">💀 屍毒：剩餘 ${cp.turns} 回合（每回合 -${cp.dmg} HP）</div>`;
+			}
 
 			playerStatusEl.innerHTML = `
 				<div class="stat-label">${t('player')} Lv.${this.player.level}</div>
@@ -54,6 +61,7 @@ const UIMixin = {
 					<div>${t('luckGoldShort')}: ${this.player.luck_gold}</div>
 				</div>
 				${setBonusHtml}
+				${debuffHtml}
 				<div class="combo-row ${(this.inBattle && (this.consecutivePrimaryCount||0) > 1) ? 'combo-active' : ''}">Combo: ${comboText}</div>
 				<div class="equip-row">
 					<span class="equip-label">${t('weapon')}: ${this.player.equipment.weapon ? this.formatItem(this.player.equipment.weapon) : t('none')}</span>
@@ -87,7 +95,23 @@ const UIMixin = {
 			let enemyImage = '';
 			if (this.inBattle && this.enemy.type) {
 				const imagePath = ENEMY_IMAGE_MAP[this.enemy.type] || ENEMY_IMAGE_MAP.default;
-				enemyImage = `<div style="text-align: center; margin-top: 5px;"><img src="${imagePath}" alt="${this.enemy.name || ''}" style="max-width: 100%; width: 120px; height: auto; opacity: 0.9; mix-blend-mode: multiply;"></div>`;
+				// Use larger width for boss images
+				// For boss, render as a blended background container so the art fuses with panel
+				if (this.enemy.type === 'boss') {
+					// Use background-image with overlay and blend to integrate into UI theme
+					enemyImage = `
+						<div style="display:flex;justify-content:center;align-items:center;margin-top:6px;">
+							<div style="width:100%;max-width:320px;height:220px;position:relative;border-radius:8px;overflow:hidden;box-shadow:0 8px 20px rgba(0,0,0,0.15);background-color:rgba(217,180,120,0.85);background-image: url('${imagePath}');background-size: cover;background-position:center;background-repeat:no-repeat;mix-blend-mode:multiply;">
+								<!-- subtle overlay to keep text readable -->
+								<div style=\"position:absolute;inset:0;background:linear-gradient(180deg, rgba(255,255,255,0.0) 0%, rgba(0,0,0,0.15) 100%);mix-blend-mode:overlay;\"></div>
+								<!-- foreground miniature art for clarity -->
+								<img src="${imagePath}" alt="${this.enemy.name || ''}" style="position:absolute;right:12px;bottom:8px;width:125px;height:auto;opacity:0.98;filter:drop-shadow(0 6px 12px rgba(0,0,0,0.35));">
+							</div>
+						</div>`;
+				} else {
+					const imageWidth = 120;
+					enemyImage = `<div style="text-align: center; margin-top: 5px;"><img src="${imagePath}" alt="${this.enemy.name || ''}" style="max-width: 100%; width: ${imageWidth}px; height: auto; opacity: 0.9;"></div>`;
+				}
 			}
 
 			enemyStatusEl.innerHTML = `

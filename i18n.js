@@ -127,6 +127,7 @@ const TRANSLATIONS = {
 		eventName_monster: '普通敵人',
 		eventName_elite: '精英敵人',
 		eventName_mini_boss: '小頭目',
+		eventName_boss: '頭目',
 		eventName_merchant: '商人',
 		eventName_black_market: '黑市',
 		eventName_oasis: '綠洲',
@@ -579,6 +580,7 @@ const TRANSLATIONS = {
 		eventName_monster: 'Normal Enemy',
 		eventName_elite: 'Elite Enemy',
 		eventName_mini_boss: 'Mini Boss',
+		eventName_boss: 'Boss',
 		eventName_merchant: 'Merchant',
 		eventName_black_market: 'Black Market',
 		eventName_oasis: 'Oasis',
@@ -1031,6 +1033,7 @@ const TRANSLATIONS = {
 		eventName_monster: 'Ennemi Normal',
 		eventName_elite: 'Ennemi Élite',
 		eventName_mini_boss: 'Mini Boss',
+		eventName_boss: 'Boss',
 		eventName_merchant: 'Marchand',
 		eventName_black_market: 'Marché Noir',
 		eventName_oasis: 'Oasis',
@@ -1383,8 +1386,9 @@ function changeLanguage(lang) {
 
 // 更新UI語言
 function updateUILanguage() {
-	// 更新標題
-	document.querySelector('h1').textContent = t('title');
+	// 更新標題（若不存在則略過）
+	const titleEl = document.querySelector('h1');
+	if (titleEl) titleEl.textContent = t('title');
 	
 	// 使用 data-i18n 屬性自動更新所有元素
 	document.querySelectorAll('[data-i18n]').forEach(el => {

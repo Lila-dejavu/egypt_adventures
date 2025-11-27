@@ -20,6 +20,9 @@ const Config = {
         ELITE: { hp: 150, hpPerDiff: 20, atk: 15, atkPerDiff: 5, strength: 1.6 },
         MINI_BOSS: { hp: 250, hpPerDiff: 40, atk: 25, atkPerDiff: 8, strength: 2.4 },
 
+        // Boss stats for map-final encounters
+        BOSS: { hp: 800, hpPerDiff: 120, atk: 60, atkPerDiff: 15, strength: 4.0 },
+
         // Mini-boss pyramid reduction
         MINI_BOSS_PYRAMID_REDUCTION: 0.8,
 

@@ -21,18 +21,23 @@ let _game = null;
  * @param {Object} game - Game instance reference
  */
 function initSlotMachine(reels, spinBtn, stopBtn, game) {
-	_reels = reels;
+	_reels = reels || [];
 	_spinBtn = spinBtn;
 	_stopBtn = stopBtn;
 	_game = game;
-	_reelState = reels.map(() => ({ interval: null, spinning: false }));
+	_reelState = _reels.map(() => ({ interval: null, spinning: false }));
 }
 
 /**
  * Populate reels with symbol strips
  */
 function populateReels() {
+	if (!_reels || !_reels.length) return;
+
 	for (let r = 0; r < _reels.length; r++) {
+		const reel = _reels[r];
+		if (!reel) continue;
+
 		const strip = document.createElement('div');
 		strip.className = 'strip';
 
@@ -47,8 +52,8 @@ function populateReels() {
 			}
 		}
 
-		_reels[r].innerHTML = '';
-		_reels[r].appendChild(strip);
+		reel.innerHTML = '';
+		reel.appendChild(strip);
 
 		// Initial position: start from middle group
 		const symbolHeight = Utils.getSymbolHeight();
@@ -64,7 +69,12 @@ function populateReels() {
 function startSpin() {
 	const symbolHeight = Utils.getSymbolHeight();
 
+	if (!_reels || !_reels.length) return;
+
 	for (let i = 0; i < _reels.length; i++) {
+		if (!_reels[i]) continue;
+		if (!_reelState[i]) _reelState[i] = { interval: null, spinning: false };
+
 		const strip = _reels[i].querySelector('.strip');
 		if (!strip) continue;
 
@@ -113,9 +123,16 @@ function stopSequentially() {
 			// Randomly select target symbol
 			const targetSymbol = Utils.pickWeightedSymbol();
 			targetSymbols[index] = targetSymbol;
-			const strip = _reels[index].querySelector('.strip');
+			const reel = _reels[index];
+			if (!reel) {
+				results[index] = null;
+				resolve();
+				return;
+			}
+			const strip = reel.querySelector('.strip');
 
 			// Stop spinning loop
+			if (!_reelState[index]) _reelState[index] = { interval: null, spinning: false };
 			_reelState[index].spinning = false;
 			if (_reelState[index].raf) cancelAnimationFrame(_reelState[index].raf);
 
@@ -203,7 +220,9 @@ function stopSequentially() {
 		let positionInfo = '';
 
 		for (let i = 0; i < 3; i++) {
-			const strip = _reels[i].querySelector('.strip');
+			const reel = (_reels && _reels[i]) ? _reels[i] : null;
+			if (!reel) continue;
+			const strip = reel.querySelector('.strip');
 			if (strip) {
 				// Get actual computed transform value
 				const comp = window.getComputedStyle(strip).transform || strip.style.transform || '';

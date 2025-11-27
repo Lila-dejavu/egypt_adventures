@@ -628,7 +628,7 @@ button[disabled] {
     bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
-    width: 150px;
+    width: 125px;
     height: 65px;
     background: url('images/backgrounds/guardian_deity.jpg') no-repeat;
     background-size: 175px auto;
@@ -647,7 +647,7 @@ button[disabled] {
     bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
-    width: 150px;
+    width: 125px;
     height: 65px;
     background: url('images/backgrounds/war_god.jpg') no-repeat;
     background-size: 175px auto;

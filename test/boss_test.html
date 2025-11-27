@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boss Test - Egypt Adventures</title>
+    <link rel="stylesheet" href="../style.css">
+    <!-- Ensure relative resource paths resolve to project root when opened from /test/ -->
+    <base href="../">
+</head>
+<body>
+    <h2>Boss Test Harness</h2>
+    <p>此頁面會自動啟動遊戲，將當前地圖目標設為 3 步，並自動移動觸發 Boss。</p>
+
+    <!-- Minimal slot-machine DOM for test harness -->
+    <div id="slot-machine-test" style="margin:12px 0;">
+        <div id="reel-0" class="reel" style="width:80px;height:120px;display:inline-block;border:1px solid #ccc;margin-right:6px;"></div>
+        <div id="reel-1" class="reel" style="width:80px;height:120px;display:inline-block;border:1px solid #ccc;margin-right:6px;"></div>
+        <div id="reel-2" class="reel" style="width:80px;height:120px;display:inline-block;border:1px solid #ccc;"></div>
+    </div>
+
+    <!-- Slot controls for manual testing -->
+    <div id="slot-controls" style="margin:8px 0; display:flex; gap:8px; align-items:center;">
+        <button id="spin-btn" style="padding:8px 12px; background:#2ecc71;border:none;border-radius:6px;color:white;cursor:pointer;">Spin</button>
+        <button id="stop-btn" style="padding:8px 12px; background:#e74c3c;border:none;border-radius:6px;color:white;cursor:pointer;">Stop</button>
+        <button id="auto-spin-btn" style="padding:8px 12px; background:#3498db;border:none;border-radius:6px;color:white;cursor:pointer;">Auto Spin</button>
+        <button id="flee-btn" style="padding:8px 12px; background:#95a5a6;border:none;border-radius:6px;color:white;cursor:pointer;">Flee</button>
+    </div>
+
+    <!-- Minimal status panels so updateStatus can render enemy (boss) -->
+    <div id="status-panels" style="display:flex;gap:12px;align-items:flex-start;">
+        <div id="player-status" style="width:280px;min-height:140px;background:#fff;padding:8px;border:1px solid #ddd;border-radius:6px;font-size:13px;color:#333;"></div>
+        <div id="enemy-status" style="width:320px;min-height:140px;background:#fff;padding:8px;border:1px solid #ddd;border-radius:6px;font-size:13px;color:#333;"></div>
+        <div id="status-summary" style="flex:1;min-height:140px;background:#fff;padding:8px;border:1px solid #ddd;border-radius:6px;font-size:13px;color:#333;"></div>
+    </div>
+
+    <script>
+        // Global error collection to help diagnose initialization failures
+        window.__initErrors = [];
+        window.addEventListener('error', function (e) {
+            try {
+                window.__initErrors.push({ type: 'error', message: e.message, filename: e.filename, lineno: e.lineno, colno: e.colno });
+                console.error('Captured error:', e.message, e.filename, e.lineno, e.colno);
+            } catch (ex) { console.error('Error handler failure', ex); }
+        });
+        window.addEventListener('unhandledrejection', function (ev) {
+            try {
+                const reason = ev.reason && ev.reason.message ? ev.reason.message : String(ev.reason);
+                window.__initErrors.push({ type: 'unhandledrejection', reason });
+                console.error('Captured unhandledrejection:', reason);
+            } catch (ex) { console.error('Rejection handler failure', ex); }
+        });
+    </script>
+
+    <!-- include main game files from project root -->
+    <script src="../i18n.js"></script>
+    <script src="../js/ui/DOMRefs.js"></script>
+    <script src="../js/core/App.js"></script>
+    <script src="../js/core/GameState.js"></script>
+    <script src="../js/core/Config.js"></script>
+    <script src="../js/data.js"></script>
+    <script src="../js/core/Utils.js"></script>
+    <script src="../js/audio/trackData.js"></script>
+    <script src="../js/music.js"></script>
+    <script src="../js/enemyNames.js"></script>
+    <script src="../js/events/helpers.js"></script>
+    <script src="../js/events/registry.js"></script>
+    <script src="../js/events/travel.js"></script>
+    <script src="../js/events/commerce.js"></script>
+    <script src="../js/events/exploration.js"></script>
+    <script src="../js/events/story.js"></script>
+    <script src="../js/events/choices.js"></script>
+    <script src="../js/events/branchHandlers.js"></script>
+    <script src="../js/equipment.js"></script>
+    <script src="../js/ui.js"></script>
+    <script src="../js/combat/EnemyGenerator.js"></script>
+    <script src="../js/battle.js"></script>
+    <script src="../js/shops.js"></script>
+    <script src="../js/slotMachine.js"></script>
+    <script src="../js/mixins/PersistenceMixin.js"></script>
+    <script src="../js/mixins/DungeonMixin.js"></script>
+    <script src="../js/mixins/NavigationMixin.js"></script>
+    <script src="../js/mixins/XPMixin.js"></script>
+    <script src="../js/mixins/DebugMixin.js"></script>
+    <script src="../main.js"></script>
+
+    <script>
+        // Wait for Game to initialize (longer timeout) and provide diagnostics on failure
+        function waitForGame(cb, timeout = 10000) {
+            const start = Date.now();
+            (function loop() {
+                if (window.game) return cb(null, window.game);
+                if (Date.now() - start > timeout) {
+                    // Collect diagnostic info to help debugging
+                    const diag = {
+                        hasApp: typeof App !== 'undefined',
+                        hasDOMRefs: typeof DOMRefs !== 'undefined',
+                        hasGameClass: (typeof Game !== 'undefined'),
+                        scriptsLoaded: Array.from(document.scripts).map(s => s.src).filter(Boolean),
+                        errors: window.__initErrors || null
+                    };
+                    return cb(Object.assign(new Error('game did not initialize in time'), { diag }));
+                }
+                setTimeout(loop, 50);
+            })();
+        }
+
+        waitForGame((err, game) => {
+            if (err) {
+                console.error('Game init failed:', err);
+                // Show diagnostics on page for easier copy/paste
+                const pre = document.createElement('pre');
+                pre.style.background = '#fff3f3';
+                pre.style.border = '1px solid #d33';
+                pre.style.padding = '12px';
+                pre.style.whiteSpace = 'pre-wrap';
+                pre.textContent = 'Game init failed. Diagnostics:\n' + JSON.stringify(err.diag || { message: err.message }, null, 2);
+                document.body.appendChild(pre);
+                alert('Game init failed');
+                return;
+            }
+            console.log('Game initialized for boss test:', game);
+
+            // Shorten the map so boss will appear quickly
+            game.map_goal = 3;
+            game.map_steps = 2; // one step away from goal
+            game.updateStatus();
+            game.generateDirectionHints();
+
+            // Simulate moving into the final tile which should spawn boss
+            setTimeout(() => {
+                console.log('Simulating move to final tile -> should spawn boss');
+                game.moveStep('前');
+            }, 500);
+        });
+    </script>
+</body>
+</html>

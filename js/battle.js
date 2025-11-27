@@ -61,6 +61,23 @@ const BattleMixin = {
 		try { stopAutoSpinLoop(); } catch(e) {}
 		showMessage(`${t('encounterEnemy')} ${type}，${t('enterBattle')}`);
 
+		// If any shop/trading panels are open (caravan/trading post/black market), close them
+		try {
+			const tp = document.getElementById('trading-post-panel');
+			if (tp && tp.parentNode) tp.parentNode.removeChild(tp);
+			const bm = DOMRefs.blackmarketPanel;
+			if (bm && bm.style) bm.style.display = 'none';
+			this.inShop = false;
+
+			// Close generic encounter/popup panels that might block battle UI
+			const enc = document.getElementById('encounter-choice-panel');
+			if (enc && enc.parentNode) enc.parentNode.removeChild(enc);
+			const pyr = document.getElementById('pyramid-choice-panel');
+			if (pyr && pyr.parentNode) pyr.parentNode.removeChild(pyr);
+			const dbg = document.getElementById('debug-panel');
+			if (dbg && dbg.parentNode) dbg.parentNode.removeChild(dbg);
+		} catch(e) { /* non-fatal */ }
+
 		// Set battle state and enemy attributes
 		this.inBattle = true;
 
@@ -71,8 +88,9 @@ const BattleMixin = {
 
 		// Store enemy type (for displaying corresponding image)
 		this.enemy.type = type;
-		// Generate enemy name
-		this.enemy.name = genEnemyName(type);
+		// Generate enemy name: use dedicated 'boss' name pool for true boss
+		const nameType = (type === 'boss') ? 'boss' : type;
+		this.enemy.name = genEnemyName(nameType);
 		showMessage(`${t('encounterEnemyName')}${this.enemy.name}`);
 
 		// Disable movement buttons during battle
@@ -93,8 +111,9 @@ const BattleMixin = {
 			? (B.STRENGTH_MULT.pyramid + this.difficulty * B.STRENGTH_SCALE_PER_DIFF)
 			: B.STRENGTH_MULT.normal;
 
-		// Get enemy type base stats from Config
-		const stats = type === 'elite' ? B.ELITE
+		// Get enemy type base stats from Config (support boss)
+		const stats = type === 'boss' ? B.BOSS
+			: type === 'elite' ? B.ELITE
 			: type === 'mini_boss' ? B.MINI_BOSS
 			: B.MONSTER;
 
@@ -198,6 +217,34 @@ const BattleMixin = {
 		// Reset attack countdown
 		this.enemy.turnsToAttack = 3;
 		this.updateStatus();
+
+		// Boss special: 屍毒蔓延 - chance to infect player with corpse poison
+		try {
+			if (this.enemy.type === 'boss') {
+				const chance = 0.28; // 28% chance on enemy auto-attack
+					if (Math.random() < chance) {
+						// apply if not already poisoned
+						this.player.debuffs = this.player.debuffs || {};
+						if (!this.player.debuffs.corpse_poison) {
+							// 有機會被戰鬥幸運閃避（會消耗一點幸運）
+							if (Math.random() < this._calcDodgeChance()) {
+								showMessage('🎲 戰鬥幸運發揮，避免屍毒！');
+								if (this.player.luck_combat > 0) {
+									this.player.luck_combat = Math.max(0, this.player.luck_combat - 1);
+									showMessage(t('luckConsumed', { remaining: this.player.luck_combat }));
+								}
+							} else {
+								// 每回合失血隨難度提高：基礎 60，難度每級額外 +20
+								const perTick = Math.floor(60 + this.difficulty * 20);
+								this.player.debuffs.corpse_poison = { turns: 3, dmg: perTick };
+								showMessage(`💀 屍毒蔓延！每回合失血 ${perTick}（持續 3 回合）`);
+								// Update status to show effect
+								this.updateStatus();
+							}
+						}
+					}
+			}
+		} catch(e) { console.error('Failed to apply boss corpse poison', e); }
 	},
 
 	/**
@@ -209,6 +256,9 @@ const BattleMixin = {
 		if (!this.inBattle) {
 			return;
 		}
+
+		// Apply any active debuffs on player at the start of their turn (e.g., 屍毒)
+		try { this._processDebuffs(); } catch(e) { console.error('Debuff processing failed', e); }
 
 		// Use leftmost slot (results[0]) as primary symbol, only count consecutive same symbols from left
 		const primary = results[0];
@@ -394,7 +444,10 @@ const BattleMixin = {
 
 		// Enemy type reward multiplier (elite x2, mini-boss x3)
 		let enemyTypeMultiplier = 1;
-		if (this.enemy.strength >= 2.4) { // mini_boss
+		// Boss has very large multiplier
+		if (this.enemy.strength >= 3.6) { // boss
+			enemyTypeMultiplier = 5;
+		} else if (this.enemy.strength >= 2.4) { // mini_boss
 			enemyTypeMultiplier = 3;
 		} else if (this.enemy.strength >= 1.6) { // elite
 			enemyTypeMultiplier = 2;
@@ -434,6 +487,31 @@ const BattleMixin = {
 	},
 
 	/**
+	 * Process active debuffs on player (called at start of player's turn)
+	 * Applies damage-over-time effects and decrements counters
+	 * @private
+	 */
+	_processDebuffs() {
+		if (!this.player || !this.player.debuffs) return;
+		const d = this.player.debuffs;
+		// Corpse poison
+		if (d.corpse_poison) {
+			const info = d.corpse_poison;
+			if (info.turns > 0) {
+				this.player.hp = Math.max(0, this.player.hp - info.dmg);
+				showMessage(`💀 屍毒：受到 ${info.dmg} 點傷害（剩餘 ${info.turns} 回合）`);
+				info.turns -= 1;
+				if (info.turns <= 0) {
+					delete d.corpse_poison;
+					showMessage('🟢 屍毒已消失');
+				}
+				// Check if player died from DoT
+				this._checkPlayerDeath();
+			}
+		}
+	},
+
+	/**
 	 * Handle loot drops after victory
 	 * @private
 	 */
@@ -457,6 +535,21 @@ const BattleMixin = {
 			}
 		} else {
 			// Normal map drops (uses pickWeightedRarity from EnemyGenerator.js)
+			// Boss drops (very generous)
+			if (enemyTypeMultiplier === 5) {
+				const dropCount = 2 + Math.floor(Math.random() * 3); // 2-4 items
+				showMessage(`👑 終極頭目掉落 ${dropCount} 件裝備！`);
+				for (let i = 0; i < dropCount; i++) {
+					// Favor high rarities
+					const weights = [0,5,10,40,45];
+					const rarity = Utils.pickWeightedRarity(weights);
+					const baseItem = ITEMS[Math.floor(Math.random() * ITEMS.length)];
+					dropped = cloneItem(baseItem, rarity);
+					this.player.inventory.push(dropped);
+					showMessage(`  獲得 ${this.formatItem(dropped)}`);
+				}
+				return;
+			}
 			if (enemyTypeMultiplier === 3) { // mini_boss
 				const weights = [10,50,10,25,5];
 				const dropCount = 1 + Math.floor(Math.random() * 2);

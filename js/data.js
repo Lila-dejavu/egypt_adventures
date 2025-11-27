@@ -29,6 +29,7 @@ const ENEMY_IMAGE_MAP = {
 	monster: 'images/enemies/monster.png',
 	elite: 'images/enemies/elite.png',
 	mini_boss: 'images/enemies/mini_boss.png',
+	boss: 'images/enemies/boss.png',
 	default: 'images/enemies/monster.png'
 };
 

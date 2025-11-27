@@ -271,7 +271,8 @@ const NavigationMixin = {
 			if (this.inPyramid && this.pyramidSteps >= this.pyramidMaxSteps) {
 				this.exitPyramid();
 			} else if (!this.inPyramid && this.map_steps >= this.map_goal) {
-				this.nextMap();
+				// Reached the final tile of the map: spawn a map Boss encounter
+				this.battle('boss');
 			}
 		}
 

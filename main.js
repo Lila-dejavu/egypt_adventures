@@ -33,8 +33,8 @@ document.addEventListener('DOMContentLoaded', function() {
 		languageSelect.addEventListener('change', function() {
 			changeLanguage(this.value);
 			if (window.game) {
-				// 清空遊戲輸出區域
-				output.innerHTML = '';
+				// 清空遊戲輸出區域（若存在）
+				if (output) output.innerHTML = '';
 				// 重新生成方向提示以更新語言
 				game.generateDirectionHints();
 				// 更新玩家和敵人狀態顯示
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	updateUILanguage();
 
 	// 初始不允許旋轉，直到玩家選擇移動方向
-	spinBtn.disabled = true;
+	if (spinBtn) spinBtn.disabled = true;
 	const reels = DOMRefs.reels;
 
 	// Early slot machine module initialization (before populateReels)
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	// genEnemyName 已移至 js/enemyNames.js
 
 	// populateReels moved to js/slotMachine.js - module initialized above
-	populateReels();
+	if (typeof populateReels === 'function' && reels) populateReels();
 
 	// 簡單遊戲狀態（玩家與敵人）
 	class Game {
@@ -152,33 +152,39 @@ document.addEventListener('DOMContentLoaded', function() {
 	// Slot machine functions are provided by js/slotMachine.js module
 	// (startSpin, stopSequentially, stopAutoSpinLoop, startAutoSpinLoop, toggleAutoSpin)
 
-	// Slot button event listeners
-	spinBtn.addEventListener('click', ()=>{
-		if (!game.inBattle) {
-			showMessage('目前不在戰鬥中，無法使用旋轉。');
-			return;
-		}
-		spinBtn.disabled = true;
-		stopBtn.disabled = false;
-		showMessage('開始旋轉...');
-		startSpin();
-	});
+	// Slot button event listeners (guard if elements exist)
+	if (spinBtn) {
+		spinBtn.addEventListener('click', ()=>{
+			if (!game.inBattle) {
+				showMessage('目前不在戰鬥中，無法使用旋轉。');
+				return;
+			}
+			if (spinBtn) spinBtn.disabled = true;
+			if (stopBtn) stopBtn.disabled = false;
+			showMessage('開始旋轉...');
+			startSpin();
+		});
+	}
 
-	stopBtn.addEventListener('click', ()=>{
-		stopSequentially();
-	});
+	if (stopBtn) {
+		stopBtn.addEventListener('click', ()=>{
+			stopSequentially();
+		});
+	}
 
 	// 簡單的輸入處理（保留用戶原本的指令輸入框功能）
-	button.addEventListener('click', function() {
-		const cmd = input.value.trim();
-		if (!cmd) { showMessage('請輸入指令。'); return; }
-		showMessage(`你輸入了：${cmd}`);
-		input.value = '';
-	});
+	if (button && input) {
+		button.addEventListener('click', function() {
+			const cmd = (input.value || '').trim();
+			if (!cmd) { showMessage('請輸入指令。'); return; }
+			showMessage(`你輸入了：${cmd}`);
+			input.value = '';
+		});
 
-	input.addEventListener('keydown', function(e) {
-		if (e.key === 'Enter') button.click();
-	});
+		input.addEventListener('keydown', function(e) {
+			if (e.key === 'Enter') button.click();
+		});
+	}
 
 	// Movement buttons (using DOMRefs)
 	if (DOMRefs.moveFront) DOMRefs.moveFront.addEventListener('click', ()=> { if (game.inBattle) { showMessage('目前在戰鬥中，無法移動。'); return; } game.moveStep('前'); });
