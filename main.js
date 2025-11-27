@@ -1276,11 +1276,11 @@ function demoEnemyNames(lang = typeof currentLanguage !== 'undefined' ? currentL
                 let enemyImage = '';
                 if (this.inBattle && this.enemy.type) {
                     if (this.enemy.type === 'monster') {
-                        enemyImage = '<div style="text-align: center; margin-top: 5px;"><img src="m1.png" alt="普通敵人" style="max-width: 100%; width: 120px; height: auto; opacity: 0.9; mix-blend-mode: multiply;"></div>';
+                        enemyImage = '<div style="text-align: center; margin-top: 5px;"><img src="images/enemies/monster.png" alt="普通敵人" style="max-width: 100%; width: 120px; height: auto; opacity: 0.9; mix-blend-mode: multiply;"></div>';
                     } else if (this.enemy.type === 'elite') {
-                        enemyImage = '<div style="text-align: center; margin-top: 5px;"><img src="m3.png" alt="菁英敵人" style="max-width: 100%; width: 120px; height: auto; opacity: 0.9; mix-blend-mode: multiply;"></div>';
+                        enemyImage = '<div style="text-align: center; margin-top: 5px;"><img src="images/enemies/elite.png" alt="菁英敵人" style="max-width: 100%; width: 120px; height: auto; opacity: 0.9; mix-blend-mode: multiply;"></div>';
                     } else if (this.enemy.type === 'mini_boss') {
-                        enemyImage = '<div style="text-align: center; margin-top: 5px;"><img src="m4.png" alt="小頭目" style="max-width: 100%; width: 120px; height: auto; opacity: 0.9; mix-blend-mode: multiply;"></div>';
+                        enemyImage = '<div style="text-align: center; margin-top: 5px;"><img src="images/enemies/mini_boss.png" alt="小頭目" style="max-width: 100%; width: 120px; height: auto; opacity: 0.9; mix-blend-mode: multiply;"></div>';
                     }
                 }				enemyStatusEl.innerHTML = `
 					<div class="stat-label">${enemyLabel}</div>
