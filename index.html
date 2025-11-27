@@ -86,6 +86,38 @@
         <button id="submit-btn" data-i18n="submit" type="button">送出</button>
     </div>
     <script src="i18n.js"></script>
-    <script src="main.js?v=20251125-16"></script>
+    <!-- Core modules -->
+    <script src="js/ui/DOMRefs.js"></script>
+    <script src="js/core/App.js"></script>
+    <script src="js/core/GameState.js"></script>
+    <script src="js/core/Config.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/core/Utils.js"></script>
+    <script src="js/audio/trackData.js"></script>
+    <script src="js/music.js"></script>
+    <script src="js/enemyNames.js"></script>
+    <!-- Event system - organized by domain -->
+    <script src="js/events/helpers.js"></script>
+    <script src="js/events/registry.js"></script>
+    <script src="js/events/travel.js"></script>
+    <script src="js/events/commerce.js"></script>
+    <script src="js/events/exploration.js"></script>
+    <script src="js/events/story.js"></script>
+    <script src="js/events/choices.js"></script>
+    <script src="js/events/branchHandlers.js"></script>
+    <!-- Game modules -->
+    <script src="js/equipment.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/combat/EnemyGenerator.js"></script>
+    <script src="js/battle.js"></script>
+    <script src="js/shops.js"></script>
+    <script src="js/slotMachine.js"></script>
+    <!-- Mixins -->
+    <script src="js/mixins/PersistenceMixin.js"></script>
+    <script src="js/mixins/DungeonMixin.js"></script>
+    <script src="js/mixins/NavigationMixin.js"></script>
+    <script src="js/mixins/XPMixin.js"></script>
+    <script src="js/mixins/DebugMixin.js"></script>
+    <script src="main.js?v=20251127-04"></script>
 </body>
 </html>

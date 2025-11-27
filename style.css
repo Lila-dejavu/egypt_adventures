@@ -621,7 +621,7 @@ button[disabled] {
         linear-gradient(180deg, #faf5eb 0%, #f5ead6 50%, #f0dfc8 100%) !important;
 }
 
-/* 角色資訊下方 - 守護神祇（1.jpg） */
+/* 角色資訊下方 - 守護神祇 (guardian_deity.jpg) */
 #player-status::after {
     content: '';
     position: absolute;
@@ -630,7 +630,7 @@ button[disabled] {
     transform: translateX(-50%);
     width: 150px;
     height: 65px;
-    background: url('1.jpg') no-repeat;
+    background: url('images/backgrounds/guardian_deity.jpg') no-repeat;
     background-size: 175px auto;
     background-position: center center;
     opacity: 0.8;
@@ -640,7 +640,7 @@ button[disabled] {
     filter: contrast(1.1) brightness(1.05);
 }
 
-/* 敵人資訊下方 - 戰神/死神（2.jpg） */
+/* 敵人資訊下方 - 戰神/死神 (war_god.jpg) */
 #enemy-status::after {
     content: '';
     position: absolute;
@@ -649,7 +649,7 @@ button[disabled] {
     transform: translateX(-50%);
     width: 150px;
     height: 65px;
-    background: url('2.jpg') no-repeat;
+    background: url('images/backgrounds/war_god.jpg') no-repeat;
     background-size: 175px auto;
     background-position: center center;
     opacity: 0.8;

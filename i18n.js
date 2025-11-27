@@ -122,7 +122,31 @@ const TRANSLATIONS = {
 		hintOnlyDesert: '只有沙漠',
 		hintPeaceful: '風平浪靜',
 		hintSilent: '寂靜無聲',
-		
+
+		// Compass event names (for compass item effect)
+		eventName_monster: '普通敵人',
+		eventName_elite: '精英敵人',
+		eventName_mini_boss: '小頭目',
+		eventName_merchant: '商人',
+		eventName_black_market: '黑市',
+		eventName_oasis: '綠洲',
+		eventName_sandstorm: '沙塵暴',
+		eventName_pyramid: '金字塔',
+		eventName_buried_treasure: '寶藏',
+		eventName_dead_traveler: '旅者遺體',
+		eventName_ancient_shrine: '神殿',
+		eventName_caravan_rest: '驛站',
+		eventName_lost_merchant: '迷失商隊',
+		eventName_cursed_shrine: '詛咒神殿',
+		eventName_bandit_ambush: '強盜',
+		eventName_ancient_puzzle: '古老謎題',
+		eventName_desert_oasis: '沙漠綠洲',
+		eventName_trading_post: '交易站',
+		eventName_empty: '平靜路段',
+		eventName_mirage: '海市蜃樓',
+		eventName_quicksand: '流沙',
+		eventName_scorpion_nest: '毒蠍巢穴',
+
 		// Branch events
 		branchAmbush: '⚠️ 突然遭遇伏擊！額外的敵人出現！',
 		branchTreasureDrop: '✨ 敵人掉落了稀有寶物！',
@@ -264,6 +288,22 @@ const TRANSLATIONS = {
 		notInBattle: '目前不在戰鬥中。',
 		fleeSuccess: '你成功逃離戰鬥！',
 		fleeFailed: '逃跑失敗！敵人獲得一次攻擊機會！',
+		victoryMessage: '你擊敗了敵人！戰鬥結束，獲得獎勵。',
+		banditLootRecovered: '💰 從強盜那裡奪回了戰利品：{gold} 金幣！',
+		// Symbol effect messages
+		critical: '（暴擊）',
+		normalAttack: '你發動普通攻擊 x{count}{crit}，對敵人造成 {damage} 傷害。',
+		skillAttack: '你使用技能 x{count}{crit}，對敵人造成 {damage} 傷害，消耗體力 {stamina}。',
+		shieldGain: '你獲得防禦 x{count}（連擊 x{combo}），護盾 +{shield}。',
+		potionUse: '使用紅色水瓶 x{count}（連擊 x{combo}，地圖{map}），回復 HP {hp}、體力 {stamina}。',
+		luckGain: '獲得戰鬥幸運 +{luck}，提高暴擊與閃避機率。',
+		dodgedSymbolAttack: '你閃避了敵人符號攻擊（戰鬥幸運 {luck}）！',
+		luckConsumed: '戰鬥幸運 -1（剩餘 {remaining}）。',
+		enemySymbolAttack: '敵人攻擊 x{count}，原始傷害 {raw}，護盾吸收 {absorbed}，實際受損 {actual}。',
+		goldGain: '獲得金幣 {gold}（💰 x{count}，連擊 x{combo}）。',
+		noSymbolEffect: '此符號沒有主要效果。',
+		dodgedAutoAttack: '你閃避了敵人的自動攻擊！(戰鬥幸運 {luck})',
+		enemyAutoAttackDamage: '敵人自動攻擊，造成 {damage} 傷害（護盾吸收 {absorbed}），玩家 HP -{actual}。',
 		dodgedAttack: '你閃避了敵人的自動普攻！(戰鬥幸運',
 		enemyAutoAttack: '敵人自動普攻，造成',
 		damageText: '傷害',
@@ -375,29 +415,41 @@ const TRANSLATIONS = {
 		exitPyramid: '🌅 你走出了金字塔，回到了沙漠中。',
 		pyramidComplete: '金字塔副本完成！探索了',
 		stepCount: '步。',
-		
-		// Slot battle results
-		slotResult: '主要符號：',
-		matchCount: '，匹配數：',
-		consecutive: '，連續',
-		multiplier: '（乘數',
-		normalAttack: '你發動普通攻擊',
-		skillAttack: '你使用技能',
-		causingDamage: '，對敵人造成',
-		defenseGain: '你獲得防禦',
-		combo: '（連擊',
-		shieldGain: '），護盾',
-		potionUse: '使用紅色水瓶',
-		restoreHp: '，回復 HP',
-		restoreStamina: '體力',
-		luckGain: '獲得戰鬥幸運',
-		improveRate: '，提高暴擊與閃避機率。',
-		dodgedSymbolAttack: '你閃避了敵人符號攻擊（戰鬥幸運',
-		critText: '（暴擊）',
-		
+
 		// Misc
 		strangerMerchant: '🏪 陌生人原來是個特殊商人！',
-		bonus: '加成'
+		bonus: '加成',
+
+		// Stat labels (short form for UI)
+		gold: '金幣',
+		atkShort: '攻',
+		defShort: '防',
+		enemy: '敵人',
+		player: '玩家',
+		xp: '經驗',
+		shield: '護盾',
+		potions: '藥水',
+		luckCombat: '幸運(戰)',
+		luckGoldShort: '幸運(金)',
+		attackIn: '攻擊倒數',
+		enhanceBtn: '強化',
+		sellBtn: '賣出',
+		enhanceSuccess: '強化成功！',
+		enhanceFailed: '強化失敗，',
+		enhanceLevel: '強化等級',
+		enhanceCost: '金幣不足，無法強化。',
+		currentLevel: '目前',
+
+		// Trading post
+		tradingPostTitle: '沙漠驛站',
+		yourGold: '你的金幣',
+		supplies: '補給物資',
+		potionItem: '藥水 x1',
+		foodItem: '食物（恢復30HP+15體力）',
+		fullHealItem: '完全恢復（HP+體力全滿）',
+		equipmentManagement: '裝備管理',
+		leaveStation: '離開驛站',
+		leftStation: '你離開了驛站，繼續踏上旅程。'
 	},
 	
 	'en': {
@@ -522,7 +574,31 @@ const TRANSLATIONS = {
 		hintOnlyDesert: 'only desert',
 		hintPeaceful: 'peaceful and calm',
 		hintSilent: 'silent',
-		
+
+		// Compass event names (for compass item effect)
+		eventName_monster: 'Normal Enemy',
+		eventName_elite: 'Elite Enemy',
+		eventName_mini_boss: 'Mini Boss',
+		eventName_merchant: 'Merchant',
+		eventName_black_market: 'Black Market',
+		eventName_oasis: 'Oasis',
+		eventName_sandstorm: 'Sandstorm',
+		eventName_pyramid: 'Pyramid',
+		eventName_buried_treasure: 'Treasure',
+		eventName_dead_traveler: 'Dead Traveler',
+		eventName_ancient_shrine: 'Shrine',
+		eventName_caravan_rest: 'Caravan Rest',
+		eventName_lost_merchant: 'Lost Caravan',
+		eventName_cursed_shrine: 'Cursed Shrine',
+		eventName_bandit_ambush: 'Bandits',
+		eventName_ancient_puzzle: 'Ancient Puzzle',
+		eventName_desert_oasis: 'Desert Oasis',
+		eventName_trading_post: 'Trading Post',
+		eventName_empty: 'Peaceful Path',
+		eventName_mirage: 'Mirage',
+		eventName_quicksand: 'Quicksand',
+		eventName_scorpion_nest: 'Scorpion Nest',
+
 		// Branch events
 		branchAmbush: '⚠️ Sudden ambush! Extra enemies appear!',
 		branchTreasureDrop: '✨ Enemy dropped rare treasure!',
@@ -664,6 +740,22 @@ const TRANSLATIONS = {
 		notInBattle: 'Not currently in battle.',
 		fleeSuccess: 'You successfully fled from battle!',
 		fleeFailed: 'Flee failed! Enemy gets a free attack!',
+		victoryMessage: 'You defeated the enemy! Battle over, rewards obtained.',
+		banditLootRecovered: '💰 Recovered loot from bandits: {gold} gold!',
+		// Symbol effect messages
+		critical: ' (Critical)',
+		normalAttack: 'Normal attack x{count}{crit}, dealt {damage} damage to enemy.',
+		skillAttack: 'Skill x{count}{crit}, dealt {damage} damage to enemy, cost {stamina} stamina.',
+		shieldGain: 'Defense x{count} (combo x{combo}), shield +{shield}.',
+		potionUse: 'Used potion x{count} (combo x{combo}, map {map}), recovered {hp} HP, {stamina} stamina.',
+		luckGain: 'Combat luck +{luck}, increased crit and dodge chance.',
+		dodgedSymbolAttack: 'You dodged enemy symbol attack (Combat luck {luck})!',
+		luckConsumed: 'Combat luck -1 (remaining {remaining}).',
+		enemySymbolAttack: 'Enemy attack x{count}, raw damage {raw}, shield absorbed {absorbed}, actual damage {actual}.',
+		goldGain: 'Obtained {gold} gold (💰 x{count}, combo x{combo}).',
+		noSymbolEffect: 'This symbol has no primary effect.',
+		dodgedAutoAttack: 'You dodged enemy auto attack! (Combat luck {luck})',
+		enemyAutoAttackDamage: 'Enemy auto attack dealt {damage} damage (shield absorbed {absorbed}), player HP -{actual}.',
 		dodgedAttack: 'You dodged enemy auto attack! (Combat Luck',
 		enemyAutoAttack: 'Enemy auto attack, dealing',
 		damageText: 'damage',
@@ -776,30 +868,42 @@ const TRANSLATIONS = {
 		pyramidComplete: 'Pyramid dungeon complete! Explored',
 		stepCount: 'steps.',
 		
-		// Slot battle results
-		slotResult: 'Main symbol:',
-		matchCount: ', Matches:',
-		consecutive: ', Consecutive',
-		multiplier: '(Multiplier',
-		normalAttack: 'You launched normal attack',
-		skillAttack: 'You used skill',
-		causingDamage: ', dealing',
-		defenseGain: 'You gained defense',
-		combo: '(Combo',
-		shieldGain: '), Shield',
-		potionUse: 'Used red potion',
-		restoreHp: ', restored HP',
-		restoreStamina: 'Stamina',
-		luckGain: 'Gained Combat Luck',
-		improveRate: ', improving critical and dodge chance.',
-		dodgedSymbolAttack: 'You dodged enemy symbol attack (Combat Luck',
-		critText: '(Critical)',
-		
 		// Misc
 		strangerMerchant: '🏪 The stranger turned out to be a special merchant!',
-		bonus: 'bonus'
+		bonus: 'bonus',
+
+		// Stat labels (short form for UI)
+		gold: 'gold',
+		atkShort: 'ATK',
+		defShort: 'DEF',
+		enemy: 'Enemy',
+		player: 'Player',
+		xp: 'XP',
+		shield: 'Shield',
+		potions: 'Potions',
+		luckCombat: 'Luck(C)',
+		luckGoldShort: 'Luck(G)',
+		attackIn: 'Attack in',
+		enhanceBtn: 'Enhance',
+		sellBtn: 'Sell',
+		enhanceSuccess: 'Enhancement success!',
+		enhanceFailed: 'Enhancement failed,',
+		enhanceLevel: 'Enhancement level',
+		enhanceCost: 'Not enough gold to enhance.',
+		currentLevel: 'current',
+
+		// Trading post
+		tradingPostTitle: 'Desert Station',
+		yourGold: 'Your Gold',
+		supplies: 'Supplies',
+		potionItem: 'Potion x1',
+		foodItem: 'Food (restore 30HP+15 stamina)',
+		fullHealItem: 'Full Recovery (HP+Stamina full)',
+		equipmentManagement: 'Equipment Management',
+		leaveStation: 'Leave Station',
+		leftStation: 'You left the station and continued your journey.'
 	},
-	
+
 	'fr': {
 		// UI Elements
 		title: 'Egypt Adventures',
@@ -922,7 +1026,31 @@ const TRANSLATIONS = {
 		hintOnlyDesert: 'seulement le désert',
 		hintPeaceful: 'paisible et calme',
 		hintSilent: 'silencieux',
-		
+
+		// Compass event names (for compass item effect)
+		eventName_monster: 'Ennemi Normal',
+		eventName_elite: 'Ennemi Élite',
+		eventName_mini_boss: 'Mini Boss',
+		eventName_merchant: 'Marchand',
+		eventName_black_market: 'Marché Noir',
+		eventName_oasis: 'Oasis',
+		eventName_sandstorm: 'Tempête de Sable',
+		eventName_pyramid: 'Pyramide',
+		eventName_buried_treasure: 'Trésor',
+		eventName_dead_traveler: 'Voyageur Mort',
+		eventName_ancient_shrine: 'Sanctuaire',
+		eventName_caravan_rest: 'Repos Caravane',
+		eventName_lost_merchant: 'Caravane Perdue',
+		eventName_cursed_shrine: 'Sanctuaire Maudit',
+		eventName_bandit_ambush: 'Bandits',
+		eventName_ancient_puzzle: 'Puzzle Ancien',
+		eventName_desert_oasis: 'Oasis Désertique',
+		eventName_trading_post: 'Poste Commercial',
+		eventName_empty: 'Chemin Paisible',
+		eventName_mirage: 'Mirage',
+		eventName_quicksand: 'Sables Mouvants',
+		eventName_scorpion_nest: 'Nid de Scorpions',
+
 		// Branch events
 		branchAmbush: '⚠️ Embuscade soudaine ! Des ennemis supplémentaires apparaissent !',
 		branchTreasureDrop: '✨ L\'ennemi a laissé tomber un trésor rare !',
@@ -1064,6 +1192,22 @@ const TRANSLATIONS = {
 		notInBattle: 'Pas actuellement en combat.',
 		fleeSuccess: 'Vous avez réussi à fuir le combat !',
 		fleeFailed: 'Fuite échouée ! L\'ennemi obtient une attaque gratuite !',
+		victoryMessage: 'Vous avez vaincu l\'ennemi ! Combat terminé, récompenses obtenues.',
+		banditLootRecovered: '💰 Butin récupéré des bandits : {gold} or !',
+		// Symbol effect messages
+		critical: ' (Critique)',
+		normalAttack: 'Attaque normale x{count}{crit}, {damage} dégâts à l\'ennemi.',
+		skillAttack: 'Compétence x{count}{crit}, {damage} dégâts à l\'ennemi, coût {stamina} endurance.',
+		shieldGain: 'Défense x{count} (combo x{combo}), bouclier +{shield}.',
+		potionUse: 'Potion utilisée x{count} (combo x{combo}, carte {map}), récupéré {hp} PV, {stamina} endurance.',
+		luckGain: 'Chance de combat +{luck}, chances de critique et d\'esquive augmentées.',
+		dodgedSymbolAttack: 'Vous avez esquivé l\'attaque symbole ennemie (Chance de combat {luck}) !',
+		luckConsumed: 'Chance de combat -1 (restant {remaining}).',
+		enemySymbolAttack: 'Attaque ennemie x{count}, dégâts bruts {raw}, bouclier absorbé {absorbed}, dégâts réels {actual}.',
+		goldGain: 'Obtenu {gold} or (💰 x{count}, combo x{combo}).',
+		noSymbolEffect: 'Ce symbole n\'a pas d\'effet principal.',
+		dodgedAutoAttack: 'Vous avez esquivé l\'attaque auto ennemie ! (Chance de combat {luck})',
+		enemyAutoAttackDamage: 'Attaque auto ennemie inflige {damage} dégâts (bouclier absorbé {absorbed}), PV du joueur -{actual}.',
 		dodgedAttack: 'Vous avez esquivé l\'attaque auto ennemie ! (Chance de Combat',
 		enemyAutoAttack: 'Attaque auto ennemie, infligeant',
 		damageText: 'dégâts',
@@ -1176,28 +1320,40 @@ const TRANSLATIONS = {
 		pyramidComplete: 'Donjon de pyramide terminé ! Exploré',
 		stepCount: 'étapes.',
 		
-		// Slot battle results
-		slotResult: 'Symbole principal :',
-		matchCount: ', Correspondances :',
-		consecutive: ', Consécutif',
-		multiplier: '(Multiplicateur',
-		normalAttack: 'Vous avez lancé une attaque normale',
-		skillAttack: 'Vous avez utilisé une compétence',
-		causingDamage: ', infligeant',
-		defenseGain: 'Vous avez gagné en défense',
-		combo: '(Combo',
-		shieldGain: '), Bouclier',
-		potionUse: 'Utilisé potion rouge',
-		restoreHp: ', PV restaurés',
-		restoreStamina: 'Endurance',
-		luckGain: 'Chance de Combat gagnée',
-		improveRate: ', améliorant les chances de critique et d\'esquive.',
-		dodgedSymbolAttack: 'Vous avez esquivé l\'attaque de symbole ennemi (Chance de Combat',
-		critText: '(Critique)',
-		
 		// Misc
 		strangerMerchant: '🏪 L\'étranger s\'est avéré être un marchand spécial !',
-		bonus: 'bonus'
+		bonus: 'bonus',
+
+		// Stat labels (short form for UI)
+		gold: 'd\'or',
+		atkShort: 'ATT',
+		defShort: 'DÉF',
+		enemy: 'Ennemi',
+		player: 'Joueur',
+		xp: 'XP',
+		shield: 'Bouclier',
+		potions: 'Potions',
+		luckCombat: 'Chance(C)',
+		luckGoldShort: 'Chance(O)',
+		attackIn: 'Attaque dans',
+		enhanceBtn: 'Améliorer',
+		sellBtn: 'Vendre',
+		enhanceSuccess: 'Amélioration réussie !',
+		enhanceFailed: 'Amélioration échouée,',
+		enhanceLevel: 'Niveau d\'amélioration',
+		enhanceCost: 'Pas assez d\'or pour améliorer.',
+		currentLevel: 'actuel',
+
+		// Trading post
+		tradingPostTitle: 'Station du Désert',
+		yourGold: 'Votre Or',
+		supplies: 'Fournitures',
+		potionItem: 'Potion x1',
+		foodItem: 'Nourriture (restaure 30PV+15 endurance)',
+		fullHealItem: 'Récupération Complète (PV+Endurance max)',
+		equipmentManagement: 'Gestion d\'Équipement',
+		leaveStation: 'Quitter la Station',
+		leftStation: 'Vous avez quitté la station et continué votre voyage.'
 	}
 };
 
@@ -1205,8 +1361,15 @@ const TRANSLATIONS = {
 let currentLanguage = localStorage.getItem('gameLanguage') || 'zh-TW';
 
 // 獲取翻譯文本
-function t(key) {
-	return TRANSLATIONS[currentLanguage][key] || TRANSLATIONS['zh-TW'][key] || key;
+function t(key, params) {
+	let text = TRANSLATIONS[currentLanguage][key] || TRANSLATIONS['zh-TW'][key] || key;
+	// Support placeholder replacement: t('key', { gold: 100 }) replaces {gold} with 100
+	if (params && typeof params === 'object') {
+		Object.keys(params).forEach(k => {
+			text = text.replace(new RegExp(`\\{${k}\\}`, 'g'), params[k]);
+		});
+	}
+	return text;
 }
 
 // 切換語言
