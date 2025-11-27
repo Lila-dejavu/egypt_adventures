@@ -222,6 +222,12 @@ const NavigationMixin = {
 		};
 
 		const options = branchMap[mainEvent] || ['random_event'];
+
+		// Prevent pyramid events within the pyramid
+		if (this.inPyramid && mainEvent === 'pyramid') {
+			return 'empty'; // Prevent pyramid events within the pyramid
+		}
+
 		return options[Math.floor(Math.random() * options.length)];
 	},
 
