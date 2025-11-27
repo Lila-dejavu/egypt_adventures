@@ -50,6 +50,12 @@ document.addEventListener('DOMContentLoaded', function() {
 	spinBtn.disabled = true;
 	const reels = [document.getElementById('reel-0'), document.getElementById('reel-1'), document.getElementById('reel-2')];
 
+	// Early slot machine module initialization (before populateReels)
+	// Game will be passed later after it's created
+	if (typeof initSlotMachine === 'function') {
+		initSlotMachine(reels, spinBtn, stopBtn, null);
+	}
+
 	// EVENTS, EVENT_WEIGHTS, ENEMY_IMAGE_MAP, chooseEvent 已移至 js/data.js
 
 	function showMessage(msg) {
@@ -71,33 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	// ITEMS, QUALITY_BONUS, PYRAMID_AFFIXES, SET_BONUSES 已移至 js/data.js
 	// genEnemyName 已移至 js/enemyNames.js
 
-	// 每軸建立長條（重複符號以便平滑旋轉）
-	function populateReels() {
-		for (let r = 0; r < reels.length; r++) {
-			const strip = document.createElement('div');
-			strip.className = 'strip';
-			// 重複 SYMBOLS 以方便連續捲動
-			const repeats = 8;
-			for (let i = 0; i < repeats; i++) {
-				for (const s of SYMBOLS) {
-					const el = document.createElement('div');
-					el.className = 'symbol';
-					el.textContent = s;
-					strip.appendChild(el);
-				}
-			}
-		reels[r].innerHTML = '';
-		reels[r].appendChild(strip);
-		// 初始位置：從中間組開始
-		// 使用動態符號高度和高亮框位置
-		const symbolHeight = getSymbolHeight();
-		const initialOffset = symbolHeight * SYMBOLS.length * 2;
-		// 確保 transform 設定正確，並清除任何可能的 CSS 預設值
-		strip.style.transform = `translateY(-${initialOffset}px)`;
-		strip.style.webkitTransform = `translateY(-${initialOffset}px)`;
-		}
-	}
-
+	// populateReels moved to js/slotMachine.js - module initialized above
 	populateReels();
 
 	// 簡單遊戲狀態（玩家與敵人）
@@ -124,30 +104,6 @@ document.addEventListener('DOMContentLoaded', function() {
 			this.hasEncounteredCaravanRest = false;
 		}
 
-		// 檢測套裝效果（需要武器+護甲+護符三件相同字綴且同品質）
-		getActiveSetBonus() {
-			const weapon = this.player.equipment.weapon;
-			const armor = this.player.equipment.armor;
-			const amulet = this.player.equipment.amulet;
-			
-			// 檢查是否都是金字塔裝備
-			if (!weapon || !armor || !amulet) return null;
-			if (!weapon.isPyramid || !armor.isPyramid || !amulet.isPyramid) return null;
-			
-			// 檢查字綴是否相同
-			if (weapon.affix !== armor.affix || weapon.affix !== amulet.affix) return null;
-			
-			// 檢查品質是否相同（不能混搭）
-			if (weapon.rarity !== armor.rarity || weapon.rarity !== amulet.rarity) return null;
-			
-			// 返回套裝效果
-			const setBonus = SET_BONUSES[weapon.affix];
-			if (setBonus) {
-				return { ...setBonus, affix: weapon.affix, affixName: weapon.affixName, rarity: weapon.rarity };
-			}
-			return null;
-		}
-
 		// 經驗曲線：傳回升到下一等級所需的經驗值（簡單指數增長，可擴展至等級99）
 		xpForNext(level) {
 			// level 起始於 1，要升到 level+1 所需
@@ -172,49 +128,10 @@ document.addEventListener('DOMContentLoaded', function() {
 			}
 		}
 
-		// 獲取套裝效果屬性加成值
-		getSetBonusValue(attrName) {
-			const setBonus = this.getActiveSetBonus();
-			if (!setBonus || !setBonus.effects) return 0;
-			return setBonus.effects[attrName] || 0;
-		}
+		// Methods from EquipmentMixin, UIMixin, BattleMixin, ShopsMixin will be attached after class definition
+		// See: js/equipment.js, js/ui.js, js/battle.js, js/shops.js
 
-		// Helper: 格式化物品屬性顯示
-		formatItem(it) {
-				if (!it) return '';
-				const parts = [];
-				if (it.atk) parts.push(`攻+${it.atk}`);
-				if (it.def) parts.push(`防+${it.def}`);
-				if (it.enhanceLevel) parts.unshift(`強化+${it.enhanceLevel}`);
-				if (it.luck_gold) parts.push(`金運+${it.luck_gold}`);
-				if (it.luck_combat) parts.push(`戰運+${it.luck_combat}`);
-				if (it.max_hp_bonus) parts.push(`HP+${it.max_hp_bonus}`);
-				if (it.stamina_bonus) parts.push(`體力+${it.stamina_bonus}`);
-				if (it.crit_rate) parts.push(`暴擊+${it.crit_rate}%`);
-				if (it.combo_rate) parts.push(`連擊+${it.combo_rate}%`);
-				if (it.skill_power) parts.push(`技能+${it.skill_power}%`);
-				if (it.dodge_rate) parts.push(`閃避+${it.dodge_rate}%`);
-				const attr = parts.length ? ` (${parts.join(' ')})` : '';
-				// 根據稀有度設定顏色
-				let color = '#333'; // 普通 common
-				if (it.rarity === 'legendary') color = '#e67e22';
-				else if (it.rarity === 'epic') color = '#9b59b6';
-				else if (it.rarity === 'excellent') color = '#2ecc71';
-				else if (it.rarity === 'rare') color = '#3498db'; // 稀有 藍色
-				else if (it.rarity === 'excellent') color = '#2ecc71'; // 精良 綠色
-				else if (it.rarity === 'epic') color = '#9b59b6'; // 史詩 紫色
-				else if (it.rarity === 'legendary') color = '#e67e22'; // 傳說 橙色
-				
-				// 金字塔裝備顯示字綴
-				let displayName = it.name;
-				if (it.isPyramid && it.affixName) {
-					displayName = `<span style="color: ${it.affixColor};">${it.affixName}</span>${it.name}`;
-				}
-				
-				return `<span style="color: ${color}; font-weight: bold;">${displayName}</span>${attr}`;
-		}
-
-		// 顯示/更新裝備面板（簡易介面），可選 filterSlot: 'weapon'|'armor'|'amulet' 或 null
+		// Placeholder for showEquipmentPanel - will be overridden by mixin
 		showEquipmentPanel(filterSlot = null) {
 			const panel = document.getElementById('equipment-panel');
 			const content = document.getElementById('equip-content');
@@ -1968,12 +1885,32 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	}
 
+	// Apply mixins to Game prototype before instantiation
+	if (typeof EquipmentMixin !== 'undefined') {
+		Object.assign(Game.prototype, EquipmentMixin);
+	}
+	if (typeof UIMixin !== 'undefined') {
+		Object.assign(Game.prototype, UIMixin);
+	}
+	if (typeof BattleMixin !== 'undefined') {
+		Object.assign(Game.prototype, BattleMixin);
+	}
+	if (typeof ShopsMixin !== 'undefined') {
+		Object.assign(Game.prototype, ShopsMixin);
+	}
+
 	const game = new Game();
+
+	// Update slot machine module with game reference
+	if (typeof initSlotMachine === 'function') {
+		initSlotMachine(reels, spinBtn, stopBtn, game);
+	}
+
 	game.updateStatus();
-	
+
 	// 顯示初始方向提示
 	game.generateDirectionHints();
-	
+
 	// 全局遊戲引用
 	window.game = game;
 
@@ -1986,6 +1923,8 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 	// 控制旋轉的 interval
+	// NOTE: These local slot machine functions use closure variables and shadow the module's global functions.
+	// They are kept for backward compatibility. See js/slotMachine.js for the modular version.
 	const reelState = reels.map(()=>({interval:null, spinning:false}));
 
 // 自動旋轉控制
