@@ -333,7 +333,11 @@ const BattleMixin = {
 				break;
 			}
 			case '💀': {
-				const rawDmg = Math.round(10 * matchCount * tripleBonus);
+				// Calculate base damage with enemy strength and other multipliers
+				const baseDmg = 10 * matchCount * tripleBonus;
+				const strengthMultiplier = this.enemy.strength || 1; // Default to 1 if strength is undefined
+				const adjustedDmg = Math.round(baseDmg * strengthMultiplier);
+
 				if (Math.random() < this._calcDodgeChance()) {
 					showMessage(t('dodgedSymbolAttack', { luck: this.player.luck_combat }));
 					if (this.player.luck_combat > 0) {
@@ -341,11 +345,11 @@ const BattleMixin = {
 						showMessage(t('luckConsumed', { remaining: this.player.luck_combat }));
 					}
 				} else {
-					const consumedShield = Math.min(this.player.shield, rawDmg);
-					const mitigated = Math.max(0, rawDmg - this.player.shield);
+					const consumedShield = Math.min(this.player.shield, adjustedDmg);
+					const mitigated = Math.max(0, adjustedDmg - this.player.shield);
 					this.player.shield -= consumedShield;
 					this.player.hp -= mitigated;
-					showMessage(t('enemySymbolAttack', { count: matchCount, raw: rawDmg, absorbed: consumedShield, actual: mitigated }));
+					showMessage(t('enemySymbolAttack', { count: matchCount, raw: adjustedDmg, absorbed: consumedShield, actual: mitigated }));
 				}
 				break;
 			}
