@@ -22,8 +22,8 @@ document.addEventListener('DOMContentLoaded', function() {
 	console.log(`視口寬度: ${window.innerWidth}px`);
 	console.log(`視口高度: ${window.innerHeight}px`);
 	console.log(`設備像素比: ${window.devicePixelRatio}`);
-	console.log(`符號高度: ${getSymbolHeight()}px`);
-	console.log(`高亮框位置: ${getHighlightTop()}px`);
+	console.log(`符號高度: ${Utils.getSymbolHeight()}px`);
+	console.log(`高亮框位置: ${Utils.getHighlightTop()}px`);
 	console.log(`UserAgent: ${navigator.userAgent}`);
 
 	// 初始化語言選擇器

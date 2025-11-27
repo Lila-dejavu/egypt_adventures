@@ -101,12 +101,3 @@ const Utils = {
 
 // Expose globally
 window.Utils = Utils;
-
-// Backward compatibility - expose individual functions globally
-// TODO: Remove these after updating all callsites to use Utils.method()
-window.pickWeightedOutcome = Utils.pickWeightedOutcome.bind(Utils);
-window.getMapMultiplier = Utils.getMapMultiplier.bind(Utils);
-window.pickWeightedRarity = Utils.pickWeightedRarity.bind(Utils);
-window.pickWeightedSymbol = Utils.pickWeightedSymbol.bind(Utils);
-window.getSymbolHeight = Utils.getSymbolHeight.bind(Utils);
-window.getHighlightTop = Utils.getHighlightTop.bind(Utils);

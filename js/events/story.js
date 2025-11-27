@@ -1,5 +1,6 @@
 // Story Events - Narrative encounters with gods, strangers, and complex scenarios
 // Called with Game instance as `this`
+// Dependencies: Utils (from Utils.js)
 
 const StoryEvents = {
     egyptian_god: {
@@ -35,7 +36,7 @@ const StoryEvents = {
                 { type: 'prophecy', weight: 25 },
                 { type: 'curse', weight: 15 }
             ];
-            const result = pickWeightedOutcome(outcomes);
+            const result = Utils.pickWeightedOutcome(outcomes);
 
             if (result.type === 'gamble') {
                 if (this.player.gold >= 100) {
@@ -67,7 +68,7 @@ const StoryEvents = {
                     showMessage(`${t('strangerGiftItem')} ${this.formatItem(newItem)} ${t('strangerSmoke')}`);
                 }
             } else if (result.type === 'prophecy') {
-                const mapMultiplier = getMapMultiplier(this.difficulty);
+                const mapMultiplier = Utils.getMapMultiplier(this.difficulty);
                 showMessage(t('strangerProphecy'));
                 const prophecies = [
                     { text: t('prophecyCombat'), buff: 'combat' },
@@ -116,7 +117,7 @@ const StoryEvents = {
                 { type: 'help', weight: 60 },
                 { type: 'trade', weight: 40 }
             ];
-            const result = pickWeightedOutcome(outcomes);
+            const result = Utils.pickWeightedOutcome(outcomes);
 
             if (result.type === 'help') {
                 showMessage('📍 你憑藉經驗，為商隊指出正確的方向！');
@@ -160,7 +161,7 @@ const StoryEvents = {
                 { type: 'curse', weight: 20 },
                 { type: 'blessing', weight: 15 }
             ];
-            const result = pickWeightedOutcome(outcomes);
+            const result = Utils.pickWeightedOutcome(outcomes);
 
             if (result.type === 'treasure') {
                 showMessage('💎 你小心翼翼地探索神殿，找到了一個寶箱！');
@@ -224,7 +225,7 @@ const StoryEvents = {
                 } else {
                     this.player.hp = this.player.max_hp;
                     this.player.stamina = this.player.max_stamina;
-                    const hpBonus = Math.floor(30 * getMapMultiplier(this.difficulty));
+                    const hpBonus = Math.floor(30 * Utils.getMapMultiplier(this.difficulty));
                     this.player.max_hp += hpBonus;
                     this.player.hp = this.player.max_hp;
                     showMessage(`💚 ${blessing.desc}！HP和體力完全恢復，最大HP +${hpBonus}`);
@@ -253,7 +254,7 @@ const StoryEvents = {
                 { type: 'escape', weight: 20 },
                 { type: 'intimidate', weight: 15 }
             ];
-            const result = pickWeightedOutcome(outcomes);
+            const result = Utils.pickWeightedOutcome(outcomes);
 
             if (result.type === 'negotiate') {
                 const payment = Math.floor(this.player.gold * 0.4);
@@ -367,7 +368,7 @@ const StoryEvents = {
                 { type: 'explore', weight: 35 },
                 { type: 'meditate', weight: 25 }
             ];
-            const result = pickWeightedOutcome(outcomes);
+            const result = Utils.pickWeightedOutcome(outcomes);
 
             if (result.type === 'full_rest') {
                 showMessage('😌 你決定在綠洲充分休息...');
@@ -375,8 +376,8 @@ const StoryEvents = {
                 this.player.hp = this.player.max_hp;
                 this.player.stamina = this.player.max_stamina;
 
-                const hpBonus = Math.floor(25 * getMapMultiplier(this.difficulty));
-                const staminaBonus = Math.floor(15 * getMapMultiplier(this.difficulty));
+                const hpBonus = Math.floor(25 * Utils.getMapMultiplier(this.difficulty));
+                const staminaBonus = Math.floor(15 * Utils.getMapMultiplier(this.difficulty));
                 this.player.max_hp += hpBonus;
                 this.player.max_stamina += staminaBonus;
                 this.player.hp = this.player.max_hp;

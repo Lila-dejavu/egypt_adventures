@@ -5,7 +5,7 @@
  * Shops mixin - methods to be attached to Game prototype
  * Dependencies: showMessage (global), t (global - i18n),
  *               ITEMS, QUALITY_BONUS, PYRAMID_AFFIXES (from data.js),
- *               cloneItem, pickWeightedRarity (from EnemyGenerator.js),
+ *               cloneItem (from EnemyGenerator.js), Utils (from Utils.js),
  *               Config (from Config.js), DOMRefs (from DOMRefs.js)
  */
 const ShopsMixin = {
@@ -27,7 +27,7 @@ const ShopsMixin = {
 		const offers = [];
 		for (let i = 0; i < Config.SHOP.BLACK_MARKET_ITEMS_COUNT; i++) {
 			const base = ITEMS[Math.floor(Math.random()*ITEMS.length)];
-			const r = pickWeightedRarity(Config.SHOP.RARITY_WEIGHTS);
+			const r = Utils.pickWeightedRarity(Config.SHOP.RARITY_WEIGHTS);
 			const o = cloneItem(base, r);
 			// Randomize price: completely random, doesn't reveal quality
 			o.price = Config.SHOP.BLACK_MARKET_PRICE_MIN + Math.floor(Math.random() * Config.SHOP.BLACK_MARKET_PRICE_RANGE);

@@ -455,7 +455,7 @@ const BattleMixin = {
 				const dropCount = 1 + Math.floor(Math.random() * 2);
 				showMessage(`💎 小頭目掉落 ${dropCount} 件裝備！`);
 				for (let i = 0; i < dropCount; i++) {
-					const rarity = pickWeightedRarity(weights);
+					const rarity = Utils.pickWeightedRarity(weights);
 					const baseItem = ITEMS[Math.floor(Math.random() * ITEMS.length)];
 					dropped = cloneItem(baseItem, rarity);
 					this.player.inventory.push(dropped);
@@ -470,7 +470,7 @@ const BattleMixin = {
 				if (dropRoll < dropChance) {
 					showMessage(`⚔️ 精英掉落 ${dropCount} 件裝備！`);
 					for (let i = 0; i < dropCount; i++) {
-						const rarity = pickWeightedRarity(weights);
+						const rarity = Utils.pickWeightedRarity(weights);
 						const baseItem = ITEMS[Math.floor(Math.random() * ITEMS.length)];
 						dropped = cloneItem(baseItem, rarity);
 						this.player.inventory.push(dropped);
@@ -483,7 +483,7 @@ const BattleMixin = {
 			} else {
 				// Normal enemy drops
 				const weights = [70,20,6,3,1];
-				const rollRarity = pickWeightedRarity(weights);
+				const rollRarity = Utils.pickWeightedRarity(weights);
 				if (rollRarity !== 'common') {
 					const baseItem = ITEMS[Math.floor(Math.random()*ITEMS.length)];
 					dropped = cloneItem(baseItem, rollRarity);

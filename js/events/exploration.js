@@ -1,5 +1,6 @@
 // Exploration Events - Discovery, loot, and exploration encounters
 // Called with Game instance as `this`
+// Dependencies: Utils (from Utils.js)
 
 const ExplorationEvents = {
     buried_treasure: {
@@ -12,7 +13,7 @@ const ExplorationEvents = {
                 { type: 'poor', weight: 30, name: '少量金幣' },
                 { type: 'nothing', weight: 10, name: '空罐或風化' }
             ];
-            const result = pickWeightedOutcome(outcomes);
+            const result = Utils.pickWeightedOutcome(outcomes);
 
             if (result.type === 'jackpot') {
                 const baseGold = 200 + Math.floor(Math.random() * 300);
@@ -52,7 +53,7 @@ const ExplorationEvents = {
                 { type: 'gold', weight: 25, name: '金幣' },
                 { type: 'nothing', weight: 15, name: '一無所獲' }
             ];
-            const result = pickWeightedOutcome(outcomes);
+            const result = Utils.pickWeightedOutcome(outcomes);
 
             if (result.type === 'equipment') {
                 const item = ITEMS[Math.floor(Math.random() * ITEMS.length)];
@@ -107,7 +108,7 @@ const ExplorationEvents = {
                 { type: 'curse', weight: 20 },
                 { type: 'trap', weight: 20 }
             ];
-            const result = pickWeightedOutcome(outcomes);
+            const result = Utils.pickWeightedOutcome(outcomes);
 
             if (result.type === 'blessing') {
                 const blessings = [
@@ -118,7 +119,7 @@ const ExplorationEvents = {
                 ];
                 const blessing = blessings[Math.floor(Math.random() * blessings.length)];
 
-                const mapMultiplier = getMapMultiplier(this.difficulty);
+                const mapMultiplier = Utils.getMapMultiplier(this.difficulty);
                 if (blessing.type === 'hp') {
                     const hpValue = Math.floor(blessing.value * mapMultiplier);
                     this.player.max_hp += hpValue;
@@ -171,7 +172,7 @@ const ExplorationEvents = {
                 { type: 'trap', weight: 25 },
                 { type: 'guardian', weight: 20 }
             ];
-            const result = pickWeightedOutcome(outcomes);
+            const result = Utils.pickWeightedOutcome(outcomes);
 
             if (result.type === 'artifact') {
                 const item = ITEMS[Math.floor(Math.random() * ITEMS.length)];
@@ -183,7 +184,7 @@ const ExplorationEvents = {
                 this.player.inventory.push(newItem);
                 showMessage(`⚱️ 你在遺跡中找到了古代神器 ${this.formatItem(newItem)}！`);
             } else if (result.type === 'inscription') {
-                const mapMultiplier = getMapMultiplier(this.difficulty);
+                const mapMultiplier = Utils.getMapMultiplier(this.difficulty);
                 const xp = Math.floor((40 + Math.floor(Math.random() * 60)) * mapMultiplier);
                 this.addXP(xp);
                 showMessage(`📜 你研究了遺跡上的銘文，獲得了古老的知識。經驗值 +${xp}`);
@@ -210,10 +211,10 @@ const ExplorationEvents = {
                 { type: 'quest', weight: 25 },
                 { type: 'hostile', weight: 10 }
             ];
-            const result = pickWeightedOutcome(outcomes);
+            const result = Utils.pickWeightedOutcome(outcomes);
 
             if (result.type === 'healing') {
-                const mapMultiplier = getMapMultiplier(this.difficulty);
+                const mapMultiplier = Utils.getMapMultiplier(this.difficulty);
                 const hpGain = Math.floor(40 * mapMultiplier);
                 const staminaGain = Math.floor(25 * mapMultiplier);
                 showMessage('🏕️ 遊牧民熱情地接待了你，提供食物和休息。');
@@ -226,7 +227,7 @@ const ExplorationEvents = {
                 this.player.inventory.push(newItem);
                 showMessage(`🎁 遊牧民贈送你一件 ${newItem.name}（已加入背包）`);
             } else if (result.type === 'quest') {
-                const mapMultiplier = getMapMultiplier(this.difficulty);
+                const mapMultiplier = Utils.getMapMultiplier(this.difficulty);
                 const xp = Math.floor((30 + Math.floor(Math.random() * 40)) * mapMultiplier);
                 const gold = 40 + Math.floor(Math.random() * 60);
                 this.addXP(xp);

@@ -1,5 +1,6 @@
 // Travel Events - Environmental hazards and simple travel encounters
 // Called with Game instance as `this`
+// Dependencies: Utils (from Utils.js)
 
 const TravelEvents = {
     empty: {
@@ -19,7 +20,7 @@ const TravelEvents = {
     oasis: {
         weight: 6,
         handler() {
-            const mapMultiplier = getMapMultiplier(this.difficulty);
+            const mapMultiplier = Utils.getMapMultiplier(this.difficulty);
             const hpGain = Math.floor(20 * mapMultiplier);
             const staminaGain = Math.floor(10 * mapMultiplier);
             showMessage(t('oasisFound'));
@@ -48,7 +49,7 @@ const TravelEvents = {
                 { type: 'treasure_real', weight: 20 },
                 { type: 'danger', weight: 15 }
             ];
-            const result = pickWeightedOutcome(outcomes);
+            const result = Utils.pickWeightedOutcome(outcomes);
 
             if (result.type === 'oasis_real') {
                 showMessage(t('mirageReal'));
@@ -85,7 +86,7 @@ const TravelEvents = {
                 { type: 'struggle', weight: 30 },
                 { type: 'sink', weight: 20 }
             ];
-            const result = pickWeightedOutcome(outcomes);
+            const result = Utils.pickWeightedOutcome(outcomes);
 
             if (result.type === 'escape') {
                 showMessage('💨 你迅速脫離了流沙區域！');
@@ -125,7 +126,7 @@ const TravelEvents = {
                 { type: 'serious_sting', weight: 20 },
                 { type: 'treasure', weight: 10 }
             ];
-            const result = pickWeightedOutcome(outcomes);
+            const result = Utils.pickWeightedOutcome(outcomes);
 
             if (result.type === 'avoid') {
                 showMessage('🏃 你小心地繞過毒蠍，成功避開了危險！');

@@ -3,8 +3,7 @@
 
 /**
  * Slot Machine Manager
- * Dependencies: SYMBOLS, pickWeightedSymbol, getSymbolHeight, getHighlightTop (from data.js),
- *               showMessage (global)
+ * Dependencies: SYMBOLS (from data.js), Utils (from Utils.js), showMessage (global)
  */
 
 // Module state
@@ -52,7 +51,7 @@ function populateReels() {
 		_reels[r].appendChild(strip);
 
 		// Initial position: start from middle group
-		const symbolHeight = getSymbolHeight();
+		const symbolHeight = Utils.getSymbolHeight();
 		const initialOffset = symbolHeight * SYMBOLS.length * 2;
 		strip.style.transform = `translateY(-${initialOffset}px)`;
 		strip.style.webkitTransform = `translateY(-${initialOffset}px)`;
@@ -63,7 +62,7 @@ function populateReels() {
  * Start spinning all reels
  */
 function startSpin() {
-	const symbolHeight = getSymbolHeight();
+	const symbolHeight = Utils.getSymbolHeight();
 
 	for (let i = 0; i < _reels.length; i++) {
 		const strip = _reels[i].querySelector('.strip');
@@ -112,7 +111,7 @@ function stopSequentially() {
 	const stopReel = (index, withAnimation = true) => {
 		return new Promise((resolve) => {
 			// Randomly select target symbol
-			const targetSymbol = pickWeightedSymbol();
+			const targetSymbol = Utils.pickWeightedSymbol();
 			targetSymbols[index] = targetSymbol;
 			const strip = _reels[index].querySelector('.strip');
 
@@ -129,8 +128,8 @@ function stopSequentially() {
 			}
 
 			// Calculate target position (dynamic for different screen sizes)
-			const symbolHeight = getSymbolHeight();
-			const highlightTop = getHighlightTop();
+			const symbolHeight = Utils.getSymbolHeight();
+			const highlightTop = Utils.getHighlightTop();
 			const singleBlock = SYMBOLS.length * symbolHeight;
 			const targetCycle = 3; // Use 3rd cycle
 
@@ -232,8 +231,8 @@ function stopSequentially() {
 					}
 				}
 
-				const symbolHeight = getSymbolHeight();
-				const highlightTop = getHighlightTop();
+				const symbolHeight = Utils.getSymbolHeight();
+				const highlightTop = Utils.getHighlightTop();
 				const symbolIndexInView = (Math.round((currentPos + highlightTop) / symbolHeight) % SYMBOLS.length + SYMBOLS.length) % SYMBOLS.length;
 				const expectedSymbol = SYMBOLS[symbolIndexInView];
 
