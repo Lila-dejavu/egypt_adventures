@@ -299,7 +299,7 @@ const NavigationMixin = {
 	choosePyramidEvent() {
 		// Pyramid events: higher monster encounter rate
 		const pyramidEvents = ['monster', 'elite', 'mini_boss', 'oasis', 'empty'];
-		const pyramidWeights = [35, 25, 15, 10, 15]; // 75% combat rate
+		const pyramidWeights = [40, 30, 20, 10, 0]; // Adjusted weights, removed pyramid event
 		const total = pyramidWeights.reduce((a, b) => a + b, 0);
 		let r = Math.random() * total;
 		for (let i = 0, acc = 0; i < pyramidWeights.length; i++) {
