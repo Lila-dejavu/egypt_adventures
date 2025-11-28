@@ -174,6 +174,24 @@ const BattleMixin = {
 		this.consecutivePrimaryCount = 0;
 		this.updateStatus();
 
+		// Bloodline: apply any on-battle-start flags (e.g., revivePercent, start_shield)
+		try{
+			const bl = this.player && this.player.bloodline;
+			if(bl && bl.flags){
+				if(bl.flags.onBattleStart_revivePercent && !this.player._bloodline_revive_used){
+					const pct = bl.flags.onBattleStart_revivePercent;
+					const heal = Math.max(1, Math.floor((this.player.max_hp || 0) * pct));
+					this.player.hp = Math.min(this.player.max_hp, (this.player.hp || 0) + heal);
+					this.player._bloodline_revive_used = true;
+					if(typeof this.showMessage === 'function') this.showMessage(`🧩 血脈開場：立即回復 ${heal} HP`);
+				}
+				if(bl.modifiers && typeof bl.modifiers.start_shield !== 'undefined'){
+					this.player.shield = (this.player.shield || 0) + bl.modifiers.start_shield;
+					this.showMessage(`🔰 血脈效果：獲得 ${bl.modifiers.start_shield} 點護盾`);
+				}
+			}
+		}catch(e){ console.warn('Battle start bloodline handling failed', e); }
+
 		// Auto-start slot and stop after short delay (simulate auto-battle)
 		startSpin();
 		setTimeout(() => {
@@ -381,29 +399,146 @@ const BattleMixin = {
 				baseDmg += this._getWeaponAttr('atk');
 				const isCrit = Math.random() < this._calcCritChance();
 				const finalDmg = isCrit ? Math.floor(baseDmg * 2.0) : baseDmg;
-				this.enemy.hp -= finalDmg;
-				showMessage(t('normalAttack', { count: matchCount, crit: isCrit ? t('critical') : '', damage: finalDmg }));
+				// Apply possible temporary attack buff from temp_buffs
+				let modifiedDmg = finalDmg;
+				try{
+					if(this.player && this.player.temp_buffs && this.player.temp_buffs.attack){
+						const pct = this.player.temp_buffs.attack.pct || 0;
+						modifiedDmg = Math.floor(modifiedDmg * (1 + pct));
+					}
+				}catch(e){}
+				this.enemy.hp -= modifiedDmg;
+				showMessage(t('normalAttack', { count: matchCount, crit: isCrit ? t('critical') : '', damage: modifiedDmg }));
+
+				// Bloodline: on-hit flags & modifiers
+				try{
+					const bl = this.player && this.player.bloodline;
+					// flags that apply status on hit (legacy: onHit_applyStatus in flags)
+					if(bl && bl.flags && bl.flags.onHit_applyStatus){
+						const f = bl.flags.onHit_applyStatus;
+						const per = f.dmgPerTurn || f.perTurnPct ? Math.max(1, Math.floor((f.dmgPerTurn || 0) || (this.enemy.max_hp * (f.perTurnPct||0)))) : 0;
+						if(per > 0){
+							this.addDebuffStack(this.enemy, f.name || 'bleed', per, f.duration || 3, 'bloodline', 5);
+						}
+					}
+					// flags that apply generic debuff (e.g., armor_down)
+					if(bl && bl.flags && bl.flags.onHit_applyDebuff){
+						const d = bl.flags.onHit_applyDebuff;
+						this.enemy.debuffs = this.enemy.debuffs || {};
+						this.enemy.debuffs[d.name] = Object.assign(this.enemy.debuffs[d.name]||{}, { turns: d.duration || 2, value: d.value });
+					}
+					// modifiers applied to player on hit (defined in modifiers and copied to player by applyBloodlineModifiers)
+					if(this.player && typeof this.player.onHit_restore_mana_pct === 'number' && this.player.max_mana){
+						const add = Math.max(1, Math.floor(this.player.max_mana * this.player.onHit_restore_mana_pct));
+						this.player.mana = Math.min(this.player.max_mana, (this.player.mana || 0) + add);
+						this.showMessage(`🔋 命中回復魔力 ${add}`);
+					}
+					if(this.player && typeof this.player.onHit_temp_attack_pct === 'number'){
+						this.player.temp_buffs = this.player.temp_buffs || {};
+						this.player.temp_buffs.attack = { pct: this.player.onHit_temp_attack_pct, turns: 2 };
+						this.showMessage(`⚔ 獲得暫時攻擊提升 ${(this.player.onHit_temp_attack_pct*100).toFixed(0)}%（2 回合）`);
+					}
+					if(this.player && typeof this.player.onHit_temp_penetration_pct === 'number'){
+						this.player.temp_buffs = this.player.temp_buffs || {};
+						this.player.temp_buffs.penetration = { pct: this.player.onHit_temp_penetration_pct, turns: 2 };
+					}
+				}catch(e){ console.warn('onHit bloodline handlers failed', e); }
 				break;
 			}
 			case '⚡️': {
-				// Skill attack with skill power bonus
-				let baseDmg = this._calcScaledValue(25, matchCount, tripleBonus, comboMultiplier);
-				baseDmg += this._getWeaponAttr('atk');
-				const skillPower = this._getWeaponAttr('skill_power');
-				baseDmg = Math.floor(baseDmg * (1 + skillPower / 100));
-				const isCrit = Math.random() < this._calcCritChance();
-				const finalDmg = isCrit ? Math.floor(baseDmg * 2.2) : baseDmg;
-				this.enemy.hp -= finalDmg;
-				const staminaCost = 5 * matchCount;
-				this.player.stamina = Math.max(0, this.player.stamina - staminaCost);
-				showMessage(t('skillAttack', { count: matchCount, crit: isCrit ? t('critical') : '', damage: finalDmg, stamina: staminaCost }));
-				// Bloodline: if player's bloodline defines an onLightningSkill effect, apply it now
+				// Skill attack — if player is a mage and has a selected mage skill, prefer consuming mana
 				try {
-					if (typeof Bloodline !== 'undefined' && typeof Bloodline.applyOnLightningSkill === 'function') {
-						Bloodline.applyOnLightningSkill(this);
+					const isMageSkill = this.player && this.player.selectedClass === 'mage' && this.player.mage_selected_skill && window.MageSkills;
+					if (isMageSkill) {
+						const skillId = this.player.mage_selected_skill;
+						// Determine proc chance: base scales with matchCount, plus any bloodline "cooldown_pct" interpreted as extra proc chance
+						let baseProc = 0.3 * matchCount; // e.g., 0.3,0.6,0.9 for 1/2/3 matches
+						let extra = 0;
+						try{ if(this.player && this.player.cooldown_pct) extra = Math.max(0, -this.player.cooldown_pct); }catch(e){}
+						const procChance = Math.min(1, baseProc + extra);
+						const roll = Math.random();
+						if(roll < procChance){
+							const result = MageSkills.useSkill(this, skillId, matchCount, comboMultiplier);
+							if (result) {
+								const sname = (MageSkills.SKILLS[skillId] && MageSkills.SKILLS[skillId].name) || skillId;
+								showMessage(`⚡ 使用法術：${sname}`);
+							} else {
+								// mana insufficient; fallback to stamina skill
+								let baseDmg = this._calcScaledValue(25, matchCount, tripleBonus, comboMultiplier);
+								baseDmg += this._getWeaponAttr('atk');
+								const skillPower = this._getWeaponAttr('skill_power');
+								baseDmg = Math.floor(baseDmg * (1 + skillPower / 100));
+								const isCrit = Math.random() < this._calcCritChance();
+								const finalDmg = isCrit ? Math.floor(baseDmg * 2.2) : baseDmg;
+								this.enemy.hp -= finalDmg;
+								const staminaCost = 5 * matchCount;
+								this.player.stamina = Math.max(0, this.player.stamina - staminaCost);
+								showMessage(t('skillAttack', { count: matchCount, crit: isCrit ? t('critical') : '', damage: finalDmg, stamina: staminaCost }));
+							}
+						} else {
+							// Proc failed — treat as no-skill (stamina-based fallback)
+							let baseDmg = this._calcScaledValue(25, matchCount, tripleBonus, comboMultiplier);
+							baseDmg += this._getWeaponAttr('atk');
+							const skillPower = this._getWeaponAttr('skill_power');
+							baseDmg = Math.floor(baseDmg * (1 + skillPower / 100));
+							const isCrit = Math.random() < this._calcCritChance();
+							const finalDmg = isCrit ? Math.floor(baseDmg * 2.2) : baseDmg;
+							this.enemy.hp -= finalDmg;
+							const staminaCost = 5 * matchCount;
+							this.player.stamina = Math.max(0, this.player.stamina - staminaCost);
+							showMessage(t('skillAttack', { count: matchCount, crit: isCrit ? t('critical') : '', damage: finalDmg, stamina: staminaCost }));
+						}
+					} else {
+						// Non-mage or no mage skill — default behavior (stamina-based skill)
+						let baseDmg = this._calcScaledValue(25, matchCount, tripleBonus, comboMultiplier);
+						baseDmg += this._getWeaponAttr('atk');
+						const skillPower = this._getWeaponAttr('skill_power');
+						baseDmg = Math.floor(baseDmg * (1 + skillPower / 100));
+						const isCrit = Math.random() < this._calcCritChance();
+						const finalDmg = isCrit ? Math.floor(baseDmg * 2.2) : baseDmg;
+						this.enemy.hp -= finalDmg;
+						const staminaCost = 5 * matchCount;
+						this.player.stamina = Math.max(0, this.player.stamina - staminaCost);
+						showMessage(t('skillAttack', { count: matchCount, crit: isCrit ? t('critical') : '', damage: finalDmg, stamina: staminaCost }));
 					}
-				} catch (e) {
-					console.error('Bloodline application failed', e);
+					// Bloodline: if player's bloodline defines an onLightningSkill effect, apply it now
+					try {
+						// Additional: handle generic onSpell flags (onSpell_applyStatus, onSpell_applyStatusChance) and modifiers like chance_shield_on_spell
+						try{
+							const bl = this.player && this.player.bloodline;
+							if(bl && bl.flags){
+								if(bl.flags.onSpell_applyStatus){
+									const f = bl.flags.onSpell_applyStatus;
+									const per = f.dmgPerTurn || f.perTurnPct ? Math.max(1, Math.floor((f.dmgPerTurn || 0) || (this.enemy.max_hp * (f.perTurnPct||0)))) : 0;
+									if(per > 0){ this.addDebuffStack(this.enemy, f.name || 'burn', per, f.duration || 3, 'bloodline', 5); }
+								}
+								if(bl.flags.onSpell_applyStatusChance){
+									const f = bl.flags.onSpell_applyStatusChance;
+									if(Math.random() < (f.chance || 0)){
+										const per = f.dmgPerTurn || f.perTurnPct ? Math.max(1, Math.floor((f.dmgPerTurn || 0) || (this.enemy.max_hp * (f.perTurnPct||0)))) : 0;
+										if(per > 0) this.addDebuffStack(this.enemy, f.name || 'burn', per, f.duration || 3, 'bloodline', 5);
+									}
+								}
+							}
+							// chance_shield_on_spell modifier (restore small shield when casting)
+							try{
+								if(this.player && typeof this.player.chance_shield_on_spell === 'number'){
+									if(Math.random() < this.player.chance_shield_on_spell){
+										const sh = Math.max(5, Math.floor((this.player.max_mana || 20) * 0.15));
+										this.player.shield = (this.player.shield || 0) + sh;
+										this.showMessage(`🔰 血脈觸發：獲得 ${sh} 點護盾`);
+									}
+								}
+							}catch(e){/*ignore*/}
+						}catch(e){ console.warn('onSpell bloodline handlers failed', e); }
+						if (typeof Bloodline !== 'undefined' && typeof Bloodline.applyOnLightningSkill === 'function') {
+							Bloodline.applyOnLightningSkill(this);
+						}
+					} catch (e) {
+						console.error('Bloodline application failed', e);
+					}
+				} catch(e){
+					console.error('Skill handling failed', e);
 				}
 				break;
 			}
@@ -531,6 +666,17 @@ const BattleMixin = {
 		this._handleLootDrop(pyramidMultiplier, enemyTypeMultiplier);
 
 		// End battle
+		// Bloodline: onKill effects (e.g., heal on kill)
+		try{
+			const bl = this.player && this.player.bloodline;
+			if(bl && bl.flags && typeof bl.flags.onKill_healPercent === 'number'){
+				const pct = bl.flags.onKill_healPercent;
+				const heal = Math.max(1, Math.floor((this.player.max_hp || 0) * pct));
+				this.player.hp = Math.min(this.player.max_hp, (this.player.hp || 0) + heal);
+				this.showMessage(`❤ 血脈效果：擊殺回復 ${heal} HP`);
+			}
+		}catch(e){ console.warn('onKill bloodline handling failed', e); }
+
 		this._endBattle();
 	},
 
@@ -582,6 +728,22 @@ const BattleMixin = {
 				this._checkPlayerDeath();
 			}
 		}
+
+		// Process temporary player buffs (decrement turns and remove)
+		try{
+			if(this.player && this.player.temp_buffs){
+				for(const key of Object.keys(this.player.temp_buffs)){
+					const info = this.player.temp_buffs[key];
+					if(info.turns > 0){
+						info.turns -= 1;
+						if(info.turns <= 0){
+							delete this.player.temp_buffs[key];
+							this.showMessage(`🔻 暫時增益 ${key} 已消失`);
+						}
+					}
+				}
+			}
+		}catch(e){ console.warn('Temp buffs processing failed', e); }
 	},
 
 	/**

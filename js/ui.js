@@ -71,6 +71,8 @@ const UIMixin = {
 				${bloodlineHtml}
 				<div class="stats-row">
 					<div>${t('stamina')}: ${this.player.stamina}/${this.player.max_stamina}</div>
+						<div>${t('mana') || '魔力'}: ${this.player.mana || 0}/${this.player.max_mana || 0}</div>
+						${this.player.selectedClass === 'mage' ? `<div id='mage-skill-row'>法術：${this.player.mage_selected_skill ? (window.MageSkills && MageSkills.SKILLS && MageSkills.SKILLS[this.player.mage_selected_skill] ? MageSkills.SKILLS[this.player.mage_selected_skill].name : this.player.mage_selected_skill) : '（未設定）'} <button id='change-skill-btn' class='small'>切換</button></div>` : ''}
 					<div>${t('shield')}: ${this.player.shield}</div>
 					<div>${t('potions')}: ${this.player.potions}</div>
 					<div>${t('gold')}: ${this.player.gold}</div>
@@ -102,6 +104,12 @@ const UIMixin = {
 					</div>
 				</div>
 			`;
+
+			// Attach handler for change-skill button (since innerHTML was replaced)
+			if(this.player.selectedClass === 'mage'){
+				const btn = playerStatusEl.querySelector('#change-skill-btn');
+				if(btn){ btn.addEventListener('click', ()=>{ try{ this.showMageSkillSelector(); }catch(e){ console.warn('showMageSkillSelector failed', e); } }); }
+			}
 		}
 
 		// Update enemy status to right panel
@@ -160,6 +168,34 @@ const UIMixin = {
 				mapEl.textContent = Math.max(0, this.map_goal - this.map_steps);
 			}
 		}
+	},
+
+	/**
+	 * Show a modal to pick mage skill (if MageSkills available)
+	 */
+	showMageSkillSelector(){
+		if(!window.MageSkills || !MageSkills.SKILLS) return;
+		const skills = MageSkills.SKILLS;
+		const panel = document.createElement('div');
+		panel.style.cssText = 'position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);z-index:10000;';
+		let html = `<div style="background:#fff;padding:16px;border-radius:8px;min-width:360px;max-width:90%"><h3>選擇法術</h3><div style='display:flex;flex-wrap:wrap;gap:8px;'>`;
+		Object.values(skills).forEach(s => {
+			html += `<div style='border:1px solid #ddd;padding:8px;border-radius:6px;width:160px;'><div style='font-weight:700'>${s.name}</div><div class='small' style='margin:6px 0'>${s.description}</div><div style='text-align:center'><button class='pick-skill' data-skill='${s.id}'>選擇</button></div></div>`;
+		});
+		html += `</div><div style='text-align:center;margin-top:12px'><button id='close-skill-modal'>取消</button></div></div>`;
+		panel.innerHTML = html;
+		document.body.appendChild(panel);
+		panel.querySelectorAll('.pick-skill').forEach(b => {
+			b.addEventListener('click', (ev) => {
+				const id = ev.currentTarget.getAttribute('data-skill');
+				this.player.mage_selected_skill = id;
+				if(typeof this.saveGame === 'function') this.saveGame();
+				this.updateStatus();
+				document.body.removeChild(panel);
+			});
+		});
+		const close = panel.querySelector('#close-skill-modal');
+		if(close) close.addEventListener('click', ()=>{ document.body.removeChild(panel); });
 	},
 
 	/**
@@ -579,7 +615,14 @@ const UIMixin = {
 				card.style.cssText = 'width:140px;padding:8px;border:1px solid #ddd;border-radius:6px;';
 				card.innerHTML = `<div style="font-weight:700">${o.name}</div><div class="small">${o.description}</div><div style="text-align:center;margin-top:8px"><button class="choose-bl">選擇</button></div>`;
 				card.querySelector('.choose-bl').addEventListener('click', () => {
-					try { this.player.selectedClass = cls; this.player.bloodline = o; if (typeof this.saveGame === 'function') this.saveGame(); } catch (e) {}
+					try { 
+						this.player.selectedClass = cls;
+						this.player.bloodline = o;
+						if (typeof this.applyBloodlineModifiers === 'function') this.applyBloodlineModifiers(o);
+						// apply class bonuses (e.g., mage mana pool)
+						if (typeof this.applyClassBonuses === 'function') this.applyClassBonuses(cls);
+						if (typeof this.saveGame === 'function') this.saveGame(); 
+					} catch (e) {}
 					document.body.removeChild(panel);
 					if (callback) callback({ class: cls, bloodline: o });
 				});
@@ -595,7 +638,34 @@ const UIMixin = {
 		}
 		// Final fallback: accept class immediately
 		this.player.selectedClass = cls;
+		if (typeof this.applyClassBonuses === 'function') this.applyClassBonuses(cls);
 		if (typeof this.saveGame === 'function') this.saveGame();
 		if (callback) callback({ class: cls });
+	},
+
+	/**
+	 * Apply class-level bonuses when a class is selected
+	 * e.g., set up mana pool for mage and default selected skill
+	 */
+	applyClassBonuses(cls){
+		try{
+			if(!this.player) return;
+			if(cls === 'mage'){
+				// initialize mage mana if not already set
+				if(!this.player.max_mana || this.player.max_mana === 0){
+					this.player.max_mana = 50;
+					this.player.mana = this.player.max_mana;
+				}
+				// set default mage skill if none
+				if(!this.player.mage_selected_skill && window.MageSkills){
+					this.player.mage_selected_skill = MageSkills.getDefaultSkillId();
+				}
+			} else {
+				// non-mage: leave mana at 0
+				if(!this.player.max_mana) this.player.max_mana = 0;
+				if(!this.player.mana) this.player.mana = 0;
+			}
+			this.updateStatus();
+		}catch(e){ console.error('applyClassBonuses failed', e); }
 	}
 };

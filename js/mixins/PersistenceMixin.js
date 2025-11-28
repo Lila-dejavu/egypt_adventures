@@ -92,6 +92,20 @@ const PersistenceMixin = {
 		this.cleared = data.cleared || false;
 		this.clearedRuns = data.clearedRuns || 0;
 		this.unlockedClasses = Array.isArray(data.unlockedClasses) ? data.unlockedClasses : (this.unlockedClasses || []);
+
+		// After restoring player, re-apply class and bloodline derived effects
+		try{
+			if(typeof this.applyClassBonuses === 'function'){
+				try{ this.applyClassBonuses(this.player && this.player.selectedClass); }catch(e){ console.warn('applyClassBonuses failed on load', e); }
+			}
+			if(typeof this.applyBloodlineModifiers === 'function' && this.player && this.player.bloodline){
+				try{ this.applyBloodlineModifiers(this.player.bloodline); }catch(e){ console.warn('applyBloodlineModifiers failed on load', e); }
+			}
+			// Ensure mage has a default skill if missing
+			if(this.player && this.player.selectedClass === 'mage' && !this.player.mage_selected_skill && window.MageSkills){
+				this.player.mage_selected_skill = MageSkills.getDefaultSkillId();
+			}
+		}catch(e){ console.warn('Post-load re-init failed', e); }
 	},
 
 	/**

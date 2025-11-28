@@ -103,7 +103,8 @@ document.addEventListener('DOMContentLoaded', function() {
 		PersistenceMixin: typeof PersistenceMixin !== 'undefined' ? PersistenceMixin : null,
 		DungeonMixin: typeof DungeonMixin !== 'undefined' ? DungeonMixin : null,
 		NavigationMixin: typeof NavigationMixin !== 'undefined' ? NavigationMixin : null,
-		XPMixin: typeof XPMixin !== 'undefined' ? XPMixin : null
+		XPMixin: typeof XPMixin !== 'undefined' ? XPMixin : null,
+		BloodlineMixin: typeof BloodlineMixin !== 'undefined' ? BloodlineMixin : null
 	};
 
 	// Validate all required mixins loaded

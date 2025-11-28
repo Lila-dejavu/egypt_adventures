@@ -11,6 +11,9 @@ const GameState = {
             shield: 0,
             stamina: 50,
             max_stamina: 50,
+            // Mana resource (used by mage class)
+            mana: 0,
+            max_mana: 0,
             potions: 2,
             gold: 500,
             luck_combat: 0,
@@ -26,7 +29,9 @@ const GameState = {
             // Temporary effects
             oasisBlessing: 0,
             banditInfo: 0,
-            compassEffect: 0
+            compassEffect: 0,
+            // Temporary buffs container (e.g., on-hit temporary attack/penetration)
+            temp_buffs: {}
             ,
             // New: selected class and bloodline
             selectedClass: null,

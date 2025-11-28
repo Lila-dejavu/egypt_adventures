@@ -46,7 +46,8 @@
         return (useGameUiToggle ? useGameUiToggle.checked : prefUseGameUI()) && typeof window.game !== 'undefined' && typeof window.game.showBloodlineForClass === 'function';
     }
 
-    const BLOODLINE_POOLS = {
+    // Prefer centralized BLOODLINE_DATA when available (includes the new 'fine' tier)
+    const BLOODLINE_POOLS = (window.BLOODLINE_DATA && window.BLOODLINE_DATA.pools) ? window.BLOODLINE_DATA.pools : {
         mage: [
             { id:'mage_common_ember', name:'火光傳承', description:'提升法術傷害 +5%', tier:'common', modifiers:{spell_damage_pct:0.05}, flags:{} },
             { id:'mage_common_focus', name:'專注根脈', description:'起始法力/耐力增加 10', tier:'common', modifiers:{max_stamina:10}, flags:{} },
@@ -66,7 +67,7 @@
         ]
     };
 
-    const TIER_PROB = [
+    const TIER_PROB = (window.BLOODLINE_DATA && window.BLOODLINE_DATA.tierProb) ? window.BLOODLINE_DATA.tierProb : [
         {tier:'legendary', weight:5},
         {tier:'epic', weight:10},
         {tier:'rare', weight:25},
@@ -110,9 +111,54 @@
     function readPlaythroughs(){ const v = parseInt(localStorage.getItem(PT_KEY) || '0', 10); return Number.isFinite(v) ? Math.max(0, v) : 0; }
     function writePlaythroughs(n){ localStorage.setItem(PT_KEY, String(n)); updateUI(); }
     function readSelectedClass(){ return localStorage.getItem(SELECTED_CLASS_KEY) || null; }
-    function writeSelectedClass(cls){ localStorage.setItem(SELECTED_CLASS_KEY, cls); updateUI(); }
+    function writeSelectedClass(cls){
+        localStorage.setItem(SELECTED_CLASS_KEY, cls);
+        // If the game is loaded, sync selection into runtime player state (helpful for live testing)
+        try{
+            if(window.game && window.game.player){
+                window.game.player.selectedClass = cls;
+                if(cls === 'mage'){
+                    window.game.player.max_mana = window.game.player.max_mana || 30;
+                    window.game.player.mana = window.game.player.max_mana;
+                } else {
+                    window.game.player.max_mana = window.game.player.max_mana || 0;
+                    window.game.player.mana = window.game.player.mana || 0;
+                }
+                if(typeof window.game.applyClassBonuses === 'function'){
+                    try{ window.game.applyClassBonuses(cls); }catch(e){ console.warn('applyClassBonuses failed', e); }
+                }
+            }
+        }catch(e){ console.warn('writeSelectedClass: sync to game failed', e); }
+        updateUI();
+    }
     function readSelectedBloodline(){ const s = localStorage.getItem(SELECTED_BLOODLINE_KEY); return s ? JSON.parse(s) : null; }
-    function writeSelectedBloodline(b){ localStorage.setItem(SELECTED_BLOODLINE_KEY, JSON.stringify(b)); updateUI(); }
+    function writeSelectedBloodline(b){
+        localStorage.setItem(SELECTED_BLOODLINE_KEY, JSON.stringify(b));
+        // If the game is loaded, try to apply bloodline modifiers to runtime player state
+        try{
+            if(window.game && window.game.player){
+                window.game.player.selectedBloodline = b;
+                if(typeof window.game.applyBloodlineModifiers === 'function'){
+                    try{ window.game.applyBloodlineModifiers(b); }catch(e){ console.warn('applyBloodlineModifiers failed', e); }
+                } else if(b.modifiers){
+                    const m = b.modifiers;
+                    if(typeof m.max_mana !== 'undefined'){
+                        window.game.player.max_mana = (window.game.player.max_mana || 0) + m.max_mana;
+                        window.game.player.mana = window.game.player.max_mana;
+                    }
+                    if(typeof m.max_stamina !== 'undefined'){
+                        window.game.player.max_stamina = (window.game.player.max_stamina || 0) + m.max_stamina;
+                        window.game.player.stamina = window.game.player.max_stamina;
+                    }
+                    if(typeof m.max_hp !== 'undefined'){
+                        window.game.player.max_hp = (window.game.player.max_hp || 0) + m.max_hp;
+                        window.game.player.hp = Math.min(window.game.player.hp || window.game.player.max_hp, window.game.player.max_hp);
+                    }
+                }
+            }
+        }catch(e){ console.warn('writeSelectedBloodline: sync to game failed', e); }
+        updateUI();
+    }
 
     function updateUI(){
         const pts = readPlaythroughs();
@@ -187,10 +233,12 @@
 
         bloodlineOptionsEl.innerHTML = '';
         const candidates = generateBloodlineForClass(cls);
+        const TIER_LABELS = { common: '普通', fine: '精良', rare: '優良', epic: '史詩', legendary: '傳說' };
         candidates.forEach(b=>{
             const card = document.createElement('div');
             card.className = 'bloodline-card';
-            card.innerHTML = `<div class='bloodline-tier tier-${b.tier}'>${b.tier.toUpperCase()}</div><div style='font-weight:600;margin-top:8px'>${b.name}</div><div class='small' style='margin:8px 0'>${b.description}</div><div style='text-align:center'><button class='button chooseBtn'>選擇</button></div>`;
+            const tierText = TIER_LABELS[b.tier] || (b.tier ? b.tier.toUpperCase() : '');
+            card.innerHTML = `<div class='bloodline-tier tier-${b.tier}'>${tierText}</div><div style='font-weight:600;margin-top:8px'>${b.name}</div><div class='small' style='margin:8px 0'>${b.description}</div><div style='text-align:center'><button class='button chooseBtn'>選擇</button></div>`;
             const choose = card.querySelector('.chooseBtn');
             choose.addEventListener('click', ()=>{ writeSelectedClass(cls); writeSelectedBloodline(b); closeModal(); showMessage(`已選擇血脈：${b.name}`); });
             bloodlineOptionsEl.appendChild(card);

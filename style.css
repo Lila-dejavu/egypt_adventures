@@ -486,6 +486,19 @@ button[disabled] {
 .tier-rare { background: #4b8ef7; }
 .tier-epic { background: linear-gradient(90deg,#8e44ad,#6f2db0); }
 .tier-legendary { background: linear-gradient(90deg,#f39c12,#d35400); }
+/* 精良 (fine) tier 樣式 */
+.tier-fine { background: linear-gradient(90deg,#2ecc71,#27ae60); }
+
+/* Make the bloodline card show a colored accent for its tier */
+.bloodline-card.tier-common { border-left: 6px solid #6b6b6b; }
+.bloodline-card.tier-fine { border-left: 6px solid #27ae60; }
+.bloodline-card.tier-rare { border-left: 6px solid #4b8ef7; }
+.bloodline-card.tier-epic { border-left: 6px solid #8e44ad; }
+.bloodline-card.tier-legendary { border-left: 6px solid #d35400; }
+
+.bloodline-card .bloodline-header { display:flex; align-items:center; gap:8px; }
+.bloodline-star { font-size:18px; color: #f1c40f; display:inline-block; width:22px; text-align:center; }
+.bloodline-name { font-weight:700; font-size:16px; }
 
 /* Cancel button style consistent with other UI */
 #bloodline-cancel-btn {
