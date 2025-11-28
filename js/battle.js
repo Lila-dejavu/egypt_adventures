@@ -259,6 +259,8 @@ const BattleMixin = {
 
 		// Apply any active debuffs on player at the start of their turn (e.g., 屍毒)
 		try { this._processDebuffs(); } catch(e) { console.error('Debuff processing failed', e); }
+		// Apply any active debuffs on enemy (e.g., burn from bloodline)
+		try { this._processEnemyDebuffs(); } catch(e) { console.error('Enemy debuff processing failed', e); }
 
 		// Use leftmost slot (results[0]) as primary symbol, only count consecutive same symbols from left
 		const primary = results[0];
@@ -357,6 +359,14 @@ const BattleMixin = {
 				const staminaCost = 5 * matchCount;
 				this.player.stamina = Math.max(0, this.player.stamina - staminaCost);
 				showMessage(t('skillAttack', { count: matchCount, crit: isCrit ? t('critical') : '', damage: finalDmg, stamina: staminaCost }));
+				// Bloodline: if player's bloodline defines an onLightningSkill effect, apply it now
+				try {
+					if (typeof Bloodline !== 'undefined' && typeof Bloodline.applyOnLightningSkill === 'function') {
+						Bloodline.applyOnLightningSkill(this);
+					}
+				} catch (e) {
+					console.error('Bloodline application failed', e);
+				}
 				break;
 			}
 			case '🛡️': {
@@ -508,6 +518,33 @@ const BattleMixin = {
 				// Check if player died from DoT
 				this._checkPlayerDeath();
 			}
+		}
+	},
+
+	/**
+	 * Process active debuffs on enemy (called at start of player's turn)
+	 * Applies damage-over-time effects and decrements counters
+	 * @private
+	 */
+	_processEnemyDebuffs() {
+		if (!this.enemy || !this.enemy.debuffs) return;
+		const d = this.enemy.debuffs;
+		// iterate over debuffs
+		for (const key of Object.keys(d)) {
+			const info = d[key];
+			if (info.turns > 0) {
+				this.enemy.hp = Math.max(0, this.enemy.hp - info.dmg);
+				showMessage(`🔥 敵人 ${key}：受到 ${info.dmg} 點傷害（剩餘 ${info.turns} 回合）`);
+				info.turns -= 1;
+				if (info.turns <= 0) {
+					delete d[key];
+					showMessage(`🟢 敵人 ${key} 效果消失`);
+				}
+			}
+		}
+		// If enemy died from DoT, handle victory
+		if (this.enemy.hp <= 0) {
+			this._handleVictory();
 		}
 	},
 

@@ -141,6 +141,28 @@ document.addEventListener('DOMContentLoaded', function() {
 		DebugSystem.init(game);
 	}
 
+	// If player has not selected a class/bloodline, prompt at startup
+	(function(){
+		try {
+			const selected = game.player && game.player.selectedClass;
+			if (!selected) {
+				// Read playthroughs count (uses test key if present)
+				const pts = parseInt(localStorage.getItem('egypt_playthroughs') || '0', 10) || 0;
+				const unlockReq = { mage: 1, warrior: 2, archer: 3 };
+				let avail = ['mage','warrior','archer'].filter(c => pts >= (unlockReq[c]||99));
+				if (avail.length === 0) avail = ['mage']; // fallback for first-time players
+				// Defer slightly so UI is ready
+				setTimeout(() => {
+					if (typeof game.showBloodlineStart === 'function') {
+						game.showBloodlineStart(avail);
+					}
+				}, 250);
+			}
+		} catch (e) {
+			console.error('Bloodline startup prompt failed', e);
+		}
+	})();
+
 	// 如果音樂已啟用，嘗試播放（可能需要用戶互動）
 	if (MusicSystem.isEnabled) {
 		// 延遲播放以確保頁面完全載入

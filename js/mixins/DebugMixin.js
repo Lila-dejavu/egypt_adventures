@@ -146,6 +146,24 @@ const DebugSystem = {
 				<button class="debug-btn" id="debug-apply" style="background: #0a0; font-size: 1.1em; padding: 10px 20px;">套用變更</button>
 				<button class="debug-btn" id="debug-close" style="background: #a00; font-size: 1.1em; padding: 10px 20px;">關閉</button>
 			</div>
+
+			<div class="debug-section">
+				<h3>周目與天賦</h3>
+				<div class="debug-input-row">
+					<label>周目數: <input type="number" id="debug-playthroughs" min="0" style="width:80px;" /></label>
+					<button class="debug-btn" id="debug-dec-playthrough">-</button>
+					<button class="debug-btn" id="debug-inc-playthrough">+</button>
+					<button class="debug-btn" id="debug-reset-playthrough">重置</button>
+				</div>
+				<div class="debug-input-row">
+					<div style="flex:1">目前已選職業： <strong id="debug-selected-class">（尚未選擇）</strong></div>
+					<div style="flex:1">目前已選血脈： <strong id="debug-selected-bloodline">（尚未選擇）</strong></div>
+				</div>
+				<div style="display:flex;gap:8px;margin-top:6px;">
+					<button class="debug-btn" id="debug-open-bloodline">開啟職業/血脈選單</button>
+					<button class="debug-btn" id="debug-clear-selection">清除選擇</button>
+				</div>
+			</div>
 		`;
 
 		// Add styles for debug panel elements
@@ -252,6 +270,23 @@ const DebugSystem = {
 		document.getElementById('debug-enemy-attack').value = game.enemy.baseAttack;
 		document.getElementById('debug-enemy-turns').value = game.enemy.turnsToAttack;
 		document.getElementById('debug-enemy-strength').value = game.enemy.strength || 1;
+
+		// Playthroughs & bloodline selection (test keys)
+		try {
+			const pts = parseInt(localStorage.getItem('egypt_playthroughs')) || 0;
+			document.getElementById('debug-playthroughs').value = pts;
+		} catch (e) { document.getElementById('debug-playthroughs').value = 0; }
+
+		// selected class / bloodline
+		const selCls = (game.player && game.player.selectedClass) || localStorage.getItem('egypt_selected_class') || null;
+		document.getElementById('debug-selected-class').textContent = selCls ? selCls : '（尚未選擇）';
+
+		let selBlood = null;
+		if (game.player && game.player.bloodline) selBlood = game.player.bloodline.name || game.player.bloodline.id || null;
+		if (!selBlood) {
+			try { const s = localStorage.getItem('egypt_selected_bloodline'); selBlood = s ? JSON.parse(s).name || JSON.parse(s).id : null; } catch (e) { selBlood = null; }
+		}
+		document.getElementById('debug-selected-bloodline').textContent = selBlood ? selBlood : '（尚未選擇）';
 	},
 
 	/**
@@ -304,6 +339,12 @@ const DebugSystem = {
 
 		game.updateStatus();
 		showMessage('🛠️ Debug: 遊戲狀態已更新');
+
+		// Persist playthroughs
+		try {
+			const pts = parseInt(document.getElementById('debug-playthroughs').value) || 0;
+			localStorage.setItem('egypt_playthroughs', String(pts));
+		} catch (e) { /* ignore */ }
 	},
 
 	/**
@@ -425,6 +466,64 @@ const DebugSystem = {
 			} else {
 				showMessage('🛠️ Debug: 已在金字塔中');
 			}
+		});
+
+		// Playthrough controls
+		const decPtBtn = document.getElementById('debug-dec-playthrough');
+		const incPtBtn = document.getElementById('debug-inc-playthrough');
+		const resetPtBtn = document.getElementById('debug-reset-playthrough');
+		if (decPtBtn) decPtBtn.addEventListener('click', () => {
+			const el = document.getElementById('debug-playthroughs');
+			let v = parseInt(el.value) || 0; v = Math.max(0, v-1); el.value = v; localStorage.setItem('egypt_playthroughs', String(v)); this.loadDebugValues(); showMessage('🛠️ Debug: 減少周目');
+		});
+		if (incPtBtn) incPtBtn.addEventListener('click', () => {
+			const el = document.getElementById('debug-playthroughs');
+			let v = parseInt(el.value) || 0; v = v+1; el.value = v; localStorage.setItem('egypt_playthroughs', String(v)); this.loadDebugValues(); showMessage('🛠️ Debug: 增加周目');
+		});
+		if (resetPtBtn) resetPtBtn.addEventListener('click', () => {
+			const el = document.getElementById('debug-playthroughs'); el.value = 0; localStorage.setItem('egypt_playthroughs','0'); localStorage.removeItem('egypt_selected_class'); localStorage.removeItem('egypt_selected_bloodline');
+			if (game.player) { game.player.selectedClass = null; game.player.bloodline = null; }
+			this.loadDebugValues(); showMessage('🛠️ Debug: 已重置周目與選角');
+		});
+
+		// Open bloodline/class selection (delegate to game UI if available)
+		const openBtn = document.getElementById('debug-open-bloodline');
+		if (openBtn) openBtn.addEventListener('click', () => {
+			const pts = parseInt(localStorage.getItem('egypt_playthroughs')) || 0;
+			const unlockReq = { mage: 1, warrior: 2, archer: 3 };
+			let avail = ['mage','warrior','archer'].filter(c => pts >= (unlockReq[c]||99));
+			if (avail.length === 0) avail = ['mage'];
+			if (game && typeof game.showBloodlineStart === 'function') {
+				try {
+					game.showBloodlineStart(avail, (chosen) => {
+						// callback - chosen may be { class, bloodline }
+						try {
+							if (chosen && chosen.class) game.player.selectedClass = chosen.class;
+							if (chosen && chosen.bloodline) game.player.bloodline = chosen.bloodline;
+							if (typeof game.saveGame === 'function') game.saveGame();
+							this.loadDebugValues();
+							showMessage('🛠️ Debug: 已選擇職業/血脈（來自遊戲UI）');
+						} catch (e) { console.error(e); }
+					});
+				} catch (e) { console.error('showBloodlineStart failed', e); }
+			} else if (window.Bloodline && typeof window.Bloodline.generateOptionsForClass === 'function') {
+				showMessage('🛠️ 使用本地測試生成器開啟血脈選單');
+				// fallback: open test modal by programmatically triggering test harness (if present)
+				try {
+					if (typeof window.openLocalBloodlineModal === 'function') window.openLocalBloodlineModal(avail[0]);
+				} catch (e) { console.error(e); }
+			} else {
+				showMessage('🛠️ 無法開啟血脈選單（遊戲 UI 或生成器不存在）');
+			}
+		});
+
+		const clearSelBtn = document.getElementById('debug-clear-selection');
+		if (clearSelBtn) clearSelBtn.addEventListener('click', () => {
+			localStorage.removeItem('egypt_selected_class');
+			localStorage.removeItem('egypt_selected_bloodline');
+			if (game.player) { game.player.selectedClass = null; game.player.bloodline = null; }
+			this.loadDebugValues();
+			showMessage('🛠️ Debug: 已清除選角與血脈');
 		});
 
 		document.getElementById('debug-apply').addEventListener('click', () => {

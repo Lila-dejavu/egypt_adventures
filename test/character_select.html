@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="utf-8">
+    <title>測試 — 角色選擇與血脈</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>角色選擇與血脈測試頁面</h1>
+        <div class="small">說明：完成第 1 周目 解鎖 <strong>法師</strong>；第 2 周目 解鎖 <strong>武士</strong>；第 3 周目 解鎖 <strong>弓箭手</strong>。選角時會隨機跳出三種血脈，請選一個主要血脈（永久）。血脈依職業區別，沒有共用。</div>
+
+        <div class="controls">
+            <div>目前週目（已完成次數）： <strong id="playthroughCount">0</strong></div>
+            <label style="display:flex;align-items:center;gap:8px;margin-left:8px;">
+                <input type="checkbox" id="useGameUiToggle">
+                <span class="small">使用遊戲 UI</span>
+            </label>
+            <button id="decBtn" class="button">-</button>
+            <button id="incBtn" class="button">+</button>
+            <button id="resetBtn" class="button">重置為 0</button>
+            <button id="simulateFinishBtn" class="button primary">模擬完成一個周目</button>
+        </div>
+
+        <div class="classes">
+            <div id="mageCard" class="card">
+                <img src="../images/charatcer/2.png" alt="Mage" class="class-avatar">
+                <h3>法師 (Mage)</h3>
+                <div class="small">解鎖：完成 1 周目</div>
+                <button data-class="mage" class="button selectBtn">選擇法師</button>
+            </div>
+
+            <div id="warriorCard" class="card locked">
+                <img src="../images/charatcer/3.png" alt="Warrior" class="class-avatar">
+                <h3>武士 (Warrior)</h3>
+                <div class="small">解鎖：完成 2 周目</div>
+                <button data-class="warrior" class="button selectBtn">選擇武士</button>
+            </div>
+
+            <div id="archerCard" class="card locked">
+                <img src="../images/charatcer/4.png" alt="Archer" class="class-avatar">
+                <h3>弓箭手 (Archer)</h3>
+                <div class="small">解鎖：完成 3 周目</div>
+                <button data-class="archer" class="button selectBtn">選擇弓箭手</button>
+            </div>
+        </div>
+
+        <div id="status" style="margin-top:12px">
+            <div>目前已選角色： <strong id="selectedClass">（尚未選擇）</strong></div>
+            <div id="selectedBloodlineDesc" class="small"></div>
+            <div id="message"></div>
+            <div style="margin-top:8px">
+                <button id="simulateLightningBtn" class="button">模擬：觸發技能（閃電圖示）</button>
+            </div>
+        </div>
+
+        <!-- 血脈選擇 Modal (uses game styles) -->
+        <div id="bloodlineModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;display:flex">
+            <div id="bloodline-selection-panel">
+                <h2>選擇你的血脈</h2>
+                <div class="small">從下列三個隨機血脈中選一個作為你的主要血脈（永久效果）。</div>
+                <div id="bloodlineOptions" style="display:flex;gap:12px;margin-top:12px"></div>
+                <div style="text-align:right;margin-top:12px"><button id="closeModalBtn" class="button">關閉</button></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="./character_select.fixed.js"></script>
+
+</body>
+</html>

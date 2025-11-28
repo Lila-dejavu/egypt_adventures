@@ -27,6 +27,12 @@ const GameState = {
             oasisBlessing: 0,
             banditInfo: 0,
             compassEffect: 0
+            ,
+            // New: selected class and bloodline
+            selectedClass: null,
+            bloodline: null,
+            // Player debuffs (for DoT effects applied by enemies or bloodlines)
+            debuffs: {}
         };
     },
 

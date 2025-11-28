@@ -398,6 +398,113 @@ button[disabled] {
 /* 轉盤中心容器已在下方定義 */
 
 /* 左側象形文字 */
+
+/* ===== 選角 / 血脈面板樣式（與遊戲風格一致） ===== */
+#encounter-choice-panel,
+#bloodline-selection-panel {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 320px;
+    max-width: 92vw;
+    background: linear-gradient(180deg, #fff9e6, #ffe4b3);
+    border: 3px solid #d4a855;
+    border-radius: 12px;
+    padding: 18px;
+    box-shadow: 0 12px 36px rgba(0,0,0,0.35);
+    z-index: 2000;
+    text-align: center;
+}
+
+#encounter-choice-panel h2, #bloodline-selection-panel h2 {
+    color: #8b4513;
+    margin-top: 0;
+}
+
+.choice-btn {
+    display: block;
+    width: 100%;
+    padding: 12px 16px;
+    margin: 8px 0;
+    font-size: 1em;
+    background: linear-gradient(180deg, #f5f5f5, #e0e0e0);
+    color: #333;
+    border: 2px solid #d4a855;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.18s ease;
+}
+
+.choice-btn:hover {
+    background: linear-gradient(180deg, #e8b44c, #d4a02e);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.bloodline-option,
+.bloodline-card {
+    text-align: left;
+    border: 1px solid rgba(224,208,176,0.9);
+    background: #fff;
+    padding: 12px;
+    border-radius: 8px;
+    margin: 8px 0;
+    cursor: pointer;
+    transition: box-shadow 0.15s ease, transform 0.12s ease;
+}
+
+.bloodline-option:hover {
+    box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+    transform: translateY(-4px);
+}
+
+.bloodline-tier {
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    color: white;
+    font-weight: bold;
+}
+
+.tier-common { background: #6b6b6b; }
+.tier-rare { background: #4b8ef7; }
+.tier-epic { background: linear-gradient(90deg,#8e44ad,#6f2db0); }
+.tier-legendary { background: linear-gradient(90deg,#f39c12,#d35400); }
+
+/* Cancel button style consistent with other UI */
+#bloodline-cancel-btn {
+    padding: 8px 12px;
+    border-radius: 6px;
+    background: #999;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+/* Make sure panels are responsive */
+@media (max-width: 420px) {
+    #encounter-choice-panel, #bloodline-selection-panel { padding: 12px; min-width: 260px; }
+    .choice-btn { padding: 10px; }
+}
+
+/* Lightweight helpers used by test pages */
+.container {
+    max-width: 960px;
+    margin: 20px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.button {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #d4a855;
+    background: linear-gradient(180deg,#f5f5f5,#e0e0e0);
+    cursor: pointer;
+}
+.button.primary { background: linear-gradient(180deg,#2d6cdf,#265fcf); color:#fff; border-color:#254fb5 }
 #slot-center::before {
     content: '𓆣\A𓇋\A𓂀\A𓁹\A𓂧\A𓏏';
     position: absolute;
