@@ -1,0 +1,3053 @@
+{
+  "generated_at": "2025-11-28T20:14:37.781Z",
+  "items": [
+    {
+      "file": "js\\battle.js",
+      "line": 97,
+      "text": "${t('encounterEnemy')} ${type}，${t('enterBattle')}",
+      "suggested_key": "evt_js_battle_js_97"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 129,
+      "text": "${t('encounterEnemyName')}${this.enemy.name}",
+      "suggested_key": "evt_js_battle_js_129"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 168,
+      "text": "${t('pyramidEnemyStrong')}${hpMultiplier.toFixed(1)}、${t('attackX')}${atkMultiplier.toFixed(1)}、${t('strengthX')}${strengthBonus.toFixed(1)}",
+      "suggested_key": "evt_js_battle_js_168"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 263,
+      "text": "🎲 戰鬥幸運發揮，避免屍毒！",
+      "suggested_key": "evt_js_battle_js_263"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 279,
+      "text": "💀 屍毒蔓延！每回合失血 ${perTick}（持續 3 回合）",
+      "suggested_key": "evt_js_battle_js_279"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 324,
+      "text": "主要符號：${primary}，匹配數：${matchCount}${bonusMsg}，連續 x${effectiveCombo}（乘數 x${comboMultiplier}）",
+      "suggested_key": "evt_js_battle_js_324"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 336,
+      "text": "目前連續主符號：${this.consecutivePrimarySymbol} x${this.consecutivePrimaryCount}",
+      "suggested_key": "evt_js_battle_js_336"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 526,
+      "text": "🔺 金字塔經驗值 x${pyramidMultiplier}！",
+      "suggested_key": "evt_js_battle_js_526"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 559,
+      "text": "💀 屍毒：受到 ${total} 點傷害（${info.stacks.length} 層，最短 ${minTurns} 回合）",
+      "suggested_key": "evt_js_battle_js_559"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 570,
+      "text": "🟢 屍毒已消失",
+      "suggested_key": "evt_js_battle_js_570"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 576,
+      "text": "💀 屍毒：受到 ${info.dmg} 點傷害（剩餘 ${info.turns} 回合）",
+      "suggested_key": "evt_js_battle_js_576"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 580,
+      "text": "🟢 屍毒已消失",
+      "suggested_key": "evt_js_battle_js_580"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 609,
+      "text": "🔥 敵人 ${key}：受到 ${total} 點傷害（${info.stacks.length} 層，最短 ${minTurns} 回合）",
+      "suggested_key": "evt_js_battle_js_609"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 618,
+      "text": "🟢 敵人 ${key} 效果消失",
+      "suggested_key": "evt_js_battle_js_618"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 623,
+      "text": "🔥 敵人 ${key}：受到 ${info.dmg} 點傷害（剩餘 ${info.turns} 回合）",
+      "suggested_key": "evt_js_battle_js_623"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 627,
+      "text": "🟢 敵人 ${key} 效果消失",
+      "suggested_key": "evt_js_battle_js_627"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 647,
+      "text": "🔺 金字塔寶藏！掉落 ${dropCount} 件裝備",
+      "suggested_key": "evt_js_battle_js_647"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 656,
+      "text": "✨ 獲得 ${this.formatItem(dropped)}",
+      "suggested_key": "evt_js_battle_js_656"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 664,
+      "text": "👑 終極頭目掉落 ${dropCount} 件裝備！",
+      "suggested_key": "evt_js_battle_js_664"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 672,
+      "text": "獲得 ${this.formatItem(dropped)}",
+      "suggested_key": "evt_js_battle_js_672"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 679,
+      "text": "💎 小頭目掉落 ${dropCount} 件裝備！",
+      "suggested_key": "evt_js_battle_js_679"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 685,
+      "text": "獲得 ${this.formatItem(dropped)}",
+      "suggested_key": "evt_js_battle_js_685"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 694,
+      "text": "⚔️ 精英掉落 ${dropCount} 件裝備！",
+      "suggested_key": "evt_js_battle_js_694"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 701,
+      "text": "獲得 ${this.formatItem(dropped)}",
+      "suggested_key": "evt_js_battle_js_701"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 714,
+      "text": "敵人掉落：${this.formatItem(dropped)}",
+      "suggested_key": "evt_js_battle_js_714"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 771,
+      "text": "HP 歸零，消耗一瓶藥水自動復活並回滿 HP/體力。剩餘藥水：${this.player.potions}",
+      "suggested_key": "evt_js_battle_js_771"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 773,
+      "text": "你倒下了，遊戲結束。沒有藥水可用。請重新整理頁面以重玩。",
+      "suggested_key": "evt_js_battle_js_773"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 97,
+      "text": "${t('encounterEnemy')} ${type}，${t('enterBattle')}",
+      "suggested_key": "evt_js_battle_js_97_1"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 129,
+      "text": "${t('encounterEnemyName')}${this.enemy.name}",
+      "suggested_key": "evt_js_battle_js_129_1"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 168,
+      "text": "${t('pyramidEnemyStrong')}${hpMultiplier.toFixed(1)}、${t('attackX')}${atkMultiplier.toFixed(1)}、${t('strengthX')}${strengthBonus.toFixed(1)}",
+      "suggested_key": "evt_js_battle_js_168_1"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 279,
+      "text": "💀 屍毒蔓延！每回合失血 ${perTick}（持續 3 回合）",
+      "suggested_key": "evt_js_battle_js_279_1"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 324,
+      "text": "主要符號：${primary}，匹配數：${matchCount}${bonusMsg}，連續 x${effectiveCombo}（乘數 x${comboMultiplier}）",
+      "suggested_key": "evt_js_battle_js_324_1"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 336,
+      "text": "目前連續主符號：${this.consecutivePrimarySymbol} x${this.consecutivePrimaryCount}",
+      "suggested_key": "evt_js_battle_js_336_1"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 526,
+      "text": "🔺 金字塔經驗值 x${pyramidMultiplier}！",
+      "suggested_key": "evt_js_battle_js_526_1"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 559,
+      "text": "💀 屍毒：受到 ${total} 點傷害（${info.stacks.length} 層，最短 ${minTurns} 回合）",
+      "suggested_key": "evt_js_battle_js_559_1"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 576,
+      "text": "💀 屍毒：受到 ${info.dmg} 點傷害（剩餘 ${info.turns} 回合）",
+      "suggested_key": "evt_js_battle_js_576_1"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 609,
+      "text": "🔥 敵人 ${key}：受到 ${total} 點傷害（${info.stacks.length} 層，最短 ${minTurns} 回合）",
+      "suggested_key": "evt_js_battle_js_609_1"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 618,
+      "text": "🟢 敵人 ${key} 效果消失",
+      "suggested_key": "evt_js_battle_js_618_1"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 623,
+      "text": "🔥 敵人 ${key}：受到 ${info.dmg} 點傷害（剩餘 ${info.turns} 回合）",
+      "suggested_key": "evt_js_battle_js_623_1"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 627,
+      "text": "🟢 敵人 ${key} 效果消失",
+      "suggested_key": "evt_js_battle_js_627_1"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 647,
+      "text": "🔺 金字塔寶藏！掉落 ${dropCount} 件裝備",
+      "suggested_key": "evt_js_battle_js_647_1"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 656,
+      "text": "✨ 獲得 ${this.formatItem(dropped)}",
+      "suggested_key": "evt_js_battle_js_656_1"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 664,
+      "text": "👑 終極頭目掉落 ${dropCount} 件裝備！",
+      "suggested_key": "evt_js_battle_js_664_1"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 672,
+      "text": "獲得 ${this.formatItem(dropped)}",
+      "suggested_key": "evt_js_battle_js_672_1"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 679,
+      "text": "💎 小頭目掉落 ${dropCount} 件裝備！",
+      "suggested_key": "evt_js_battle_js_679_1"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 685,
+      "text": "獲得 ${this.formatItem(dropped)}",
+      "suggested_key": "evt_js_battle_js_685_1"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 694,
+      "text": "⚔️ 精英掉落 ${dropCount} 件裝備！",
+      "suggested_key": "evt_js_battle_js_694_1"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 701,
+      "text": "獲得 ${this.formatItem(dropped)}",
+      "suggested_key": "evt_js_battle_js_701_1"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 714,
+      "text": "敵人掉落：${this.formatItem(dropped)}",
+      "suggested_key": "evt_js_battle_js_714_1"
+    },
+    {
+      "file": "js\\battle.js",
+      "line": 771,
+      "text": "HP 歸零，消耗一瓶藥水自動復活並回滿 HP/體力。剩餘藥水：${this.player.potions}",
+      "suggested_key": "evt_js_battle_js_771_1"
+    },
+    {
+      "file": "js\\core\\Bloodline.js",
+      "line": 91,
+      "text": "🧨 血脈觸發：對敵人施加 ${statusName}，每回合失血 ${dmgPerTurn}（持續 ${duration} 回合）",
+      "suggested_key": "evt_js_core_Bloodline_js_91"
+    },
+    {
+      "file": "js\\core\\Bloodline.js",
+      "line": 94,
+      "text": "🧨 血脈觸發：對敵人施加 ${statusName}，每回合失血 ${dmgPerTurn}（持續 ${duration} 回合）",
+      "suggested_key": "evt_js_core_Bloodline_js_94"
+    },
+    {
+      "file": "js\\core\\Bloodline.js",
+      "line": 91,
+      "text": "🧨 血脈觸發：對敵人施加 ${statusName}，每回合失血 ${dmgPerTurn}（持續 ${duration} 回合）",
+      "suggested_key": "evt_js_core_Bloodline_js_91_1"
+    },
+    {
+      "file": "js\\core\\Bloodline.js",
+      "line": 94,
+      "text": "🧨 血脈觸發：對敵人施加 ${statusName}，每回合失血 ${dmgPerTurn}（持續 ${duration} 回合）",
+      "suggested_key": "evt_js_core_Bloodline_js_94_1"
+    },
+    {
+      "file": "js\\equipment.js",
+      "line": 113,
+      "text": "${t('unequipped')} ${oldEquipment.name}, ${t('addedToInventory')}.",
+      "suggested_key": "evt_js_equipment_js_113"
+    },
+    {
+      "file": "js\\equipment.js",
+      "line": 118,
+      "text": "${t('equipTo')} ${it.name} ${t('to')} ${it.slot}",
+      "suggested_key": "evt_js_equipment_js_118"
+    },
+    {
+      "file": "js\\equipment.js",
+      "line": 123,
+      "text": "${t('gainedGoldLuck')} +${it.luck_gold}",
+      "suggested_key": "evt_js_equipment_js_123"
+    },
+    {
+      "file": "js\\equipment.js",
+      "line": 128,
+      "text": "${t('maxHpBonus')} +${it.max_hp_bonus}",
+      "suggested_key": "evt_js_equipment_js_128"
+    },
+    {
+      "file": "js\\equipment.js",
+      "line": 133,
+      "text": "${t('maxStaminaBonus')} +${it.stamina_bonus}",
+      "suggested_key": "evt_js_equipment_js_133"
+    },
+    {
+      "file": "js\\equipment.js",
+      "line": 157,
+      "text": "${t('unequipped')} ${it.name}, ${t('addedToInventory')}.",
+      "suggested_key": "evt_js_equipment_js_157"
+    },
+    {
+      "file": "js\\equipment.js",
+      "line": 162,
+      "text": "${t('goldLuckRemaining')} -${it.luck_gold}（${t('remaining')} ${this.player.luck_gold}）。",
+      "suggested_key": "evt_js_equipment_js_162"
+    },
+    {
+      "file": "js\\equipment.js",
+      "line": 167,
+      "text": "${t('maxHpBonus')} -${it.max_hp_bonus}",
+      "suggested_key": "evt_js_equipment_js_167"
+    },
+    {
+      "file": "js\\equipment.js",
+      "line": 172,
+      "text": "${t('maxStaminaBonus')} -${it.stamina_bonus}",
+      "suggested_key": "evt_js_equipment_js_172"
+    },
+    {
+      "file": "js\\equipment.js",
+      "line": 113,
+      "text": "${t('unequipped')} ${oldEquipment.name}, ${t('addedToInventory')}.",
+      "suggested_key": "evt_js_equipment_js_113_1"
+    },
+    {
+      "file": "js\\equipment.js",
+      "line": 118,
+      "text": "${t('equipTo')} ${it.name} ${t('to')} ${it.slot}",
+      "suggested_key": "evt_js_equipment_js_118_1"
+    },
+    {
+      "file": "js\\equipment.js",
+      "line": 123,
+      "text": "${t('gainedGoldLuck')} +${it.luck_gold}",
+      "suggested_key": "evt_js_equipment_js_123_1"
+    },
+    {
+      "file": "js\\equipment.js",
+      "line": 128,
+      "text": "${t('maxHpBonus')} +${it.max_hp_bonus}",
+      "suggested_key": "evt_js_equipment_js_128_1"
+    },
+    {
+      "file": "js\\equipment.js",
+      "line": 133,
+      "text": "${t('maxStaminaBonus')} +${it.stamina_bonus}",
+      "suggested_key": "evt_js_equipment_js_133_1"
+    },
+    {
+      "file": "js\\equipment.js",
+      "line": 157,
+      "text": "${t('unequipped')} ${it.name}, ${t('addedToInventory')}.",
+      "suggested_key": "evt_js_equipment_js_157_1"
+    },
+    {
+      "file": "js\\equipment.js",
+      "line": 162,
+      "text": "${t('goldLuckRemaining')} -${it.luck_gold}（${t('remaining')} ${this.player.luck_gold}）。",
+      "suggested_key": "evt_js_equipment_js_162_1"
+    },
+    {
+      "file": "js\\equipment.js",
+      "line": 167,
+      "text": "${t('maxHpBonus')} -${it.max_hp_bonus}",
+      "suggested_key": "evt_js_equipment_js_167_1"
+    },
+    {
+      "file": "js\\equipment.js",
+      "line": 172,
+      "text": "${t('maxStaminaBonus')} -${it.stamina_bonus}",
+      "suggested_key": "evt_js_equipment_js_172_1"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 8,
+      "text": "🌪️ 巨大的沙塵暴即將來襲！你發現了一個避難所...",
+      "suggested_key": "evt_js_events_choices_js_8"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 23,
+      "text": "🏔️ 洞穴空無一人，你安全地度過了沙塵暴。",
+      "suggested_key": "evt_js_events_choices_js_23"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 26,
+      "text": "💤 趁機休息，恢復 30 HP 和 20 體力。",
+      "suggested_key": "evt_js_events_choices_js_26"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 29,
+      "text": "👴 洞穴中住著一位隱士，他分享了食物和故事。",
+      "suggested_key": "evt_js_events_choices_js_29"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 33,
+      "text": "📖 你從隱士的故事中學到了很多！",
+      "suggested_key": "evt_js_events_choices_js_33"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 37,
+      "text": "🎁 隱士送給你一件禮物：${this.formatItem(item)}",
+      "suggested_key": "evt_js_events_choices_js_37"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 41,
+      "text": "🐺 洞穴是野獸的巢穴！你必須戰鬥！",
+      "suggested_key": "evt_js_events_choices_js_41"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 45,
+      "text": "🏛️ 你躲進了古老的廢墟中...",
+      "suggested_key": "evt_js_events_choices_js_45"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 50,
+      "text": "💰 在廢墟中搜尋時，你發現了 ${gold} 金幣！",
+      "suggested_key": "evt_js_events_choices_js_50"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 54,
+      "text": "⚔️ 還找到了 ${this.formatItem(item)}！",
+      "suggested_key": "evt_js_events_choices_js_54"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 59,
+      "text": "💥 廢墟部分坍塌！你受到 ${damage} 點傷害。",
+      "suggested_key": "evt_js_events_choices_js_59"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 60,
+      "text": "🏃 你趕緊逃出廢墟，沙塵暴已經過去。",
+      "suggested_key": "evt_js_events_choices_js_60"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 62,
+      "text": "🌪️ 廢墟很穩固，你安全地躲過了沙塵暴。",
+      "suggested_key": "evt_js_events_choices_js_62"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 63,
+      "text": "但廢墟中沒有找到任何有價值的東西。",
+      "suggested_key": "evt_js_events_choices_js_63"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 67,
+      "text": "💪 你決定勇敢面對沙塵暴！",
+      "suggested_key": "evt_js_events_choices_js_67"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 72,
+      "text": "🌪️ 沙塵暴很猛烈！你損失了 ${stormDamage} HP 和 ${staminaCost} 體力。",
+      "suggested_key": "evt_js_events_choices_js_72"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 75,
+      "text": "💎 在暴風中前行鍛鍊了你的意志，戰鬥幸運 +1！",
+      "suggested_key": "evt_js_events_choices_js_75"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 78,
+      "text": "🏃 你成功穿越了沙塵暴區域，地圖進度額外 +1（${this.map_steps}/${this.map_goal}）！",
+      "suggested_key": "evt_js_events_choices_js_78"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 94,
+      "text": "🧙 你遇到了一位流浪的煉金術師...",
+      "suggested_key": "evt_js_events_choices_js_94"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 108,
+      "text": "💸 你的金幣不夠購買藥水。",
+      "suggested_key": "evt_js_events_choices_js_108"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 109,
+      "text": "🧙 煉金術師：「等你有錢了再來吧。」",
+      "suggested_key": "evt_js_events_choices_js_109"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 115,
+      "text": "🧪 你花費 ${totalCost} 金幣購買了 ${buyCount} 瓶高品質藥水！",
+      "suggested_key": "evt_js_events_choices_js_115"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 122,
+      "text": "💸 你沒有足夠的金幣（需要 150 金幣）。",
+      "suggested_key": "evt_js_events_choices_js_122"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 129,
+      "text": "💪 你獲得了力量藥劑！最大HP永久 +40！",
+      "suggested_key": "evt_js_events_choices_js_129"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 133,
+      "text": "🏃 你獲得了敏捷藥劑！最大體力永久 +30！",
+      "suggested_key": "evt_js_events_choices_js_133"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 137,
+      "text": "🍀 你獲得了幸運藥劑！戰鬥幸運 +3，金幣幸運 +2！",
+      "suggested_key": "evt_js_events_choices_js_137"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 143,
+      "text": "📚 煉金術師開始教導你煉金的奧秘...",
+      "suggested_key": "evt_js_events_choices_js_143"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 147,
+      "text": "😓 學習很累人，消耗 20 體力。",
+      "suggested_key": "evt_js_events_choices_js_147"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 150,
+      "text": "✨ 你學會了基礎煉金術！",
+      "suggested_key": "evt_js_events_choices_js_150"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 151,
+      "text": "🧪 從現在開始，使用藥水時額外恢復 20% HP！",
+      "suggested_key": "evt_js_events_choices_js_151"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 154,
+      "text": "📖 你的煉金知識更加精進，獲得 2 瓶藥水！",
+      "suggested_key": "evt_js_events_choices_js_154"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 167,
+      "text": "📜 你發現了一塊刻有古老文字的石碑...",
+      "suggested_key": "evt_js_events_choices_js_167"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 178,
+      "text": "🔍 你努力解讀石碑上的文字...",
+      "suggested_key": "evt_js_events_choices_js_178"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 183,
+      "text": "💡 你成功解讀了古老的知識！",
+      "suggested_key": "evt_js_events_choices_js_183"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 188,
+      "text": "📖 石碑記載了古老的體能訓練法，最大HP +25！",
+      "suggested_key": "evt_js_events_choices_js_188"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 191,
+      "text": "📖 石碑記載了戰鬥技巧，戰鬥幸運 +2！",
+      "suggested_key": "evt_js_events_choices_js_191"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 194,
+      "text": "📖 石碑記載了寶藏的位置線索，金幣幸運 +2！",
+      "suggested_key": "evt_js_events_choices_js_194"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 199,
+      "text": "😕 文字太古老了，你只能理解一小部分。",
+      "suggested_key": "evt_js_events_choices_js_199"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 200,
+      "text": "但你仍然學到了一些東西。",
+      "suggested_key": "evt_js_events_choices_js_200"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 203,
+      "text": "✋ 你的手觸碰到了石碑...",
+      "suggested_key": "evt_js_events_choices_js_203"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 206,
+      "text": "✨ 石碑散發出溫暖的光芒！",
+      "suggested_key": "evt_js_events_choices_js_206"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 210,
+      "text": "💫 你的生命和體力完全恢復，並獲得 30 點護盾！",
+      "suggested_key": "evt_js_events_choices_js_210"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 214,
+      "text": "🌀 石碑的魔法將你傳送到了另一個地方！",
+      "suggested_key": "evt_js_events_choices_js_214"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 216,
+      "text": "📍 地圖進度 +2（${this.map_steps}/${this.map_goal}）",
+      "suggested_key": "evt_js_events_choices_js_216"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 219,
+      "text": "💰 你在新地點發現了 ${gold} 金幣！",
+      "suggested_key": "evt_js_events_choices_js_219"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 221,
+      "text": "⚠️ 石碑是個陷阱！",
+      "suggested_key": "evt_js_events_choices_js_221"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 224,
+      "text": "💥 魔法能量爆發，你受到 ${damage} 點傷害！",
+      "suggested_key": "evt_js_events_choices_js_224"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 227,
+      "text": "🚶 你決定不理會石碑，繼續你的旅程。",
+      "suggested_key": "evt_js_events_choices_js_227"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 228,
+      "text": "安全第一總是沒錯的。",
+      "suggested_key": "evt_js_events_choices_js_228"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 230,
+      "text": "體力恢復 10 點。",
+      "suggested_key": "evt_js_events_choices_js_230"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 242,
+      "text": "🐺 你遭遇了一群沙漠野獸！",
+      "suggested_key": "evt_js_events_choices_js_242"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 253,
+      "text": "⚔️ 你決定迎擊野獸群！",
+      "suggested_key": "evt_js_events_choices_js_253"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 260,
+      "text": "😓 你的體力不足以嚇跑野獸！",
+      "suggested_key": "evt_js_events_choices_js_260"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 261,
+      "text": "🐺 野獸們嗅到了你的虛弱，發起攻擊！",
+      "suggested_key": "evt_js_events_choices_js_261"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 267,
+      "text": "💪 你展現出強大的氣勢，成功嚇跑了野獸！（消耗 ${staminaCost} 體力）",
+      "suggested_key": "evt_js_events_choices_js_267"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 271,
+      "text": "💰 野獸逃跑時掉落了 ${gold} 金幣！",
+      "suggested_key": "evt_js_events_choices_js_271"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 277,
+      "text": "😰 嚇唬失敗！野獸更加憤怒了！（消耗 ${staminaCost} 體力）",
+      "suggested_key": "evt_js_events_choices_js_277"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 283,
+      "text": "🧪 你沒有藥水可以當作食物！",
+      "suggested_key": "evt_js_events_choices_js_283"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 284,
+      "text": "🐺 野獸們向你撲來！",
+      "suggested_key": "evt_js_events_choices_js_284"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 288,
+      "text": "🍖 你用藥水中的草藥安撫了野獸。",
+      "suggested_key": "evt_js_events_choices_js_288"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 289,
+      "text": "🐺 野獸們吃飽後滿意地離開了。",
+      "suggested_key": "evt_js_events_choices_js_289"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 294,
+      "text": "🎁 野獸頭領留下了一件物品：${this.formatItem(item)}！",
+      "suggested_key": "evt_js_events_choices_js_294"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 298,
+      "text": "💰 野獸離開時留下了 ${gold} 金幣。",
+      "suggested_key": "evt_js_events_choices_js_298"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 314,
+      "text": "🌙 在月光下，你發現了一座神秘的祭壇...",
+      "suggested_key": "evt_js_events_choices_js_314"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 325,
+      "text": "🙏 你跪在祭壇前虔誠祈禱...",
+      "suggested_key": "evt_js_events_choices_js_325"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 328,
+      "text": "✨ 月神回應了你的祈禱！",
+      "suggested_key": "evt_js_events_choices_js_328"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 330,
+      "text": "🌙 你獲得月神祝福，接下來 5 場戰鬥暴擊率大幅提升！",
+      "suggested_key": "evt_js_events_choices_js_330"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 334,
+      "text": "🌟 月光照耀著你。",
+      "suggested_key": "evt_js_events_choices_js_334"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 337,
+      "text": "恢復 40 HP，戰鬥幸運 +1。",
+      "suggested_key": "evt_js_events_choices_js_337"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 339,
+      "text": "...",
+      "suggested_key": "evt_js_events_choices_js_339"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 340,
+      "text": "月神似乎沒有回應，但祈禱讓你內心平靜。",
+      "suggested_key": "evt_js_events_choices_js_340"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 346,
+      "text": "💸 你沒有足夠的金幣獻祭。",
+      "suggested_key": "evt_js_events_choices_js_346"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 347,
+      "text": "🌙 但月神欣賞你的誠意。",
+      "suggested_key": "evt_js_events_choices_js_347"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 349,
+      "text": "金幣幸運 +1。",
+      "suggested_key": "evt_js_events_choices_js_349"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 352,
+      "text": "💰 你獻上了 ${offerCost} 金幣。",
+      "suggested_key": "evt_js_events_choices_js_352"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 353,
+      "text": "✨ 祭壇綻放出耀眼的光芒！",
+      "suggested_key": "evt_js_events_choices_js_353"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 358,
+      "text": "💎 月神慷慨地回饋你 ${goldReturn} 金幣！",
+      "suggested_key": "evt_js_events_choices_js_358"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 362,
+      "text": "⚔️ 月神賜予你一件珍貴的裝備：${this.formatItem(item)}！",
+      "suggested_key": "evt_js_events_choices_js_362"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 368,
+      "text": "🌙 月神的力量強化了你的身體！最大HP +35，最大體力 +25！",
+      "suggested_key": "evt_js_events_choices_js_368"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 372,
+      "text": "👁️ 你伸手去拿祭壇上的寶物...",
+      "suggested_key": "evt_js_events_choices_js_372"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 375,
+      "text": "🎉 沒有觸發任何機關！",
+      "suggested_key": "evt_js_events_choices_js_375"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 380,
+      "text": "💰 你獲得了 ${gold} 金幣和 ${this.formatItem(item)}！",
+      "suggested_key": "evt_js_events_choices_js_380"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 384,
+      "text": "⚠️ 祭壇的守護魔法觸發了！",
+      "suggested_key": "evt_js_events_choices_js_384"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 387,
+      "text": "⚔️ 你拿到了 ${this.formatItem(item)}",
+      "suggested_key": "evt_js_events_choices_js_387"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 391,
+      "text": "😈 但受到詛咒！損失 ${curse} HP 和 10 最大HP！",
+      "suggested_key": "evt_js_events_choices_js_391"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 395,
+      "text": "👹 祭壇的守護者被喚醒了！",
+      "suggested_key": "evt_js_events_choices_js_395"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 410,
+      "text": "🐪 你發現了一處商隊遺骸...",
+      "suggested_key": "evt_js_events_choices_js_410"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 421,
+      "text": "🔍 你仔細搜索每一個角落...",
+      "suggested_key": "evt_js_events_choices_js_421"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 423,
+      "text": "😓 仔細搜索消耗了 15 體力。",
+      "suggested_key": "evt_js_events_choices_js_423"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 426,
+      "text": "💰 你找到了 ${gold} 金幣！",
+      "suggested_key": "evt_js_events_choices_js_426"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 433,
+      "text": "⚔️ 找到了 ${this.formatItem(item)}！",
+      "suggested_key": "evt_js_events_choices_js_433"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 439,
+      "text": "🧪 還找到了 ${potions} 瓶藥水！",
+      "suggested_key": "evt_js_events_choices_js_439"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 444,
+      "text": "💨 你快速搜刮了一遍...",
+      "suggested_key": "evt_js_events_choices_js_444"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 449,
+      "text": "💰 你找到了 ${gold} 金幣。",
+      "suggested_key": "evt_js_events_choices_js_449"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 453,
+      "text": "⚔️ 還找到了 ${this.formatItem(item)}。",
+      "suggested_key": "evt_js_events_choices_js_453"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 458,
+      "text": "💥 你觸發了殘留的陷阱！",
+      "suggested_key": "evt_js_events_choices_js_458"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 461,
+      "text": "受到 ${damage} 點傷害。",
+      "suggested_key": "evt_js_events_choices_js_461"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 464,
+      "text": "💰 匆忙中你還是撿到了 ${gold} 金幣。",
+      "suggested_key": "evt_js_events_choices_js_464"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 468,
+      "text": "⚠️ 其他掠奪者也盯上了這裡！",
+      "suggested_key": "evt_js_events_choices_js_468"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 472,
+      "text": "🔍 你檢查商隊成員的狀況...",
+      "suggested_key": "evt_js_events_choices_js_472"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 475,
+      "text": "😊 你找到了一位倖存者！",
+      "suggested_key": "evt_js_events_choices_js_475"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 478,
+      "text": "💰 倖存者感激地給了你 ${gold} 金幣作為酬謝。",
+      "suggested_key": "evt_js_events_choices_js_478"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 481,
+      "text": "🎁 還送給你一件珍貴物品：${this.formatItem(item)}！",
+      "suggested_key": "evt_js_events_choices_js_481"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 484,
+      "text": "😌 救人一命讓你心情愉悅。",
+      "suggested_key": "evt_js_events_choices_js_484"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 488,
+      "text": "😔 所有人都已經罹難了...",
+      "suggested_key": "evt_js_events_choices_js_488"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 489,
+      "text": "📖 你找到了商隊隊長的日記。",
+      "suggested_key": "evt_js_events_choices_js_489"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 492,
+      "text": "從日記中你學到了一些沙漠生存技巧。",
+      "suggested_key": "evt_js_events_choices_js_492"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 495,
+      "text": "💰 你找到了他們的共同基金 ${gold} 金幣。",
+      "suggested_key": "evt_js_events_choices_js_495"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 499,
+      "text": "😨 「倖存者」突然站起來攻擊你！",
+      "suggested_key": "evt_js_events_choices_js_499"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 500,
+      "text": "原來是盜賊的陷阱！",
+      "suggested_key": "evt_js_events_choices_js_500"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 512,
+      "text": "🔺 你發現了一座古老的金字塔！",
+      "suggested_key": "evt_js_events_choices_js_512"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 513,
+      "text": "這裡充滿危險，但也蘊藏著巨大的寶藏...",
+      "suggested_key": "evt_js_events_choices_js_513"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 514,
+      "text": "金字塔副本：8步探險，敵人強度極高（隨地圖提升），獎勵豐厚（15倍經驗/金幣），保證掉落優良以上裝備！",
+      "suggested_key": "evt_js_events_choices_js_514"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 37,
+      "text": "🎁 隱士送給你一件禮物：${this.formatItem(item)}",
+      "suggested_key": "evt_js_events_choices_js_37_1"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 50,
+      "text": "💰 在廢墟中搜尋時，你發現了 ${gold} 金幣！",
+      "suggested_key": "evt_js_events_choices_js_50_1"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 54,
+      "text": "⚔️ 還找到了 ${this.formatItem(item)}！",
+      "suggested_key": "evt_js_events_choices_js_54_1"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 59,
+      "text": "💥 廢墟部分坍塌！你受到 ${damage} 點傷害。",
+      "suggested_key": "evt_js_events_choices_js_59_1"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 72,
+      "text": "🌪️ 沙塵暴很猛烈！你損失了 ${stormDamage} HP 和 ${staminaCost} 體力。",
+      "suggested_key": "evt_js_events_choices_js_72_1"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 78,
+      "text": "🏃 你成功穿越了沙塵暴區域，地圖進度額外 +1（${this.map_steps}/${this.map_goal}）！",
+      "suggested_key": "evt_js_events_choices_js_78_1"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 115,
+      "text": "🧪 你花費 ${totalCost} 金幣購買了 ${buyCount} 瓶高品質藥水！",
+      "suggested_key": "evt_js_events_choices_js_115_1"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 216,
+      "text": "📍 地圖進度 +2（${this.map_steps}/${this.map_goal}）",
+      "suggested_key": "evt_js_events_choices_js_216_1"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 219,
+      "text": "💰 你在新地點發現了 ${gold} 金幣！",
+      "suggested_key": "evt_js_events_choices_js_219_1"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 224,
+      "text": "💥 魔法能量爆發，你受到 ${damage} 點傷害！",
+      "suggested_key": "evt_js_events_choices_js_224_1"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 267,
+      "text": "💪 你展現出強大的氣勢，成功嚇跑了野獸！（消耗 ${staminaCost} 體力）",
+      "suggested_key": "evt_js_events_choices_js_267_1"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 271,
+      "text": "💰 野獸逃跑時掉落了 ${gold} 金幣！",
+      "suggested_key": "evt_js_events_choices_js_271_1"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 277,
+      "text": "😰 嚇唬失敗！野獸更加憤怒了！（消耗 ${staminaCost} 體力）",
+      "suggested_key": "evt_js_events_choices_js_277_1"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 294,
+      "text": "🎁 野獸頭領留下了一件物品：${this.formatItem(item)}！",
+      "suggested_key": "evt_js_events_choices_js_294_1"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 298,
+      "text": "💰 野獸離開時留下了 ${gold} 金幣。",
+      "suggested_key": "evt_js_events_choices_js_298_1"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 352,
+      "text": "💰 你獻上了 ${offerCost} 金幣。",
+      "suggested_key": "evt_js_events_choices_js_352_1"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 358,
+      "text": "💎 月神慷慨地回饋你 ${goldReturn} 金幣！",
+      "suggested_key": "evt_js_events_choices_js_358_1"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 362,
+      "text": "⚔️ 月神賜予你一件珍貴的裝備：${this.formatItem(item)}！",
+      "suggested_key": "evt_js_events_choices_js_362_1"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 380,
+      "text": "💰 你獲得了 ${gold} 金幣和 ${this.formatItem(item)}！",
+      "suggested_key": "evt_js_events_choices_js_380_1"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 387,
+      "text": "⚔️ 你拿到了 ${this.formatItem(item)}",
+      "suggested_key": "evt_js_events_choices_js_387_1"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 391,
+      "text": "😈 但受到詛咒！損失 ${curse} HP 和 10 最大HP！",
+      "suggested_key": "evt_js_events_choices_js_391_1"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 426,
+      "text": "💰 你找到了 ${gold} 金幣！",
+      "suggested_key": "evt_js_events_choices_js_426_1"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 433,
+      "text": "⚔️ 找到了 ${this.formatItem(item)}！",
+      "suggested_key": "evt_js_events_choices_js_433_1"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 439,
+      "text": "🧪 還找到了 ${potions} 瓶藥水！",
+      "suggested_key": "evt_js_events_choices_js_439_1"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 449,
+      "text": "💰 你找到了 ${gold} 金幣。",
+      "suggested_key": "evt_js_events_choices_js_449_1"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 453,
+      "text": "⚔️ 還找到了 ${this.formatItem(item)}。",
+      "suggested_key": "evt_js_events_choices_js_453_1"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 461,
+      "text": "受到 ${damage} 點傷害。",
+      "suggested_key": "evt_js_events_choices_js_461_1"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 464,
+      "text": "💰 匆忙中你還是撿到了 ${gold} 金幣。",
+      "suggested_key": "evt_js_events_choices_js_464_1"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 478,
+      "text": "💰 倖存者感激地給了你 ${gold} 金幣作為酬謝。",
+      "suggested_key": "evt_js_events_choices_js_478_1"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 481,
+      "text": "🎁 還送給你一件珍貴物品：${this.formatItem(item)}！",
+      "suggested_key": "evt_js_events_choices_js_481_1"
+    },
+    {
+      "file": "js\\events\\choices.js",
+      "line": 495,
+      "text": "💰 你找到了他們的共同基金 ${gold} 金幣。",
+      "suggested_key": "evt_js_events_choices_js_495_1"
+    },
+    {
+      "file": "js\\events\\commerce.js",
+      "line": 8,
+      "text": "遇到商隊：若資金足夠可補給藥水（50金/瓶）。",
+      "suggested_key": "evt_js_events_commerce_js_8"
+    },
+    {
+      "file": "js\\events\\commerce.js",
+      "line": 12,
+      "text": "補給成功，藥水+1",
+      "suggested_key": "evt_js_events_commerce_js_12"
+    },
+    {
+      "file": "js\\events\\commerce.js",
+      "line": 14,
+      "text": "金幣不足，無法購買補給。",
+      "suggested_key": "evt_js_events_commerce_js_14"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 22,
+      "text": "${t('treasureJackpot')} ${finalGold} ${t('goldCoins')}",
+      "suggested_key": "evt_js_events_exploration_js_22"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 24,
+      "text": "${t('goldLuckBonus')} +${Math.floor(baseGold * 0.15 * this.player.luck_gold)}）",
+      "suggested_key": "evt_js_events_exploration_js_24"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 30,
+      "text": "${t('treasureGood')} ${finalGold} ${t('goldCoins')}",
+      "suggested_key": "evt_js_events_exploration_js_30"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 34,
+      "text": "${t('treasurePoor')} ${gold} ${t('goldCoins')}",
+      "suggested_key": "evt_js_events_exploration_js_34"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 72,
+      "text": "⚔️ 你在遺體旁找到了 ${this.formatItem(newItem)}！",
+      "suggested_key": "evt_js_events_exploration_js_72"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 73,
+      "text": "（已加入背包）",
+      "suggested_key": "evt_js_events_exploration_js_73"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 80,
+      "text": "💰 你找到了 ${gold} 金幣和 ${newItem.name}！",
+      "suggested_key": "evt_js_events_exploration_js_80"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 84,
+      "text": "💰 你在遺體旁找到了 ${gold} 金幣。",
+      "suggested_key": "evt_js_events_exploration_js_84"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 88,
+      "text": "🕊️ 你為旅人默哀，但身上已經沒有任何有價值的東西了。",
+      "suggested_key": "evt_js_events_exploration_js_88"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 90,
+      "text": "💨 遺體和裝備都已被風沙侵蝕，無法使用。",
+      "suggested_key": "evt_js_events_exploration_js_90"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 92,
+      "text": "🦂 遺體周圍有毒蠍的痕跡，你謹慎地離開了，什麼也沒拿。",
+      "suggested_key": "evt_js_events_exploration_js_92"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 95,
+      "text": "（小心離開時受到輕傷 -${damage} HP）",
+      "suggested_key": "evt_js_events_exploration_js_95"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 104,
+      "text": "🛕 你發現了一座古老的神殿廢墟...",
+      "suggested_key": "evt_js_events_exploration_js_104"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 127,
+      "text": "✨ 神殿的祝福降臨！最大HP +${hpValue}",
+      "suggested_key": "evt_js_events_exploration_js_127"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 132,
+      "text": "${t('shrineBlessing')} +${staminaValue}",
+      "suggested_key": "evt_js_events_exploration_js_132"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 136,
+      "text": "✨ 神殿的祝福降臨！戰鬥幸運 +${luckValue}",
+      "suggested_key": "evt_js_events_exploration_js_136"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 140,
+      "text": "✨ 神殿的祝福降臨！金幣幸運 +${luckValue}",
+      "suggested_key": "evt_js_events_exploration_js_140"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 145,
+      "text": "💎 你在神殿中找到了古老的寶藏！獲得 ${gold} 金幣。",
+      "suggested_key": "evt_js_events_exploration_js_145"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 152,
+      "text": "⚠️ ${curses[Math.floor(Math.random() * curses.length)]}",
+      "suggested_key": "evt_js_events_exploration_js_152"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 155,
+      "text": "受到詛咒傷害 -${damage} HP",
+      "suggested_key": "evt_js_events_exploration_js_155"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 157,
+      "text": "💥 你觸發了古老的陷阱！",
+      "suggested_key": "evt_js_events_exploration_js_157"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 160,
+      "text": "陷阱造成 ${damage} 點傷害！",
+      "suggested_key": "evt_js_events_exploration_js_160"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 168,
+      "text": "🏛️ 你發現了一處古代遺跡...",
+      "suggested_key": "evt_js_events_exploration_js_168"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 185,
+      "text": "⚱️ 你在遺跡中找到了古代神器 ${this.formatItem(newItem)}！",
+      "suggested_key": "evt_js_events_exploration_js_185"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 190,
+      "text": "📜 你研究了遺跡上的銘文，獲得了古老的知識。經驗值 +${xp}",
+      "suggested_key": "evt_js_events_exploration_js_190"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 192,
+      "text": "💥 你觸發了遺跡的守護機關！",
+      "suggested_key": "evt_js_events_exploration_js_192"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 195,
+      "text": "受到 ${damage} 點傷害！",
+      "suggested_key": "evt_js_events_exploration_js_195"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 197,
+      "text": "⚔️ 遺跡的守護者甦醒了！",
+      "suggested_key": "evt_js_events_exploration_js_197"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 198,
+      "text": "💀 一個強大的精英敵人向你發起攻擊！",
+      "suggested_key": "evt_js_events_exploration_js_198"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 207,
+      "text": "⛺ 你遇到了一個遊牧民族的營地...",
+      "suggested_key": "evt_js_events_exploration_js_207"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 220,
+      "text": "🏕️ 遊牧民熱情地接待了你，提供食物和休息。",
+      "suggested_key": "evt_js_events_exploration_js_220"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 223,
+      "text": "HP +${hpGain}，體力 +${staminaGain}",
+      "suggested_key": "evt_js_events_exploration_js_223"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 228,
+      "text": "🎁 遊牧民贈送你一件 ${newItem.name}（已加入背包）",
+      "suggested_key": "evt_js_events_exploration_js_228"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 235,
+      "text": "📖 遊牧民告訴你關於沙漠的古老傳說和秘密。",
+      "suggested_key": "evt_js_events_exploration_js_235"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 236,
+      "text": "獲得 ${xp} 經驗值和 ${gold} 金幣。",
+      "suggested_key": "evt_js_events_exploration_js_236"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 238,
+      "text": "⚔️ 這個部落對外來者不友善！",
+      "suggested_key": "evt_js_events_exploration_js_238"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 22,
+      "text": "${t('treasureJackpot')} ${finalGold} ${t('goldCoins')}",
+      "suggested_key": "evt_js_events_exploration_js_22_1"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 24,
+      "text": "${t('goldLuckBonus')} +${Math.floor(baseGold * 0.15 * this.player.luck_gold)}）",
+      "suggested_key": "evt_js_events_exploration_js_24_1"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 30,
+      "text": "${t('treasureGood')} ${finalGold} ${t('goldCoins')}",
+      "suggested_key": "evt_js_events_exploration_js_30_1"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 34,
+      "text": "${t('treasurePoor')} ${gold} ${t('goldCoins')}",
+      "suggested_key": "evt_js_events_exploration_js_34_1"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 72,
+      "text": "⚔️ 你在遺體旁找到了 ${this.formatItem(newItem)}！",
+      "suggested_key": "evt_js_events_exploration_js_72_1"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 80,
+      "text": "💰 你找到了 ${gold} 金幣和 ${newItem.name}！",
+      "suggested_key": "evt_js_events_exploration_js_80_1"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 84,
+      "text": "💰 你在遺體旁找到了 ${gold} 金幣。",
+      "suggested_key": "evt_js_events_exploration_js_84_1"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 95,
+      "text": "（小心離開時受到輕傷 -${damage} HP）",
+      "suggested_key": "evt_js_events_exploration_js_95_1"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 127,
+      "text": "✨ 神殿的祝福降臨！最大HP +${hpValue}",
+      "suggested_key": "evt_js_events_exploration_js_127_1"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 132,
+      "text": "${t('shrineBlessing')} +${staminaValue}",
+      "suggested_key": "evt_js_events_exploration_js_132_1"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 136,
+      "text": "✨ 神殿的祝福降臨！戰鬥幸運 +${luckValue}",
+      "suggested_key": "evt_js_events_exploration_js_136_1"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 140,
+      "text": "✨ 神殿的祝福降臨！金幣幸運 +${luckValue}",
+      "suggested_key": "evt_js_events_exploration_js_140_1"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 145,
+      "text": "💎 你在神殿中找到了古老的寶藏！獲得 ${gold} 金幣。",
+      "suggested_key": "evt_js_events_exploration_js_145_1"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 152,
+      "text": "⚠️ ${curses[Math.floor(Math.random() * curses.length)]}",
+      "suggested_key": "evt_js_events_exploration_js_152_1"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 155,
+      "text": "受到詛咒傷害 -${damage} HP",
+      "suggested_key": "evt_js_events_exploration_js_155_1"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 160,
+      "text": "陷阱造成 ${damage} 點傷害！",
+      "suggested_key": "evt_js_events_exploration_js_160_1"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 185,
+      "text": "⚱️ 你在遺跡中找到了古代神器 ${this.formatItem(newItem)}！",
+      "suggested_key": "evt_js_events_exploration_js_185_1"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 190,
+      "text": "📜 你研究了遺跡上的銘文，獲得了古老的知識。經驗值 +${xp}",
+      "suggested_key": "evt_js_events_exploration_js_190_1"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 195,
+      "text": "受到 ${damage} 點傷害！",
+      "suggested_key": "evt_js_events_exploration_js_195_1"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 223,
+      "text": "HP +${hpGain}，體力 +${staminaGain}",
+      "suggested_key": "evt_js_events_exploration_js_223_1"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 228,
+      "text": "🎁 遊牧民贈送你一件 ${newItem.name}（已加入背包）",
+      "suggested_key": "evt_js_events_exploration_js_228_1"
+    },
+    {
+      "file": "js\\events\\exploration.js",
+      "line": 236,
+      "text": "獲得 ${xp} 經驗值和 ${gold} 金幣。",
+      "suggested_key": "evt_js_events_exploration_js_236_1"
+    },
+    {
+      "file": "js\\events\\registry.js",
+      "line": 41,
+      "text": "⚠️ 事件執行發生錯誤",
+      "suggested_key": "evt_js_events_registry_js_41"
+    },
+    {
+      "file": "js\\events\\registry.js",
+      "line": 41,
+      "text": "⚠️ 事件執行發生錯誤",
+      "suggested_key": "evt_js_events_registry_js_41_1"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 9,
+      "text": "遇到古埃及神祇，獲得祝福或詛咒（隨機）。",
+      "suggested_key": "evt_js_events_story_js_9"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 15,
+      "text": "獲得祝福：金幣 +${finalG}（含金幣幸運加成 x${this.player.luck_gold}）。",
+      "suggested_key": "evt_js_events_story_js_15"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 17,
+      "text": "金幣幸運 -1（剩餘 ${this.player.luck_gold}）。",
+      "suggested_key": "evt_js_events_story_js_17"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 20,
+      "text": "獲得祝福：金幣 +50",
+      "suggested_key": "evt_js_events_story_js_20"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 24,
+      "text": "受到詛咒：HP -15",
+      "suggested_key": "evt_js_events_story_js_24"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 32,
+      "text": "👤 一個神秘的陌生人從沙丘後出現...",
+      "suggested_key": "evt_js_events_story_js_32"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 60,
+      "text": "${t('strangerGiftGold')} ${gold} ${t('strangerDisappear')}",
+      "suggested_key": "evt_js_events_story_js_60"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 68,
+      "text": "${t('strangerGiftItem')} ${this.formatItem(newItem)} ${t('strangerSmoke')}",
+      "suggested_key": "evt_js_events_story_js_68"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 84,
+      "text": "${t('combatLuck')} +${luckValue}",
+      "suggested_key": "evt_js_events_story_js_84"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 88,
+      "text": "${t('goldLuck')} +${luckValue}",
+      "suggested_key": "evt_js_events_story_js_88"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 92,
+      "text": "${t('gainShield')} +${shieldValue}",
+      "suggested_key": "evt_js_events_story_js_92"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 100,
+      "text": "${t('curseGoldLoss')} -${goldLoss}！",
+      "suggested_key": "evt_js_events_story_js_100"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 104,
+      "text": "${t('curseHpLoss')} -${damage} HP！",
+      "suggested_key": "evt_js_events_story_js_104"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 113,
+      "text": "🐪 你遇到一支迷失的商隊！",
+      "suggested_key": "evt_js_events_story_js_113"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 114,
+      "text": "商隊領隊焦急地說：「我們在沙漠中迷路了，你能幫助我們找到出路嗎？」",
+      "suggested_key": "evt_js_events_story_js_114"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 123,
+      "text": "📍 你憑藉經驗，為商隊指出正確的方向！",
+      "suggested_key": "evt_js_events_story_js_123"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 124,
+      "text": "💡 提示：在沙漠中，向前方通常能找到更多機會...",
+      "suggested_key": "evt_js_events_story_js_124"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 130,
+      "text": "✨ 商隊感激不盡！獲得 ${goldReward} 金幣",
+      "suggested_key": "evt_js_events_story_js_130"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 131,
+      "text": "🧭 獲得「沙漠指南針」效果：接下來3次移動將顯示更詳細的方向資訊！",
+      "suggested_key": "evt_js_events_story_js_131"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 133,
+      "text": "🛒 商隊願意與你進行特殊交易！",
+      "suggested_key": "evt_js_events_story_js_133"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 134,
+      "text": "💰 他們以優惠價格出售稀有物品...",
+      "suggested_key": "evt_js_events_story_js_134"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 139,
+      "text": "商隊提供：${rareItem.name}（稀有品質）- 只需 ${price} 金幣！",
+      "suggested_key": "evt_js_events_story_js_139"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 144,
+      "text": "✅ 購買成功！獲得 ${rareItem.name}",
+      "suggested_key": "evt_js_events_story_js_144"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 146,
+      "text": "❌ 金幣不足，錯過了這次交易機會...",
+      "suggested_key": "evt_js_events_story_js_146"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 155,
+      "text": "⚠️ 你發現一座散發著不祥氣息的神殿！",
+      "suggested_key": "evt_js_events_story_js_155"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 156,
+      "text": "神殿內部傳來陣陣低語...這裡可能藏著寶藏，也可能充滿危險。",
+      "suggested_key": "evt_js_events_story_js_156"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 167,
+      "text": "💎 你小心翼翼地探索神殿，找到了一個寶箱！",
+      "suggested_key": "evt_js_events_story_js_167"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 175,
+      "text": "✨ 獲得 ${goldReward} 金幣 和 ${item.name}（${item.rarity}）！",
+      "suggested_key": "evt_js_events_story_js_175"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 177,
+      "text": "✨ 獲得 ${goldReward} 金幣！",
+      "suggested_key": "evt_js_events_story_js_177"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 180,
+      "text": "⚔️ 神殿守護者甦醒了！準備戰鬥！",
+      "suggested_key": "evt_js_events_story_js_180"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 181,
+      "text": "💀 這是一個強大的精英敵人...",
+      "suggested_key": "evt_js_events_story_js_181"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 184,
+      "text": "🌑 你觸發了神殿的詛咒！",
+      "suggested_key": "evt_js_events_story_js_184"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 195,
+      "text": "⚠️ ${curse.desc}！HP -${hpLoss}",
+      "suggested_key": "evt_js_events_story_js_195"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 199,
+      "text": "⚠️ ${curse.desc}！體力 -${staminaLoss}",
+      "suggested_key": "evt_js_events_story_js_199"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 203,
+      "text": "⚠️ ${curse.desc}！失去 ${goldLoss} 金幣",
+      "suggested_key": "evt_js_events_story_js_203"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 205,
+      "text": "💡 建議：前往綠洲或休息站恢復狀態...",
+      "suggested_key": "evt_js_events_story_js_205"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 207,
+      "text": "✨ 神殿中傳來神秘的光芒...",
+      "suggested_key": "evt_js_events_story_js_207"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 208,
+      "text": "🌟 這是古老神祇的祝福！",
+      "suggested_key": "evt_js_events_story_js_208"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 220,
+      "text": "⚡ ${blessing.desc}！攻擊力 +3，防禦力 +2",
+      "suggested_key": "evt_js_events_story_js_220"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 224,
+      "text": "🍀 ${blessing.desc}！戰鬥幸運 +2，金幣幸運 +2",
+      "suggested_key": "evt_js_events_story_js_224"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 231,
+      "text": "💚 ${blessing.desc}！HP和體力完全恢復，最大HP +${hpBonus}",
+      "suggested_key": "evt_js_events_story_js_231"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 240,
+      "text": "⚔️ 一群沙漠強盜突然出現，包圍了你！",
+      "suggested_key": "evt_js_events_story_js_240"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 241,
+      "text": "💰 強盜頭目：「識相的話，留下一半金幣，否則別想活著離開！」",
+      "suggested_key": "evt_js_events_story_js_241"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 246,
+      "text": "強盜們發現你身無分文，憤怒地發動攻擊！",
+      "suggested_key": "evt_js_events_story_js_246"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 262,
+      "text": "💰 你決定支付 ${payment} 金幣作為「通行費」...",
+      "suggested_key": "evt_js_events_story_js_262"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 263,
+      "text": "🤝 強盜們拿到錢後滿意地離開了。",
+      "suggested_key": "evt_js_events_story_js_263"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 264,
+      "text": "📍 臨走前，強盜頭目指向一個方向：「那邊有個好地方，算是給你的情報。」",
+      "suggested_key": "evt_js_events_story_js_264"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 266,
+      "text": "🗺️ 獲得「強盜情報」：接下來2次移動有更高機率遇到好事件！",
+      "suggested_key": "evt_js_events_story_js_266"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 268,
+      "text": "⚔️ 你決定與強盜戰鬥！",
+      "suggested_key": "evt_js_events_story_js_268"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 269,
+      "text": "💡 戰鬥提示：擊敗強盜可獲得他們搶奪的財寶！",
+      "suggested_key": "evt_js_events_story_js_269"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 273,
+      "text": "💨 你趁強盜不注意，成功逃脫了！",
+      "suggested_key": "evt_js_events_story_js_273"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 276,
+      "text": "⚠️ 逃跑時掉落了 ${goldLoss} 金幣...",
+      "suggested_key": "evt_js_events_story_js_276"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 277,
+      "text": "💡 提示：繼續向前方探索，尋找安全的地方。",
+      "suggested_key": "evt_js_events_story_js_277"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 279,
+      "text": "😎 你展示了你的實力和裝備...",
+      "suggested_key": "evt_js_events_story_js_279"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 280,
+      "text": "💪 強盜們被你的氣勢震懾，不敢輕舉妄動！",
+      "suggested_key": "evt_js_events_story_js_280"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 283,
+      "text": "🏃 強盜們嚇得落荒而逃！",
+      "suggested_key": "evt_js_events_story_js_283"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 286,
+      "text": "✨ 你在強盜營地找到 ${foundGold} 金幣！",
+      "suggested_key": "evt_js_events_story_js_286"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 288,
+      "text": "⚔️ 強盜頭目不服，向你發起挑戰！",
+      "suggested_key": "evt_js_events_story_js_288"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 298,
+      "text": "🧩 你發現了一座古老的石碑，上面刻滿了象形文字...",
+      "suggested_key": "evt_js_events_story_js_298"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 299,
+      "text": "這似乎是某種謎題，破解它可能會獲得獎勵。",
+      "suggested_key": "evt_js_events_story_js_299"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 323,
+      "text": "📜 石碑上的問題：${puzzle.question}",
+      "suggested_key": "evt_js_events_story_js_323"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 324,
+      "text": "💡 提示：${puzzle.hint}",
+      "suggested_key": "evt_js_events_story_js_324"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 331,
+      "text": "✅ 你憑藉智慧破解了謎題！答案是：${puzzle.answers[puzzle.correct]}",
+      "suggested_key": "evt_js_events_story_js_331"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 332,
+      "text": "🌟 石碑發出金色光芒，地面出現一個寶箱！",
+      "suggested_key": "evt_js_events_story_js_332"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 344,
+      "text": "🎁 獲得：${goldReward} 金幣、${item.name}（${item.rarity}）",
+      "suggested_key": "evt_js_events_story_js_344"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 345,
+      "text": "📚 智慧提升：戰鬥幸運 +1，金幣幸運 +1",
+      "suggested_key": "evt_js_events_story_js_345"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 346,
+      "text": "💡 解謎心得：保持探索精神，向不同方向前進會有不同發現！",
+      "suggested_key": "evt_js_events_story_js_346"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 348,
+      "text": "❌ 謎題太過複雜，你無法解開...",
+      "suggested_key": "evt_js_events_story_js_348"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 349,
+      "text": "⚠️ 石碑發出紅光，觸發了防禦機制！",
+      "suggested_key": "evt_js_events_story_js_349"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 354,
+      "text": "💥 陷阱造成 ${trapDamage} 點傷害！",
+      "suggested_key": "evt_js_events_story_js_354"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 355,
+      "text": "💡 建議：提升幸運值可以增加解謎成功率。",
+      "suggested_key": "evt_js_events_story_js_355"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 363,
+      "text": "🌴 你發現了一片隱藏的沙漠綠洲！",
+      "suggested_key": "evt_js_events_story_js_363"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 364,
+      "text": "清澈的泉水、茂密的棕櫚樹...這是沙漠中的奇蹟！",
+      "suggested_key": "evt_js_events_story_js_364"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 374,
+      "text": "😌 你決定在綠洲充分休息...",
+      "suggested_key": "evt_js_events_story_js_374"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 388,
+      "text": "💚 完全恢復！HP和體力全滿！",
+      "suggested_key": "evt_js_events_story_js_388"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 389,
+      "text": "⬆️ 最大HP +${hpBonus}，最大體力 +${staminaBonus}",
+      "suggested_key": "evt_js_events_story_js_389"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 390,
+      "text": "✨ 獲得「綠洲祝福」：接下來5次移動，每次自動恢復少量HP和體力！",
+      "suggested_key": "evt_js_events_story_js_390"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 391,
+      "text": "💡 探索提示：休息好後，可以大膽探索更危險的區域！",
+      "suggested_key": "evt_js_events_story_js_391"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 393,
+      "text": "🔍 你決定探索綠洲周圍...",
+      "suggested_key": "evt_js_events_story_js_393"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 394,
+      "text": "🌟 在棕櫚樹下，你發現了一個隱藏的寶藏！",
+      "suggested_key": "evt_js_events_story_js_394"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 408,
+      "text": "💚 恢復 ${hpRecover} HP 和 ${staminaRecover} 體力",
+      "suggested_key": "evt_js_events_story_js_408"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 409,
+      "text": "🎁 獲得：${goldReward} 金幣、${item.name}（${item.rarity}）",
+      "suggested_key": "evt_js_events_story_js_409"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 410,
+      "text": "💡 綠洲守護者的話：「勇敢的冒險者，繼續向前吧！」",
+      "suggested_key": "evt_js_events_story_js_410"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 412,
+      "text": "🧘 你在綠洲邊緣盤坐冥想...",
+      "suggested_key": "evt_js_events_story_js_412"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 413,
+      "text": "💫 沙漠的寧靜讓你的心靈得到昇華...",
+      "suggested_key": "evt_js_events_story_js_413"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 424,
+      "text": "💚 恢復 ${hpRecover} HP 和 ${staminaRecover} 體力",
+      "suggested_key": "evt_js_events_story_js_424"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 425,
+      "text": "⚡ 冥想收穫：攻擊力 +4，防禦力 +3，戰鬥幸運 +2",
+      "suggested_key": "evt_js_events_story_js_425"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 426,
+      "text": "🌟 你感受到內在力量的成長！",
+      "suggested_key": "evt_js_events_story_js_426"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 427,
+      "text": "💡 智者的教誨：「力量來自內心，而非外物。」",
+      "suggested_key": "evt_js_events_story_js_427"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 430,
+      "text": "🗺️ 探索建議：綠洲周圍可能還有其他秘密，多探索不同方向！",
+      "suggested_key": "evt_js_events_story_js_430"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 15,
+      "text": "獲得祝福：金幣 +${finalG}（含金幣幸運加成 x${this.player.luck_gold}）。",
+      "suggested_key": "evt_js_events_story_js_15_1"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 17,
+      "text": "金幣幸運 -1（剩餘 ${this.player.luck_gold}）。",
+      "suggested_key": "evt_js_events_story_js_17_1"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 60,
+      "text": "${t('strangerGiftGold')} ${gold} ${t('strangerDisappear')}",
+      "suggested_key": "evt_js_events_story_js_60_1"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 68,
+      "text": "${t('strangerGiftItem')} ${this.formatItem(newItem)} ${t('strangerSmoke')}",
+      "suggested_key": "evt_js_events_story_js_68_1"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 84,
+      "text": "${t('combatLuck')} +${luckValue}",
+      "suggested_key": "evt_js_events_story_js_84_1"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 88,
+      "text": "${t('goldLuck')} +${luckValue}",
+      "suggested_key": "evt_js_events_story_js_88_1"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 92,
+      "text": "${t('gainShield')} +${shieldValue}",
+      "suggested_key": "evt_js_events_story_js_92_1"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 100,
+      "text": "${t('curseGoldLoss')} -${goldLoss}！",
+      "suggested_key": "evt_js_events_story_js_100_1"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 104,
+      "text": "${t('curseHpLoss')} -${damage} HP！",
+      "suggested_key": "evt_js_events_story_js_104_1"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 130,
+      "text": "✨ 商隊感激不盡！獲得 ${goldReward} 金幣",
+      "suggested_key": "evt_js_events_story_js_130_1"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 139,
+      "text": "商隊提供：${rareItem.name}（稀有品質）- 只需 ${price} 金幣！",
+      "suggested_key": "evt_js_events_story_js_139_1"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 144,
+      "text": "✅ 購買成功！獲得 ${rareItem.name}",
+      "suggested_key": "evt_js_events_story_js_144_1"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 175,
+      "text": "✨ 獲得 ${goldReward} 金幣 和 ${item.name}（${item.rarity}）！",
+      "suggested_key": "evt_js_events_story_js_175_1"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 177,
+      "text": "✨ 獲得 ${goldReward} 金幣！",
+      "suggested_key": "evt_js_events_story_js_177_1"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 195,
+      "text": "⚠️ ${curse.desc}！HP -${hpLoss}",
+      "suggested_key": "evt_js_events_story_js_195_1"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 199,
+      "text": "⚠️ ${curse.desc}！體力 -${staminaLoss}",
+      "suggested_key": "evt_js_events_story_js_199_1"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 203,
+      "text": "⚠️ ${curse.desc}！失去 ${goldLoss} 金幣",
+      "suggested_key": "evt_js_events_story_js_203_1"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 220,
+      "text": "⚡ ${blessing.desc}！攻擊力 +3，防禦力 +2",
+      "suggested_key": "evt_js_events_story_js_220_1"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 224,
+      "text": "🍀 ${blessing.desc}！戰鬥幸運 +2，金幣幸運 +2",
+      "suggested_key": "evt_js_events_story_js_224_1"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 231,
+      "text": "💚 ${blessing.desc}！HP和體力完全恢復，最大HP +${hpBonus}",
+      "suggested_key": "evt_js_events_story_js_231_1"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 262,
+      "text": "💰 你決定支付 ${payment} 金幣作為「通行費」...",
+      "suggested_key": "evt_js_events_story_js_262_1"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 276,
+      "text": "⚠️ 逃跑時掉落了 ${goldLoss} 金幣...",
+      "suggested_key": "evt_js_events_story_js_276_1"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 286,
+      "text": "✨ 你在強盜營地找到 ${foundGold} 金幣！",
+      "suggested_key": "evt_js_events_story_js_286_1"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 323,
+      "text": "📜 石碑上的問題：${puzzle.question}",
+      "suggested_key": "evt_js_events_story_js_323_1"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 324,
+      "text": "💡 提示：${puzzle.hint}",
+      "suggested_key": "evt_js_events_story_js_324_1"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 331,
+      "text": "✅ 你憑藉智慧破解了謎題！答案是：${puzzle.answers[puzzle.correct]}",
+      "suggested_key": "evt_js_events_story_js_331_1"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 344,
+      "text": "🎁 獲得：${goldReward} 金幣、${item.name}（${item.rarity}）",
+      "suggested_key": "evt_js_events_story_js_344_1"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 354,
+      "text": "💥 陷阱造成 ${trapDamage} 點傷害！",
+      "suggested_key": "evt_js_events_story_js_354_1"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 389,
+      "text": "⬆️ 最大HP +${hpBonus}，最大體力 +${staminaBonus}",
+      "suggested_key": "evt_js_events_story_js_389_1"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 408,
+      "text": "💚 恢復 ${hpRecover} HP 和 ${staminaRecover} 體力",
+      "suggested_key": "evt_js_events_story_js_408_1"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 409,
+      "text": "🎁 獲得：${goldReward} 金幣、${item.name}（${item.rarity}）",
+      "suggested_key": "evt_js_events_story_js_409_1"
+    },
+    {
+      "file": "js\\events\\story.js",
+      "line": 424,
+      "text": "💚 恢復 ${hpRecover} HP 和 ${staminaRecover} 體力",
+      "suggested_key": "evt_js_events_story_js_424_1"
+    },
+    {
+      "file": "js\\events\\travel.js",
+      "line": 29,
+      "text": "HP +${hpGain}，體力 +${staminaGain}",
+      "suggested_key": "evt_js_events_travel_js_29"
+    },
+    {
+      "file": "js\\events\\travel.js",
+      "line": 38,
+      "text": "${t('sandstormDamage')} -10。",
+      "suggested_key": "evt_js_events_travel_js_38"
+    },
+    {
+      "file": "js\\events\\travel.js",
+      "line": 60,
+      "text": "${t('mirageRecovery')} ${gold} ${t('goldCoins')}",
+      "suggested_key": "evt_js_events_travel_js_60"
+    },
+    {
+      "file": "js\\events\\travel.js",
+      "line": 65,
+      "text": "${t('staminaLoss')} -${staminaLoss}",
+      "suggested_key": "evt_js_events_travel_js_65"
+    },
+    {
+      "file": "js\\events\\travel.js",
+      "line": 70,
+      "text": "${t('obtained')} ${gold} ${t('goldCoins')}",
+      "suggested_key": "evt_js_events_travel_js_70"
+    },
+    {
+      "file": "js\\events\\travel.js",
+      "line": 75,
+      "text": "${t('damageTaken')} -${damage} ${t('hp')}",
+      "suggested_key": "evt_js_events_travel_js_75"
+    },
+    {
+      "file": "js\\events\\travel.js",
+      "line": 83,
+      "text": "⚠️ 你踩到了流沙！",
+      "suggested_key": "evt_js_events_travel_js_83"
+    },
+    {
+      "file": "js\\events\\travel.js",
+      "line": 92,
+      "text": "💨 你迅速脫離了流沙區域！",
+      "suggested_key": "evt_js_events_travel_js_92"
+    },
+    {
+      "file": "js\\events\\travel.js",
+      "line": 95,
+      "text": "消耗體力 -${staminaLoss}",
+      "suggested_key": "evt_js_events_travel_js_95"
+    },
+    {
+      "file": "js\\events\\travel.js",
+      "line": 102,
+      "text": "${t('damageTaken')} -${hpLoss} ${t('hp')}, ${t('staminaLoss')} -${staminaLoss}",
+      "suggested_key": "evt_js_events_travel_js_102"
+    },
+    {
+      "file": "js\\events\\travel.js",
+      "line": 104,
+      "text": "💀 你陷入流沙越來越深！",
+      "suggested_key": "evt_js_events_travel_js_104"
+    },
+    {
+      "file": "js\\events\\travel.js",
+      "line": 109,
+      "text": "危急脫困！HP -${hpLoss}，體力 -${staminaLoss}",
+      "suggested_key": "evt_js_events_travel_js_109"
+    },
+    {
+      "file": "js\\events\\travel.js",
+      "line": 113,
+      "text": "✨ 在掙扎中摸到了埋藏的 ${gold} 金幣！",
+      "suggested_key": "evt_js_events_travel_js_113"
+    },
+    {
+      "file": "js\\events\\travel.js",
+      "line": 122,
+      "text": "🦂 你無意中闖入了毒蠍的巢穴！",
+      "suggested_key": "evt_js_events_travel_js_122"
+    },
+    {
+      "file": "js\\events\\travel.js",
+      "line": 132,
+      "text": "🏃 你小心地繞過毒蠍，成功避開了危險！",
+      "suggested_key": "evt_js_events_travel_js_132"
+    },
+    {
+      "file": "js\\events\\travel.js",
+      "line": 134,
+      "text": "😣 你被毒蠍蜇了一下！",
+      "suggested_key": "evt_js_events_travel_js_134"
+    },
+    {
+      "file": "js\\events\\travel.js",
+      "line": 137,
+      "text": "受到毒素傷害 -${damage} HP",
+      "suggested_key": "evt_js_events_travel_js_137"
+    },
+    {
+      "file": "js\\events\\travel.js",
+      "line": 139,
+      "text": "💀 多隻毒蠍攻擊了你！",
+      "suggested_key": "evt_js_events_travel_js_139"
+    },
+    {
+      "file": "js\\events\\travel.js",
+      "line": 144,
+      "text": "HP -${damage}，體力 -${staminaLoss}",
+      "suggested_key": "evt_js_events_travel_js_144"
+    },
+    {
+      "file": "js\\events\\travel.js",
+      "line": 146,
+      "text": "✨ 在躲避毒蠍時，你發現了牠們守護的寶藏！",
+      "suggested_key": "evt_js_events_travel_js_146"
+    },
+    {
+      "file": "js\\events\\travel.js",
+      "line": 149,
+      "text": "獲得 ${gold} 金幣！",
+      "suggested_key": "evt_js_events_travel_js_149"
+    },
+    {
+      "file": "js\\events\\travel.js",
+      "line": 29,
+      "text": "HP +${hpGain}，體力 +${staminaGain}",
+      "suggested_key": "evt_js_events_travel_js_29_1"
+    },
+    {
+      "file": "js\\events\\travel.js",
+      "line": 38,
+      "text": "${t('sandstormDamage')} -10。",
+      "suggested_key": "evt_js_events_travel_js_38_1"
+    },
+    {
+      "file": "js\\events\\travel.js",
+      "line": 60,
+      "text": "${t('mirageRecovery')} ${gold} ${t('goldCoins')}",
+      "suggested_key": "evt_js_events_travel_js_60_1"
+    },
+    {
+      "file": "js\\events\\travel.js",
+      "line": 65,
+      "text": "${t('staminaLoss')} -${staminaLoss}",
+      "suggested_key": "evt_js_events_travel_js_65_1"
+    },
+    {
+      "file": "js\\events\\travel.js",
+      "line": 70,
+      "text": "${t('obtained')} ${gold} ${t('goldCoins')}",
+      "suggested_key": "evt_js_events_travel_js_70_1"
+    },
+    {
+      "file": "js\\events\\travel.js",
+      "line": 75,
+      "text": "${t('damageTaken')} -${damage} ${t('hp')}",
+      "suggested_key": "evt_js_events_travel_js_75_1"
+    },
+    {
+      "file": "js\\events\\travel.js",
+      "line": 95,
+      "text": "消耗體力 -${staminaLoss}",
+      "suggested_key": "evt_js_events_travel_js_95_1"
+    },
+    {
+      "file": "js\\events\\travel.js",
+      "line": 102,
+      "text": "${t('damageTaken')} -${hpLoss} ${t('hp')}, ${t('staminaLoss')} -${staminaLoss}",
+      "suggested_key": "evt_js_events_travel_js_102_1"
+    },
+    {
+      "file": "js\\events\\travel.js",
+      "line": 109,
+      "text": "危急脫困！HP -${hpLoss}，體力 -${staminaLoss}",
+      "suggested_key": "evt_js_events_travel_js_109_1"
+    },
+    {
+      "file": "js\\events\\travel.js",
+      "line": 113,
+      "text": "✨ 在掙扎中摸到了埋藏的 ${gold} 金幣！",
+      "suggested_key": "evt_js_events_travel_js_113_1"
+    },
+    {
+      "file": "js\\events\\travel.js",
+      "line": 137,
+      "text": "受到毒素傷害 -${damage} HP",
+      "suggested_key": "evt_js_events_travel_js_137_1"
+    },
+    {
+      "file": "js\\events\\travel.js",
+      "line": 144,
+      "text": "HP -${damage}，體力 -${staminaLoss}",
+      "suggested_key": "evt_js_events_travel_js_144_1"
+    },
+    {
+      "file": "js\\events\\travel.js",
+      "line": 149,
+      "text": "獲得 ${gold} 金幣！",
+      "suggested_key": "evt_js_events_travel_js_149_1"
+    },
+    {
+      "file": "js\\mixins\\DebugMixin.js",
+      "line": 341,
+      "text": "🛠️ Debug: 遊戲狀態已更新",
+      "suggested_key": "evt_js_mixins_DebugMixin_js_341"
+    },
+    {
+      "file": "js\\mixins\\DebugMixin.js",
+      "line": 385,
+      "text": "🛠️ Debug: 完全恢復",
+      "suggested_key": "evt_js_mixins_DebugMixin_js_385"
+    },
+    {
+      "file": "js\\mixins\\DebugMixin.js",
+      "line": 392,
+      "text": "🛠️ Debug: +1000 金幣",
+      "suggested_key": "evt_js_mixins_DebugMixin_js_392"
+    },
+    {
+      "file": "js\\mixins\\DebugMixin.js",
+      "line": 403,
+      "text": "🛠️ Debug: 升級",
+      "suggested_key": "evt_js_mixins_DebugMixin_js_403"
+    },
+    {
+      "file": "js\\mixins\\DebugMixin.js",
+      "line": 411,
+      "text": "🛠️ Debug: 敵人HP歸零",
+      "suggested_key": "evt_js_mixins_DebugMixin_js_411"
+    },
+    {
+      "file": "js\\mixins\\DebugMixin.js",
+      "line": 413,
+      "text": "🛠️ Debug: 目前不在戰鬥中",
+      "suggested_key": "evt_js_mixins_DebugMixin_js_413"
+    },
+    {
+      "file": "js\\mixins\\DebugMixin.js",
+      "line": 446,
+      "text": "🛠️ Debug: 獲得 ${game.formatItem(newItem)}",
+      "suggested_key": "evt_js_mixins_DebugMixin_js_446"
+    },
+    {
+      "file": "js\\mixins\\DebugMixin.js",
+      "line": 453,
+      "text": "🛠️ Debug: 強制開始戰鬥",
+      "suggested_key": "evt_js_mixins_DebugMixin_js_453"
+    },
+    {
+      "file": "js\\mixins\\DebugMixin.js",
+      "line": 455,
+      "text": "🛠️ Debug: 已在戰鬥中",
+      "suggested_key": "evt_js_mixins_DebugMixin_js_455"
+    },
+    {
+      "file": "js\\mixins\\DebugMixin.js",
+      "line": 476,
+      "text": "🛠️ Debug: 強制結束戰鬥",
+      "suggested_key": "evt_js_mixins_DebugMixin_js_476"
+    },
+    {
+      "file": "js\\mixins\\DebugMixin.js",
+      "line": 478,
+      "text": "🛠️ Debug: 目前不在戰鬥中",
+      "suggested_key": "evt_js_mixins_DebugMixin_js_478"
+    },
+    {
+      "file": "js\\mixins\\DebugMixin.js",
+      "line": 486,
+      "text": "🛠️ Debug: 進入金字塔",
+      "suggested_key": "evt_js_mixins_DebugMixin_js_486"
+    },
+    {
+      "file": "js\\mixins\\DebugMixin.js",
+      "line": 488,
+      "text": "🛠️ Debug: 已在金字塔中",
+      "suggested_key": "evt_js_mixins_DebugMixin_js_488"
+    },
+    {
+      "file": "js\\mixins\\DebugMixin.js",
+      "line": 498,
+      "text": "🛠️ Debug: 減少周目",
+      "suggested_key": "evt_js_mixins_DebugMixin_js_498"
+    },
+    {
+      "file": "js\\mixins\\DebugMixin.js",
+      "line": 502,
+      "text": "🛠️ Debug: 增加周目",
+      "suggested_key": "evt_js_mixins_DebugMixin_js_502"
+    },
+    {
+      "file": "js\\mixins\\DebugMixin.js",
+      "line": 507,
+      "text": "🛠️ Debug: 已重置周目與選角",
+      "suggested_key": "evt_js_mixins_DebugMixin_js_507"
+    },
+    {
+      "file": "js\\mixins\\DebugMixin.js",
+      "line": 526,
+      "text": "🛠️ Debug: 已選擇職業/血脈（來自遊戲UI）",
+      "suggested_key": "evt_js_mixins_DebugMixin_js_526"
+    },
+    {
+      "file": "js\\mixins\\DebugMixin.js",
+      "line": 531,
+      "text": "🛠️ 使用本地測試生成器開啟血脈選單",
+      "suggested_key": "evt_js_mixins_DebugMixin_js_531"
+    },
+    {
+      "file": "js\\mixins\\DebugMixin.js",
+      "line": 537,
+      "text": "🛠️ 無法開啟血脈選單（遊戲 UI 或生成器不存在）",
+      "suggested_key": "evt_js_mixins_DebugMixin_js_537"
+    },
+    {
+      "file": "js\\mixins\\DebugMixin.js",
+      "line": 547,
+      "text": "🛠️ Debug: 已清除選角與血脈",
+      "suggested_key": "evt_js_mixins_DebugMixin_js_547"
+    },
+    {
+      "file": "js\\mixins\\DebugMixin.js",
+      "line": 571,
+      "text": "🛠️ Debug模式已啟動 (Ctrl+Shift+D 關閉)",
+      "suggested_key": "evt_js_mixins_DebugMixin_js_571"
+    },
+    {
+      "file": "js\\mixins\\DebugMixin.js",
+      "line": 574,
+      "text": "🛠️ Debug模式已關閉",
+      "suggested_key": "evt_js_mixins_DebugMixin_js_574"
+    },
+    {
+      "file": "js\\mixins\\DebugMixin.js",
+      "line": 446,
+      "text": "🛠️ Debug: 獲得 ${game.formatItem(newItem)}",
+      "suggested_key": "evt_js_mixins_DebugMixin_js_446_1"
+    },
+    {
+      "file": "js\\mixins\\DungeonMixin.js",
+      "line": 15,
+      "text": "⚡ 你踏入了金字塔深處...",
+      "suggested_key": "evt_js_mixins_DungeonMixin_js_15"
+    },
+    {
+      "file": "js\\mixins\\DungeonMixin.js",
+      "line": 16,
+      "text": "🔺 金字塔副本開始！你有 8 步探險機會。",
+      "suggested_key": "evt_js_mixins_DungeonMixin_js_16"
+    },
+    {
+      "file": "js\\mixins\\DungeonMixin.js",
+      "line": 31,
+      "text": "🌅 你走出了金字塔，回到了沙漠中。",
+      "suggested_key": "evt_js_mixins_DungeonMixin_js_31"
+    },
+    {
+      "file": "js\\mixins\\DungeonMixin.js",
+      "line": 32,
+      "text": "金字塔副本完成！探索了 ${this.pyramidSteps}/${this.pyramidMaxSteps} 步。",
+      "suggested_key": "evt_js_mixins_DungeonMixin_js_32"
+    },
+    {
+      "file": "js\\mixins\\DungeonMixin.js",
+      "line": 32,
+      "text": "金字塔副本完成！探索了 ${this.pyramidSteps}/${this.pyramidMaxSteps} 步。",
+      "suggested_key": "evt_js_mixins_DungeonMixin_js_32_1"
+    },
+    {
+      "file": "js\\mixins\\NavigationMixin.js",
+      "line": 21,
+      "text": "🌴 綠洲祝福：自動恢復 ${healAmount} HP 和 ${staminaAmount} 體力（剩餘 ${this.player.oasisBlessing} 次）",
+      "suggested_key": "evt_js_mixins_NavigationMixin_js_21"
+    },
+    {
+      "file": "js\\mixins\\NavigationMixin.js",
+      "line": 41,
+      "text": "🏪 你感覺前方不遠處有驛站的氣息...",
+      "suggested_key": "evt_js_mixins_NavigationMixin_js_41"
+    },
+    {
+      "file": "js\\mixins\\NavigationMixin.js",
+      "line": 56,
+      "text": "🗺️ 強盜情報：你感覺${targetDir}方似乎有好東西...（剩餘 ${this.player.banditInfo} 次）",
+      "suggested_key": "evt_js_mixins_NavigationMixin_js_56"
+    },
+    {
+      "file": "js\\mixins\\NavigationMixin.js",
+      "line": 167,
+      "text": "🧭 沙漠指南針剩餘 ${this.player.compassEffect} 次使用",
+      "suggested_key": "evt_js_mixins_NavigationMixin_js_167"
+    },
+    {
+      "file": "js\\mixins\\NavigationMixin.js",
+      "line": 169,
+      "text": "🧭 沙漠指南針效果已消失",
+      "suggested_key": "evt_js_mixins_NavigationMixin_js_169"
+    },
+    {
+      "file": "js\\mixins\\NavigationMixin.js",
+      "line": 251,
+      "text": "${t('youChose')} ${direction} ${t('direction')}🔺 ${t('pyramidExploration')}: ${this.pyramidSteps}/${this.pyramidMaxSteps} ${t('steps')}",
+      "suggested_key": "evt_js_mixins_NavigationMixin_js_251"
+    },
+    {
+      "file": "js\\mixins\\NavigationMixin.js",
+      "line": 255,
+      "text": "${t('youChose')} ${direction} ${t('direction')}${t('movedSteps')} ${this.map_steps}/${this.map_goal} ${t('steps')}",
+      "suggested_key": "evt_js_mixins_NavigationMixin_js_255"
+    },
+    {
+      "file": "js\\mixins\\NavigationMixin.js",
+      "line": 297,
+      "text": "${t('branchSpecialEvent')}: ${branch}",
+      "suggested_key": "evt_js_mixins_NavigationMixin_js_297"
+    },
+    {
+      "file": "js\\mixins\\NavigationMixin.js",
+      "line": 21,
+      "text": "🌴 綠洲祝福：自動恢復 ${healAmount} HP 和 ${staminaAmount} 體力（剩餘 ${this.player.oasisBlessing} 次）",
+      "suggested_key": "evt_js_mixins_NavigationMixin_js_21_1"
+    },
+    {
+      "file": "js\\mixins\\NavigationMixin.js",
+      "line": 56,
+      "text": "🗺️ 強盜情報：你感覺${targetDir}方似乎有好東西...（剩餘 ${this.player.banditInfo} 次）",
+      "suggested_key": "evt_js_mixins_NavigationMixin_js_56_1"
+    },
+    {
+      "file": "js\\mixins\\NavigationMixin.js",
+      "line": 167,
+      "text": "🧭 沙漠指南針剩餘 ${this.player.compassEffect} 次使用",
+      "suggested_key": "evt_js_mixins_NavigationMixin_js_167_1"
+    },
+    {
+      "file": "js\\mixins\\NavigationMixin.js",
+      "line": 251,
+      "text": "${t('youChose')} ${direction} ${t('direction')}🔺 ${t('pyramidExploration')}: ${this.pyramidSteps}/${this.pyramidMaxSteps} ${t('steps')}",
+      "suggested_key": "evt_js_mixins_NavigationMixin_js_251_1"
+    },
+    {
+      "file": "js\\mixins\\NavigationMixin.js",
+      "line": 255,
+      "text": "${t('youChose')} ${direction} ${t('direction')}${t('movedSteps')} ${this.map_steps}/${this.map_goal} ${t('steps')}",
+      "suggested_key": "evt_js_mixins_NavigationMixin_js_255_1"
+    },
+    {
+      "file": "js\\mixins\\NavigationMixin.js",
+      "line": 297,
+      "text": "${t('branchSpecialEvent')}: ${branch}",
+      "suggested_key": "evt_js_mixins_NavigationMixin_js_297_1"
+    },
+    {
+      "file": "js\\mixins\\PersistenceMixin.js",
+      "line": 102,
+      "text": "💾 遊戲已儲存！(等級 ${this.player.level}, 金幣 ${this.player.gold}, 時間 ${saveDate.toLocaleTimeString('zh-TW')})",
+      "suggested_key": "evt_js_mixins_PersistenceMixin_js_102"
+    },
+    {
+      "file": "js\\mixins\\PersistenceMixin.js",
+      "line": 105,
+      "text": "⚠️ 儲存可能失敗，請檢查瀏覽器設定是否允許 localStorage",
+      "suggested_key": "evt_js_mixins_PersistenceMixin_js_105"
+    },
+    {
+      "file": "js\\mixins\\PersistenceMixin.js",
+      "line": 123,
+      "text": "❌ 找不到存檔！請先點擊「儲存」按鈕建立存檔。",
+      "suggested_key": "evt_js_mixins_PersistenceMixin_js_123"
+    },
+    {
+      "file": "js\\mixins\\PersistenceMixin.js",
+      "line": 131,
+      "text": "⚠️ 存檔資料損壞，將重新開始遊戲。",
+      "suggested_key": "evt_js_mixins_PersistenceMixin_js_131"
+    },
+    {
+      "file": "js\\mixins\\PersistenceMixin.js",
+      "line": 143,
+      "text": "📂 讀取成功！存檔時間：${saveDate.toLocaleString('zh-TW')}",
+      "suggested_key": "evt_js_mixins_PersistenceMixin_js_143"
+    },
+    {
+      "file": "js\\mixins\\PersistenceMixin.js",
+      "line": 147,
+      "text": "⚠️ 存檔讀取失敗，將重新開始遊戲。",
+      "suggested_key": "evt_js_mixins_PersistenceMixin_js_147"
+    },
+    {
+      "file": "js\\mixins\\PersistenceMixin.js",
+      "line": 166,
+      "text": "🗑️ 存檔已清除",
+      "suggested_key": "evt_js_mixins_PersistenceMixin_js_166"
+    },
+    {
+      "file": "js\\mixins\\PersistenceMixin.js",
+      "line": 102,
+      "text": "💾 遊戲已儲存！(等級 ${this.player.level}, 金幣 ${this.player.gold}, 時間 ${saveDate.toLocaleTimeString('zh-TW')})",
+      "suggested_key": "evt_js_mixins_PersistenceMixin_js_102_1"
+    },
+    {
+      "file": "js\\mixins\\PersistenceMixin.js",
+      "line": 143,
+      "text": "📂 讀取成功！存檔時間：${saveDate.toLocaleString('zh-TW')}",
+      "suggested_key": "evt_js_mixins_PersistenceMixin_js_143_1"
+    },
+    {
+      "file": "js\\mixins\\XPMixin.js",
+      "line": 25,
+      "text": "${t('gainedExp')} ${amount}。",
+      "suggested_key": "evt_js_mixins_XPMixin_js_25"
+    },
+    {
+      "file": "js\\mixins\\XPMixin.js",
+      "line": 39,
+      "text": "${t('levelUp')} ${this.player.level} ${t('hpStaminaRecovered')}",
+      "suggested_key": "evt_js_mixins_XPMixin_js_39"
+    },
+    {
+      "file": "js\\mixins\\XPMixin.js",
+      "line": 25,
+      "text": "${t('gainedExp')} ${amount}。",
+      "suggested_key": "evt_js_mixins_XPMixin_js_25_1"
+    },
+    {
+      "file": "js\\mixins\\XPMixin.js",
+      "line": 39,
+      "text": "${t('levelUp')} ${this.player.level} ${t('hpStaminaRecovered')}",
+      "suggested_key": "evt_js_mixins_XPMixin_js_39_1"
+    },
+    {
+      "file": "js\\shops.js",
+      "line": 71,
+      "text": "${t('blackMarketBought')}: ${offer.name} (${offer.rarity}), ${t('spent')} ${offer.price} ${t('gold')}.",
+      "suggested_key": "evt_js_shops_js_71"
+    },
+    {
+      "file": "js\\shops.js",
+      "line": 79,
+      "text": "${t('revealAttributes')}: ${attrs.join('  ')}",
+      "suggested_key": "evt_js_shops_js_79"
+    },
+    {
+      "file": "js\\shops.js",
+      "line": 87,
+      "text": "${t('blackMarketLimit')} ${t('blackMarketEnd')}",
+      "suggested_key": "evt_js_shops_js_87"
+    },
+    {
+      "file": "js\\shops.js",
+      "line": 259,
+      "text": "${t('soldItem')} ${item.name}, ${t('obtainedGold')} ${price} ${t('gold')}.",
+      "suggested_key": "evt_js_shops_js_259"
+    },
+    {
+      "file": "js\\shops.js",
+      "line": 290,
+      "text": "❌ ${t('enhanceCost')}",
+      "suggested_key": "evt_js_shops_js_290"
+    },
+    {
+      "file": "js\\shops.js",
+      "line": 313,
+      "text": "✨ ${t('enhanceSuccess')} ${item.name} ${t('enhanceLevel')} +1 (${t('currentLevel')} +${item.enhanceLevel})",
+      "suggested_key": "evt_js_shops_js_313"
+    },
+    {
+      "file": "js\\shops.js",
+      "line": 318,
+      "text": "💥 ${t('enhanceFailed')} ${item.name} ${t('enhanceLevel')} -1 (${t('currentLevel')} +${item.enhanceLevel})",
+      "suggested_key": "evt_js_shops_js_318"
+    },
+    {
+      "file": "js\\shops.js",
+      "line": 347,
+      "text": "🍖 ${t('boughtFood')}, HP +${hpGain}, ${t('stamina')} +${staminaGain}",
+      "suggested_key": "evt_js_shops_js_347"
+    },
+    {
+      "file": "js\\shops.js",
+      "line": 71,
+      "text": "${t('blackMarketBought')}: ${offer.name} (${offer.rarity}), ${t('spent')} ${offer.price} ${t('gold')}.",
+      "suggested_key": "evt_js_shops_js_71_1"
+    },
+    {
+      "file": "js\\shops.js",
+      "line": 79,
+      "text": "${t('revealAttributes')}: ${attrs.join('  ')}",
+      "suggested_key": "evt_js_shops_js_79_1"
+    },
+    {
+      "file": "js\\shops.js",
+      "line": 87,
+      "text": "${t('blackMarketLimit')} ${t('blackMarketEnd')}",
+      "suggested_key": "evt_js_shops_js_87_1"
+    },
+    {
+      "file": "js\\shops.js",
+      "line": 259,
+      "text": "${t('soldItem')} ${item.name}, ${t('obtainedGold')} ${price} ${t('gold')}.",
+      "suggested_key": "evt_js_shops_js_259_1"
+    },
+    {
+      "file": "js\\shops.js",
+      "line": 290,
+      "text": "❌ ${t('enhanceCost')}",
+      "suggested_key": "evt_js_shops_js_290_1"
+    },
+    {
+      "file": "js\\shops.js",
+      "line": 313,
+      "text": "✨ ${t('enhanceSuccess')} ${item.name} ${t('enhanceLevel')} +1 (${t('currentLevel')} +${item.enhanceLevel})",
+      "suggested_key": "evt_js_shops_js_313_1"
+    },
+    {
+      "file": "js\\shops.js",
+      "line": 318,
+      "text": "💥 ${t('enhanceFailed')} ${item.name} ${t('enhanceLevel')} -1 (${t('currentLevel')} +${item.enhanceLevel})",
+      "suggested_key": "evt_js_shops_js_318_1"
+    },
+    {
+      "file": "js\\shops.js",
+      "line": 347,
+      "text": "🍖 ${t('boughtFood')}, HP +${hpGain}, ${t('stamina')} +${staminaGain}",
+      "suggested_key": "evt_js_shops_js_347_1"
+    },
+    {
+      "file": "js\\slotMachine.js",
+      "line": 278,
+      "text": "插槽結果： ${results.join(' | ')}",
+      "suggested_key": "evt_js_slotMachine_js_278"
+    },
+    {
+      "file": "js\\slotMachine.js",
+      "line": 278,
+      "text": "插槽結果： ${results.join(' | ')}",
+      "suggested_key": "evt_js_slotMachine_js_278_1"
+    }
+  ]
+}

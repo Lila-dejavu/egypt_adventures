@@ -428,5 +428,174 @@ const UIMixin = {
 				DOMRefs.enableMovement();
 			});
 		}
+	},
+
+	/**
+	 * Show class / bloodline selection at game start
+	 * @param {Array} avail - array of available class ids (e.g., ['mage','warrior'])
+	 * @param {Function} callback - optional callback ({class, bloodline})
+	 */
+	showBloodlineStart(avail, callback) {
+		const pts = parseInt(localStorage.getItem('egypt_playthroughs') || '0', 10) || 0;
+		// Basic class definitions - extend as needed
+		const CLASS_DEFS = {
+			mage: { id: 'mage', name: '法師', desc: '法術傷害高，耐久較低', unlock: 'normal', ngBonus: '起始魔力/耐力 +10' },
+			warrior: { id: 'warrior', name: '戰士', desc: '高生命值與近戰輸出', unlock: 'normal', ngBonus: '起始護盾 +20' },
+			archer: { id: 'archer', name: '弓手', desc: '遠程攻擊，擅長單體輸出', unlock: 'normal', ngBonus: '起始箭矢 x10' },
+			// Example NG+ only class
+			special_mage: { id: 'special_mage', name: '沙塵巫師', desc: '周目+ 專屬，擅長灼燒與控制', unlock: 'ngplus', ngBonus: '起始金幣 +200，特殊技能「沙塵護盾」' }
+		};
+
+		// Build modal
+		const panel = document.createElement('div');
+		panel.id = 'bloodline-start-panel';
+		panel.style.cssText = `position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);z-index:1000;`;
+
+		const modeToggle = (pts > 0) ? `
+			<div style="display:flex;gap:12px;margin-bottom:12px;align-items:center;justify-content:center;">
+				<label><input type="radio" name="ngmode" value="normal" checked> 普通遊戲</label>
+				<label><input type="radio" name="ngmode" value="ngplus"> 第${pts+1}周目（新遊戲+）</label>
+			</div>
+		` : '';
+
+		panel.innerHTML = `
+			<div style="background:#fff;padding:18px;border-radius:10px;min-width:360px;max-width:90vw;box-shadow:0 8px 30px rgba(0,0,0,0.3);">
+				<h2 style="margin-top:0">🔰 選擇職業</h2>
+				${pts > 0 ? `<div class="small" style="margin-bottom:8px;color:#666;">偵測到你已完成 ${pts} 次周目；選擇「周目+」以啟用額外職業與起始加成。</div>` : ''}
+				${modeToggle}
+				<div id="class-grid" style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;"></div>
+				<div style="text-align:center;margin-top:12px;"><button id="bloodline-start-close" style="padding:8px 16px">取消</button></div>
+			</div>
+		`;
+
+		document.body.appendChild(panel);
+
+		const grid = panel.querySelector('#class-grid');
+		function renderGrid(mode){
+			grid.innerHTML = '';
+			// Determine visible classes
+			const modeIsNG = (mode === 'ngplus');
+			// Always include core classes (mage/warrior/archer) so they display side-by-side
+			const unlockReq = { mage: 1, warrior: 2, archer: 3 };
+			const all = Object.values(CLASS_DEFS);
+			const candidates = all.filter(c => {
+				// NG+ classes only visible when NG+ mode selected
+				if (c.unlock === 'ngplus' && !modeIsNG) return false;
+				// Include core classes regardless of 'avail' so they appear in the grid
+				if (c.id === 'mage' || c.id === 'warrior' || c.id === 'archer') return true;
+				// For any other classes, follow avail (or NG+ mode)
+				if (!modeIsNG && !avail.includes(c.id)) return false;
+				return true;
+			});
+			candidates.forEach(c => {
+				const card = document.createElement('div');
+				card.style.cssText = 'width:150px;padding:12px;border-radius:8px;border:1px solid #ddd;background:#fff;';
+				const badges = [];
+				if (c.unlock === 'ngplus') badges.push('<span class="badge">解鎖於周目+</span>');
+
+				// Determine if this class is allowed in current mode (based on playthroughs)
+				const allowed = modeIsNG || (pts >= (unlockReq[c.id] || 0));
+
+				card.innerHTML = `
+					<div style="font-weight:700">${c.name}</div>
+					<div class="small" style="margin:8px 0;color:#444">${c.desc}</div>
+					<div style="font-size:12px;color:#666">${c.ngBonus || ''}</div>
+					<div style="text-align:center;margin-top:8px"><button class="choose-class" data-class="${c.id}"${allowed ? '' : ' disabled'}>選擇</button></div>
+				`;
+
+				if (!allowed) {
+					// visual locked marker
+					const lockBadge = document.createElement('div');
+					lockBadge.style.cssText = 'position:relative;margin-top:-92px;text-align:center;pointer-events:none;';
+					lockBadge.innerHTML = '<div style="display:inline-block;background:rgba(0,0,0,0.6);color:white;padding:4px 8px;border-radius:6px;font-size:12px;">未解鎖</div>';
+					card.appendChild(lockBadge);
+				}
+				grid.appendChild(card);
+			});
+		};
+
+		// Initial render
+		renderGrid('normal');
+
+		// Mode toggle listener
+		if (pts > 0) {
+			panel.querySelectorAll('input[name="ngmode"]').forEach(r => {
+				r.addEventListener('change', (e) => {
+					renderGrid(e.target.value);
+				});
+			});
+		}
+
+		// Choose handler
+		panel.addEventListener('click', (ev) => {
+			const btn = ev.target.closest('.choose-class');
+			if (btn) {
+				const cls = btn.getAttribute('data-class');
+				// delegate to showBloodlineForClass which will open bloodline modal
+				document.body.removeChild(panel);
+				if (typeof this.showBloodlineForClass === 'function') {
+					this.showBloodlineForClass(cls, (chosen) => {
+						if (callback) callback(chosen);
+					});
+				} else {
+					// Fallback: persist simple selection
+					this.player.selectedClass = cls;
+					if (typeof this.saveGame === 'function') this.saveGame();
+					if (callback) callback({ class: cls });
+				}
+			}
+		});
+
+		// Close button
+		const closeBtn = document.getElementById('bloodline-start-close');
+		if (closeBtn) closeBtn.addEventListener('click', () => { document.body.removeChild(panel); DOMRefs.enableMovement(); });
+	},
+
+	/**
+	 * Show bloodline selection for a chosen class
+	 * Delegates to Bloodline.generateOptionsForClass if available
+	 */
+	showBloodlineForClass(cls, callback) {
+		if (typeof Bloodline !== 'undefined' && typeof Bloodline.generateOptionsForClass === 'function') {
+			const opts = Bloodline.generateOptionsForClass(cls);
+			// reuse existing bloodline modal if available
+			try {
+				if (window.openLocalBloodlineModal) {
+					window.openLocalBloodlineModal(cls);
+					// openLocalBloodlineModal will call into save handlers in test harness
+					if (callback) callback({ class: cls });
+					return;
+				}
+			} catch (e) { /* ignore */ }
+			// Otherwise show a minimal modal
+			const panel = document.createElement('div');
+			panel.style.cssText = 'position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);z-index:1000;';
+			panel.innerHTML = `<div style="background:#fff;padding:16px;border-radius:8px;min-width:320px;">` +
+				`<h3 style="margin:0 0 8px 0">選擇血脈 — ${cls}</h3><div id="bloodline-opts" style="display:flex;gap:10px;flex-wrap:wrap;"></div><div style="text-align:center;margin-top:12px"><button id="bloodline-cancel">取消</button></div></div>`;
+			document.body.appendChild(panel);
+			const optsEl = panel.querySelector('#bloodline-opts');
+			opts.forEach(o => {
+				const card = document.createElement('div');
+				card.style.cssText = 'width:140px;padding:8px;border:1px solid #ddd;border-radius:6px;';
+				card.innerHTML = `<div style="font-weight:700">${o.name}</div><div class="small">${o.description}</div><div style="text-align:center;margin-top:8px"><button class="choose-bl">選擇</button></div>`;
+				card.querySelector('.choose-bl').addEventListener('click', () => {
+					try { this.player.selectedClass = cls; this.player.bloodline = o; if (typeof this.saveGame === 'function') this.saveGame(); } catch (e) {}
+					document.body.removeChild(panel);
+					if (callback) callback({ class: cls, bloodline: o });
+				});
+				optsEl.appendChild(card);
+			});
+			const cancel = panel.querySelector('#bloodline-cancel');
+			if (cancel) cancel.addEventListener('click', () => { document.body.removeChild(panel); if (callback) callback(null); });
+			return;
+		}
+		// Fallback: if no Bloodline generator, try test harness fallback
+		if (typeof window.openLocalBloodlineModal === 'function') {
+			try { window.openLocalBloodlineModal(cls); if (callback) callback({ class: cls }); return; } catch (e) { /* ignore */ }
+		}
+		// Final fallback: accept class immediately
+		this.player.selectedClass = cls;
+		if (typeof this.saveGame === 'function') this.saveGame();
+		if (callback) callback({ class: cls });
 	}
 };

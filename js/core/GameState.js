@@ -56,6 +56,11 @@ const GameState = {
             inPyramid: false,
             inShop: false,
             hasEncounteredCaravanRest: false
+            ,
+            // New: new-game+ / playthrough tracking
+            cleared: false,       // whether player has completed at least one full run
+            clearedRuns: 0,       // number of completed runs
+            unlockedClasses: []   // extra classes unlocked via clear / ng+ mechanics
         };
     },
 

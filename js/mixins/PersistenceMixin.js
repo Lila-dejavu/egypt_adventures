@@ -61,6 +61,10 @@ const PersistenceMixin = {
 			pyramidMaxSteps: this.pyramidMaxSteps,
 			normalMapSteps: this.normalMapSteps,
 			hasEncounteredCaravanRest: this.hasEncounteredCaravanRest,
+            // Persist NG+ / clear flags so UI can reflect unlocks on new game
+            cleared: this.cleared || false,
+            clearedRuns: this.clearedRuns || 0,
+            unlockedClasses: Array.isArray(this.unlockedClasses) ? this.unlockedClasses : [],
 			timestamp: Date.now()
 		};
 	},
@@ -83,6 +87,11 @@ const PersistenceMixin = {
 		this.pyramidMaxSteps = data.pyramidMaxSteps || 8;
 		this.normalMapSteps = data.normalMapSteps || 0;
 		this.hasEncounteredCaravanRest = data.hasEncounteredCaravanRest || false;
+
+		// Restore NG+ / clear flags if present
+		this.cleared = data.cleared || false;
+		this.clearedRuns = data.clearedRuns || 0;
+		this.unlockedClasses = Array.isArray(data.unlockedClasses) ? data.unlockedClasses : (this.unlockedClasses || []);
 	},
 
 	/**
