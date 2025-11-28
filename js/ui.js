@@ -52,7 +52,14 @@ const UIMixin = {
 			let debuffHtml = '';
 			if (this.player.debuffs && this.player.debuffs.corpse_poison) {
 				const cp = this.player.debuffs.corpse_poison;
-				debuffHtml = `<div style="margin-top:6px;color:#b03030;font-weight:bold;">💀 屍毒：剩餘 ${cp.turns} 回合（每回合 -${cp.dmg} HP）</div>`;
+				if (cp.stacks && Array.isArray(cp.stacks)) {
+					const total = cp.stacks.reduce((s, st) => s + (st.dmg || 0), 0);
+					const minTurns = cp.stacks.reduce((m, st) => Math.min(m, st.turns || Infinity), Infinity) || 0;
+					debuffHtml = `<div style="margin-top:6px;color:#b03030;font-weight:bold;">💀 屍毒：${cp.stacks.length} 層（每回合 -${total} HP，最短 ${minTurns} 回合）</div>`;
+				} else {
+					const cpLegacy = cp;
+					debuffHtml = `<div style="margin-top:6px;color:#b03030;font-weight:bold;">💀 屍毒：剩餘 ${cpLegacy.turns} 回合（每回合 -${cpLegacy.dmg} HP）</div>`;
+				}
 			}
 
 			playerStatusEl.innerHTML = `

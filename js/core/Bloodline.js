@@ -73,7 +73,17 @@
             const duration = flag.duration || 3;
             // Store as absolute hp-per-turn by converting percent of enemy.max_hp
             const dmgPerTurn = Math.max(1, Math.floor(game.enemy.max_hp * perTurn));
-            game.enemy.debuffs[statusName] = { turns: duration, dmg: dmgPerTurn };
+            // Prefer engine helper if available (supports stacking). Bloodline stacks capped at 5 layers.
+            if (typeof game.addDebuffStack === 'function') {
+                try {
+                    game.addDebuffStack(game.enemy, statusName, dmgPerTurn, duration, 'bloodline', 5);
+                } catch (e) {
+                    // fallback to legacy behavior
+                    game.enemy.debuffs[statusName] = { turns: duration, dmg: dmgPerTurn };
+                }
+            } else {
+                game.enemy.debuffs[statusName] = { turns: duration, dmg: dmgPerTurn };
+            }
             if(typeof game.updateStatus === 'function'){
                 game.updateStatus();
             }

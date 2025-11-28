@@ -53,6 +53,41 @@ const BattleMixin = {
 	},
 
 	/**
+	 * Add a debuff stack to a target (player or enemy).
+	 * Supports converting legacy single-object debuffs into stack form.
+	 * @param {Object} target - target object that contains `.debuffs`
+	 * @param {string} name - debuff key
+	 * @param {number} dmg - damage per turn for this stack
+	 * @param {number} turns - remaining turns for this stack
+	 * @param {string} source - origin label (e.g., 'bloodline' or 'boss')
+	 * @param {number|null} maxStacks - maximum stacks allowed (null = unlimited)
+	 */
+	addDebuffStack(target, name, dmg, turns, source = 'unknown', maxStacks = null) {
+		target.debuffs = target.debuffs || {};
+		const cur = target.debuffs[name];
+		// If there is no existing debuff, create a stacked container
+		if (!cur) {
+			target.debuffs[name] = { stacks: [{ dmg: dmg, turns: turns, source: source }], total: dmg };
+			return;
+		}
+		// If legacy shape (single object with dmg/turns), convert to stack container
+		if (!cur.stacks && (typeof cur.dmg === 'number')) {
+			const existing = { dmg: cur.dmg, turns: cur.turns || turns, source: cur.source || 'legacy' };
+			target.debuffs[name] = { stacks: [ existing ], total: existing.dmg };
+		}
+		const container = target.debuffs[name];
+		// Enforce maxStacks if provided
+		if (Array.isArray(container.stacks)) {
+			if (maxStacks != null && container.stacks.length >= maxStacks) {
+				// Do not add more stacks beyond the cap
+				return;
+			}
+			container.stacks.push({ dmg: dmg, turns: turns, source: source });
+			container.total = container.stacks.reduce((s, st) => s + (st.dmg || 0), 0);
+		}
+	},
+
+	/**
 	 * Initiate battle with enemy
 	 * @param {string} type - Enemy type: 'monster', 'elite', or 'mini_boss'
 	 */
@@ -223,24 +258,27 @@ const BattleMixin = {
 			if (this.enemy.type === 'boss') {
 				const chance = 0.28; // 28% chance on enemy auto-attack
 					if (Math.random() < chance) {
-						// apply if not already poisoned
-						this.player.debuffs = this.player.debuffs || {};
-						if (!this.player.debuffs.corpse_poison) {
-							// 有機會被戰鬥幸運閃避（會消耗一點幸運）
-							if (Math.random() < this._calcDodgeChance()) {
-								showMessage('🎲 戰鬥幸運發揮，避免屍毒！');
-								if (this.player.luck_combat > 0) {
-									this.player.luck_combat = Math.max(0, this.player.luck_combat - 1);
-									showMessage(t('luckConsumed', { remaining: this.player.luck_combat }));
-								}
-							} else {
-								// 每回合失血隨難度提高：基礎 60，難度每級額外 +20
-								const perTick = Math.floor(60 + this.difficulty * 20);
-								this.player.debuffs.corpse_poison = { turns: 3, dmg: perTick };
-								showMessage(`💀 屍毒蔓延！每回合失血 ${perTick}（持續 3 回合）`);
-								// Update status to show effect
-								this.updateStatus();
+						// 有機會被戰鬥幸運閃避（會消耗一點幸運）
+						if (Math.random() < this._calcDodgeChance()) {
+							showMessage('🎲 戰鬥幸運發揮，避免屍毒！');
+							if (this.player.luck_combat > 0) {
+								this.player.luck_combat = Math.max(0, this.player.luck_combat - 1);
+								showMessage(t('luckConsumed', { remaining: this.player.luck_combat }));
 							}
+						} else {
+							// 每回合失血隨難度提高：基礎 60，難度每級額外 +20
+							const perTick = Math.floor(60 + this.difficulty * 20);
+							// Use addDebuffStack helper to allow stacking (boss stacks are unlimited)
+							try {
+								this.addDebuffStack(this.player, 'corpse_poison', perTick, 3, 'boss', null);
+							} catch (e) {
+								// Fallback to legacy assignment
+								this.player.debuffs = this.player.debuffs || {};
+								this.player.debuffs.corpse_poison = { turns: 3, dmg: perTick };
+							}
+							showMessage(`💀 屍毒蔓延！每回合失血 ${perTick}（持續 3 回合）`);
+							// Update status to show effect
+							this.updateStatus();
 						}
 					}
 			}
@@ -504,10 +542,36 @@ const BattleMixin = {
 	_processDebuffs() {
 		if (!this.player || !this.player.debuffs) return;
 		const d = this.player.debuffs;
-		// Corpse poison
+		// Corpse poison (supports stacked and legacy formats)
 		if (d.corpse_poison) {
 			const info = d.corpse_poison;
-			if (info.turns > 0) {
+			if (info.stacks && Array.isArray(info.stacks)) {
+				let total = 0;
+				let minTurns = Infinity;
+				for (const st of info.stacks) {
+					if (st.turns > 0) {
+						total += st.dmg || 0;
+						minTurns = Math.min(minTurns, st.turns || 0);
+					}
+				}
+				if (total > 0) {
+					this.player.hp = Math.max(0, this.player.hp - total);
+					showMessage(`💀 屍毒：受到 ${total} 點傷害（${info.stacks.length} 層，最短 ${minTurns} 回合）`);
+				}
+				// decrement and cleanup
+				for (let i = info.stacks.length - 1; i >= 0; i--) {
+					info.stacks[i].turns -= 1;
+					if (info.stacks[i].turns <= 0) {
+						info.stacks.splice(i, 1);
+					}
+				}
+				if (info.stacks.length === 0) {
+					delete d.corpse_poison;
+					showMessage('🟢 屍毒已消失');
+				}
+				this._checkPlayerDeath();
+			} else if (info.turns > 0) {
+				// legacy single-object format
 				this.player.hp = Math.max(0, this.player.hp - info.dmg);
 				showMessage(`💀 屍毒：受到 ${info.dmg} 點傷害（剩餘 ${info.turns} 回合）`);
 				info.turns -= 1;
@@ -515,7 +579,6 @@ const BattleMixin = {
 					delete d.corpse_poison;
 					showMessage('🟢 屍毒已消失');
 				}
-				// Check if player died from DoT
 				this._checkPlayerDeath();
 			}
 		}
@@ -529,10 +592,33 @@ const BattleMixin = {
 	_processEnemyDebuffs() {
 		if (!this.enemy || !this.enemy.debuffs) return;
 		const d = this.enemy.debuffs;
-		// iterate over debuffs
+		// iterate over debuffs (support stacked and legacy formats)
 		for (const key of Object.keys(d)) {
 			const info = d[key];
-			if (info.turns > 0) {
+			if (info.stacks && Array.isArray(info.stacks)) {
+				let total = 0;
+				let minTurns = Infinity;
+				for (const st of info.stacks) {
+					if (st.turns > 0) {
+						total += st.dmg || 0;
+						minTurns = Math.min(minTurns, st.turns || 0);
+					}
+				}
+				if (total > 0) {
+					this.enemy.hp = Math.max(0, this.enemy.hp - total);
+					showMessage(`🔥 敵人 ${key}：受到 ${total} 點傷害（${info.stacks.length} 層，最短 ${minTurns} 回合）`);
+				}
+				// decrement and cleanup
+				for (let i = info.stacks.length - 1; i >= 0; i--) {
+					info.stacks[i].turns -= 1;
+					if (info.stacks[i].turns <= 0) info.stacks.splice(i, 1);
+				}
+				if (!info.stacks.length) {
+					delete d[key];
+					showMessage(`🟢 敵人 ${key} 效果消失`);
+				}
+			} else if (info.turns > 0) {
+				// legacy single-object format
 				this.enemy.hp = Math.max(0, this.enemy.hp - info.dmg);
 				showMessage(`🔥 敵人 ${key}：受到 ${info.dmg} 點傷害（剩餘 ${info.turns} 回合）`);
 				info.turns -= 1;
