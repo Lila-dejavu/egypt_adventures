@@ -562,6 +562,78 @@ button[disabled] {
     z-index: 1;
 }
 
+/* ===== Character select: 固定大小等比縮放，三欄佈局 ===== */
+.classes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    align-items: start;
+    width: 100%;
+}
+.card {
+    background: #fff;
+    border: 1px solid #e6e6e6;
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.03);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    height: 360px; /* 固定卡片高度，確保等高 */
+}
+.card .image-wrap {
+    width: 100%;
+    height: 220px; /* 固定圖片展示區高度 */
+    overflow: hidden;
+    border-radius: 6px;
+    background: #f3f3f3;
+}
+.card .image-wrap img.class-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* 等比縮放完整顯示 */
+    object-position: center center;
+    display: block;
+    background: transparent;
+}
+.card h3 { margin: 10px 0 4px 0; z-index:2 }
+.card .small { margin-bottom: 8px; z-index:2 }
+.card .card-body { z-index:2 }
+.card button { z-index:2; margin-top: auto; align-self: center; }
+.card.locked { opacity: 0.6; filter: grayscale(0.25); }
+
+/* 縮小視窗時改為單欄或兩欄顯示 */
+@media (max-width: 900px) {
+    .classes { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 520px) {
+    .classes { grid-template-columns: 1fr; }
+}
+
+/* Ensure test bloodline modal appears above all game UI layers */
+#bloodlineModal {
+    position: fixed;
+    inset: 0;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.5);
+    z-index: 30001;
+    pointer-events: auto;
+}
+#bloodlineModal #bloodline-selection-panel {
+    background: #ffffff;
+    padding: 18px;
+    border-radius: 8px;
+    max-width: 880px;
+    width: 92%;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.45);
+    z-index: 30002;
+}
+
+
 .reel {
     width: 90px;
     height: 120px;
