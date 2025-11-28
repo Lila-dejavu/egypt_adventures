@@ -149,6 +149,21 @@ body::after {
     margin-left: 10px;
     font-size: 0.8em;
 }
+/* 橫幅下方的提示裝飾條 */
+.banner-note {
+    margin: 8px auto 12px auto;
+    max-width: 920px;
+    text-align: center;
+    background: linear-gradient(180deg, rgba(245,230,214,0.95) 0%, rgba(241,224,200,0.95) 100%);
+    border: 4px solid #a97638;
+    border-top: 8px solid #8b6914;
+    color: #6e4b12;
+    font-weight: 700;
+    padding: 10px 14px;
+    box-shadow: 0 4px 10px rgba(101,67,33,0.25), inset 0 2px 0 rgba(255,248,220,0.6);
+    font-size: 1.05em;
+    letter-spacing: 1px;
+}
 #game-output {
     margin-bottom: 16px;
     background: 
