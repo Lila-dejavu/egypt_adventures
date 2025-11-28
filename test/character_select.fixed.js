@@ -236,9 +236,18 @@
         const TIER_LABELS = { common: '普通', fine: '精良', rare: '優良', epic: '史詩', legendary: '傳說' };
         candidates.forEach(b=>{
             const card = document.createElement('div');
-            card.className = 'bloodline-card';
-            const tierText = TIER_LABELS[b.tier] || (b.tier ? b.tier.toUpperCase() : '');
-            card.innerHTML = `<div class='bloodline-tier tier-${b.tier}'>${tierText}</div><div style='font-weight:600;margin-top:8px'>${b.name}</div><div class='small' style='margin:8px 0'>${b.description}</div><div style='text-align:center'><button class='button chooseBtn'>選擇</button></div>`;
+                // add tier class to card so CSS border-left accent applies
+                card.className = 'bloodline-card tier-' + (b.tier || 'common');
+                const tierText = TIER_LABELS[b.tier] || (b.tier ? b.tier.toUpperCase() : '');
+                // header includes a star, name and a colored tier badge to the right
+                card.innerHTML = `
+                    <div class='bloodline-header'>
+                        <span class='bloodline-star'>★</span>
+                        <div class='bloodline-name'>${b.name}</div>
+                        <div style='margin-left:auto'><span class='bloodline-tier tier-${b.tier}'>${tierText}</span></div>
+                    </div>
+                    <div class='small' style='margin:8px 0'>${b.description}</div>
+                    <div style='text-align:center'><button class='button chooseBtn'>選擇</button></div>`;
             const choose = card.querySelector('.chooseBtn');
             choose.addEventListener('click', ()=>{ writeSelectedClass(cls); writeSelectedBloodline(b); closeModal(); showMessage(`已選擇血脈：${b.name}`); });
             bloodlineOptionsEl.appendChild(card);
