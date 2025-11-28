@@ -31,6 +31,15 @@ const UIMixin = {
 			const xpNeeded = this.xpForNext(this.player.level);
 			const xpPct = this.player.level >= 99 ? 100 : Math.max(0, Math.min(100, Math.floor((this.player.xp / xpNeeded) * 100)));
 
+			// Bloodline display (show below XP if present)
+			let bloodlineHtml = '';
+			try {
+				if (this.player && this.player.bloodline) {
+					const bn = this.player.bloodline.name || this.player.bloodline.id || '';
+					bloodlineHtml = `<div class="combo-row">已覺醒 ${bn} 血脈</div>`;
+				}
+			} catch (e) { bloodlineHtml = ''; }
+
 			// Check set bonus
 			const setBonus = this.getActiveSetBonus();
 			let setBonusHtml = '';
@@ -52,6 +61,7 @@ const UIMixin = {
 				<div class="hp-bar"><div class="hp-inner" style="width:${playerPct}%"></div></div>
 				<div class="xp-row">${t('xp')}: <span class="xp-text">${this.player.xp}/${xpNeeded === Infinity ? 'MAX' : xpNeeded}</span></div>
 				<div class="xp-bar"><div class="xp-inner" style="width:${xpPct}%"></div></div>
+				${bloodlineHtml}
 				<div class="stats-row">
 					<div>${t('stamina')}: ${this.player.stamina}/${this.player.max_stamina}</div>
 					<div>${t('shield')}: ${this.player.shield}</div>
