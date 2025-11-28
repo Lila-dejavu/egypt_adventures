@@ -610,10 +610,21 @@ const UIMixin = {
 				`<h3 style="margin:0 0 8px 0">選擇血脈 — ${cls}</h3><div id="bloodline-opts" style="display:flex;gap:10px;flex-wrap:wrap;"></div><div style="text-align:center;margin-top:12px"><button id="bloodline-cancel">取消</button></div></div>`;
 			document.body.appendChild(panel);
 			const optsEl = panel.querySelector('#bloodline-opts');
+			const TIER_LABELS = { common: '普通', fine: '精良', rare: '優良', epic: '史詩', legendary: '傳說' };
 			opts.forEach(o => {
 				const card = document.createElement('div');
-				card.style.cssText = 'width:140px;padding:8px;border:1px solid #ddd;border-radius:6px;';
-				card.innerHTML = `<div style="font-weight:700">${o.name}</div><div class="small">${o.description}</div><div style="text-align:center;margin-top:8px"><button class="choose-bl">選擇</button></div>`;
+				// apply tier class so CSS accent (border-left) and badge color show
+				card.className = 'bloodline-card tier-' + (o.tier || 'common');
+				card.style.cssText = 'width:160px;padding:10px;border-radius:6px;background:#fff;';
+				const tierText = TIER_LABELS[o.tier] || (o.tier ? o.tier.toUpperCase() : '');
+				card.innerHTML = `
+					<div class='bloodline-header'>
+						<span class='bloodline-star'>★</span>
+						<div class='bloodline-name'>${o.name}</div>
+						<div style='margin-left:auto'><span class='bloodline-tier tier-${o.tier}'>${tierText}</span></div>
+					</div>
+					<div class="small" style='margin:8px 0'>${o.description}</div>
+					<div style="text-align:center;margin-top:8px"><button class="choose-bl">選擇</button></div>`;
 				card.querySelector('.choose-bl').addEventListener('click', () => {
 					try { 
 						this.player.selectedClass = cls;
