@@ -463,7 +463,7 @@ const UIMixin = {
 				<h2 style="margin-top:0">🔰 選擇職業</h2>
 				${pts > 0 ? `<div class="small" style="margin-bottom:8px;color:#666;">偵測到你已完成 ${pts} 次周目；選擇「周目+」以啟用額外職業與起始加成。</div>` : ''}
 				${modeToggle}
-				<div id="class-grid" style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;"></div>
+				<div id="class-grid" style="display:grid;grid-template-columns:repeat(3,150px);gap:12px;justify-content:center;align-items:start;"></div>
 				<div style="text-align:center;margin-top:12px;"><button id="bloodline-start-close" style="padding:8px 16px">取消</button></div>
 			</div>
 		`;
