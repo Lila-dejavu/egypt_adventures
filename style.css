@@ -2038,6 +2038,33 @@ button[disabled] {
 
 #debug-panel input, #debug-panel .debug-btn { font-family: 'Courier New', monospace !important; }
 
+/* 血脈顯著樣式：顯眼的外框、金色主題與陰影，放在經驗值下方 */
+.bloodline-row {
+    margin-top: 10px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: linear-gradient(180deg, #fff7e6 0%, #fff1d1 100%);
+    border: 3px solid rgba(212, 175, 55, 0.95);
+    box-shadow: 0 6px 18px rgba(212, 175, 55, 0.15), 0 2px 6px rgba(0,0,0,0.08);
+    color: #5a3b00;
+    font-weight: 800;
+    font-size: 0.95em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.bloodline-row::before {
+    content: '🜁';
+    display: inline-block;
+    font-size: 18px;
+    line-height: 1;
+    transform: translateY(-1px);
+}
+
+@media (max-width: 420px) {
+    .bloodline-row { padding: 10px; font-size: 0.9em; }
+}
+
 /* For equipment/blackmarket panels ensure inner list scrolls if present */
 #equipment-panel .panel-body,
 #blackmarket-panel .panel-body,

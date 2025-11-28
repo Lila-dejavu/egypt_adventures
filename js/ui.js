@@ -36,7 +36,7 @@ const UIMixin = {
 			try {
 				if (this.player && this.player.bloodline) {
 					const bn = this.player.bloodline.name || this.player.bloodline.id || '';
-					bloodlineHtml = `<div class="combo-row">已覺醒 ${bn} 血脈</div>`;
+					bloodlineHtml = `<div class="combo-row bloodline-row">已覺醒 ${bn} 血脈</div>`;
 				}
 			} catch (e) { bloodlineHtml = ''; }
 

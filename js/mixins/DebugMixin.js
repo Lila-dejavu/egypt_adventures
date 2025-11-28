@@ -345,6 +345,27 @@ const DebugSystem = {
 			const pts = parseInt(document.getElementById('debug-playthroughs').value) || 0;
 			localStorage.setItem('egypt_playthroughs', String(pts));
 		} catch (e) { /* ignore */ }
+
+		// If debug panel shows a selected class/bloodline, persist them into game.player
+		try {
+			const storedCls = localStorage.getItem('egypt_selected_class');
+			const storedBl = localStorage.getItem('egypt_selected_bloodline');
+			if (storedCls && storedCls !== 'null') {
+				try { this.game.player.selectedClass = storedCls; } catch(e) { /* ignore */ }
+			}
+			if (storedBl) {
+				try {
+					const parsed = JSON.parse(storedBl);
+					this.game.player.bloodline = parsed;
+				} catch (e) {
+					// stored value may be plain string (name/id) - keep as simple id container
+					this.game.player.bloodline = { id: storedBl, name: storedBl };
+				}
+			}
+			// ensure UI updated and saved
+			if (typeof this.game.updateStatus === 'function') this.game.updateStatus();
+			if (typeof this.game.saveGame === 'function') this.game.saveGame();
+		} catch (e) { /* ignore */ }
 	},
 
 	/**
