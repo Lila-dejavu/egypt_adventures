@@ -497,6 +497,15 @@ button[disabled] {
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
+.class-avatar {
+    /* 類別頭像（選角頁面）
+       參考敵人資訊的圖片大小，限制寬度為 150px，並保持響應式縮放 */
+    width: 150px;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 8px auto;
+}
 .button {
     padding: 8px 12px;
     border-radius: 6px;
