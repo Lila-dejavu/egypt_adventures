@@ -2075,6 +2075,22 @@ button[disabled] {
     100% { box-shadow: 0 0 6px rgba(255,180,50,0.35); transform: scale(1); }
 }
 
+/* Debuff rows shown in enemy status - use a red/pink variant of combo box */
+.combo-row.debuff-row {
+    background: linear-gradient(180deg,#fff3f3,#ffecec);
+    color: #8a1f1f;
+    font-weight: 700;
+    margin-top: 6px;
+}
+
+/* Player temporary buffs - same box style as combo but green tint */
+.combo-row.buff-row {
+    background: linear-gradient(180deg,#f0fff4,#e6ffec);
+    color: #1f6f3a;
+    font-weight: 700;
+    margin-top: 6px;
+}
+
 /* Fix: keep panel footer / close buttons visible when inner content scrolls */
 /* Many panels are created dynamically with inline overflow; make the footer sticky inside the panel */
 #trading-post-panel,

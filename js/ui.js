@@ -81,6 +81,7 @@ const UIMixin = {
 				</div>
 				${setBonusHtml}
 				${debuffHtml}
+				${playerBuffHtml || ''}
 				<div class="combo-row ${(this.inBattle && (this.consecutivePrimaryCount||0) > 1) ? 'combo-active' : ''}">Combo: ${comboText}</div>
 				<div class="equip-row">
 					<span class="equip-label">${t('weapon')}: ${this.player.equipment.weapon ? this.formatItem(this.player.equipment.weapon) : t('none')}</span>
@@ -112,6 +113,38 @@ const UIMixin = {
 			}
 		}
 
+		// Build player temporary buffs display (shown inside player status)
+		let playerBuffHtml = '';
+		try {
+			if (this.player && this.player.temp_buffs) {
+				const LABELS = { attack: '攻擊', penetration: '穿透', shield: '護盾', regen: '回復', stamina: '體力', mana: '魔力' };
+				const parts = [];
+				for (const key in this.player.temp_buffs) {
+					if (!Object.prototype.hasOwnProperty.call(this.player.temp_buffs, key)) continue;
+					const b = this.player.temp_buffs[key];
+					if (!b) continue;
+					const label = LABELS[key] || key;
+					// Support stacked-like or single object shapes
+					if (Array.isArray(b.stacks)) {
+						const stacks = b.stacks.length;
+						const minTurns = b.stacks.reduce((m, s) => Math.min(m, s.turns || Infinity), Infinity) || 0;
+						parts.push(`<div class='combo-row buff-row'>${label} ${stacks} 層（最短 ${minTurns} 回合）</div>`);
+						continue;
+					}
+					const turns = (typeof b.turns === 'number') ? b.turns : (typeof b.duration === 'number' ? b.duration : null);
+					const val = (typeof b.value !== 'undefined') ? b.value : (typeof b.pct !== 'undefined' ? (Math.round(b.pct*100)+'%') : '');
+					if (turns !== null) {
+						parts.push(`<div class='combo-row buff-row'>${label} ${val ? ('+'+val+' ') : ''}${turns} 回合</div>`);
+					} else if (val) {
+						parts.push(`<div class='combo-row buff-row'>${label} +${val}</div>`);
+					} else {
+						parts.push(`<div class='combo-row buff-row'>${label}</div>`);
+					}
+				}
+				playerBuffHtml = parts.join('');
+			}
+		} catch (e) { console.warn('player buff render failed', e); }
+
 		// Update enemy status to right panel
 		if (enemyStatusEl) {
 			const enemyPct = this.enemy && this.enemy.max_hp ? Math.max(0, Math.min(100, Math.floor((this.enemy.hp / this.enemy.max_hp) * 100))) : 0;
@@ -139,6 +172,41 @@ const UIMixin = {
 				}
 			}
 
+			// Build enemy debuff display (show each debuff like a combo box)
+			let enemyDebuffHtml = '';
+			try {
+				if (this.inBattle && this.enemy && this.enemy.debuffs) {
+					const STATUS_LABELS = { burn: '灼燒', burn_mage: '灼燒', burn_strong: '焚身', bleed: '流血', poison: '中毒', frozen: '冰凍', shock_mage: '震懾', curse_mage: '詛咒' };
+					const parts = [];
+					for (const key in this.enemy.debuffs) {
+						if (!Object.prototype.hasOwnProperty.call(this.enemy.debuffs, key)) continue;
+						const d = this.enemy.debuffs[key];
+						if (!d) continue;
+						const label = STATUS_LABELS[key] || (d.name || key);
+						// Stacked form
+						if (Array.isArray(d.stacks)) {
+							const stacks = d.stacks.length;
+							// find shortest remaining turns among stacks for display
+							const minTurns = d.stacks.reduce((m, s) => Math.min(m, s.turns || Infinity), Infinity) || 0;
+							parts.push(`<div class='combo-row debuff-row'>${label} ${stacks} 層（最短 ${minTurns} 回合）</div>`);
+							continue;
+						}
+						// Legacy single-object shape: { turns, dmg }
+						const turns = (typeof d.turns === 'number') ? d.turns : (typeof d.duration === 'number' ? d.duration : null);
+						if (turns !== null) {
+							parts.push(`<div class='combo-row debuff-row'>${label} ${turns} 回合</div>`);
+						} else if (typeof d.total === 'number' || typeof d.dmg === 'number') {
+							// No explicit turns, show damage per turn if available
+							const dmg = d.total || d.dmg || 0;
+							parts.push(`<div class='combo-row debuff-row'>${label}：每回合 ${dmg} 傷害</div>`);
+						} else {
+							parts.push(`<div class='combo-row debuff-row'>${label}</div>`);
+						}
+					}
+					enemyDebuffHtml = parts.join('');
+				}
+			} catch (e) { console.warn('enemy debuff render failed', e); }
+
 			enemyStatusEl.innerHTML = `
 				<div class="stat-label">${t('enemy')}</div>
 				${this.inBattle ? `
@@ -146,6 +214,7 @@ const UIMixin = {
 					<div class="hp-bar"><div class="hp-inner enemy-hp" style="width:${enemyPct}%"></div></div>
 					${enemyImage}
 					<div class="stats-row"><div>${t('attackIn')}: ${this.enemy.turnsToAttack}</div><div>${t('strengthX').replace(' x', '')}: x${(this.enemy.strength||1).toFixed(2)}</div></div>
+					${enemyDebuffHtml || ''}
 				` : `
 					<div class="hp-row">${t('none')}</div>
 					<div class="hp-bar"><div class="hp-inner enemy-hp" style="width:0%"></div></div>
@@ -176,11 +245,64 @@ const UIMixin = {
 	showMageSkillSelector(){
 		if(!window.MageSkills || !MageSkills.SKILLS) return;
 		const skills = MageSkills.SKILLS;
+		// helper: determine whether current enemy context includes grouped enemies
+		function enemySupportsGroups(game){
+			if(!game) return false;
+			if(!game.inBattle || !game.enemy) return false;
+			// common signals: explicit count, group flag, or type indicating swarm
+			if(typeof game.enemy.count === 'number' && game.enemy.count > 1) return true;
+			if(game.enemy.isGroup || game.enemy.multiple || game.enemy.group) return true;
+			// fallback: certain enemy types may indicate multiple attackers (e.g., 'swarm')
+			if(game.enemy.type && String(game.enemy.type).toLowerCase().includes('swarm')) return true;
+			return false;
+		}
 		const panel = document.createElement('div');
 		panel.style.cssText = 'position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);z-index:10000;';
 		let html = `<div style="background:#fff;padding:16px;border-radius:8px;min-width:360px;max-width:90%"><h3>選擇法術</h3><div style='display:flex;flex-wrap:wrap;gap:8px;'>`;
+		const supportsGroups = enemySupportsGroups(this);
 		Object.values(skills).forEach(s => {
-			html += `<div style='border:1px solid #ddd;padding:8px;border-radius:6px;width:160px;'><div style='font-weight:700'>${s.name}</div><div class='small' style='margin:6px 0'>${s.description}</div><div style='text-align:center'><button class='pick-skill' data-skill='${s.id}'>選擇</button></div></div>`;
+			let dispDesc = s.description || '';
+			// If current context doesn't support grouped enemies, remove sentences that specifically mention 範圍/群體/全體 or 單體/單一
+			if(!supportsGroups){
+				// split into sentences by comma, fullwidth comma, or punctuation, then filter
+				const parts = dispDesc.split(/[。！？\n]+/).map(p=>p.trim()).filter(Boolean);
+				const filtered = parts.filter(p => {
+					// if sentence mentions area keywords, drop it; also drop explicit single-target phrasing
+					const lower = p.toLowerCase();
+					if(/範圍|群體|全體|群攻|範圍法術|對敵人施加範圍|群體出現/.test(p)) return false;
+					if(/單一|單體|單目標|單個目標/.test(p)) return false;
+					return true;
+				});
+				dispDesc = filtered.join('。');
+				if(dispDesc && !dispDesc.endsWith('。')) dispDesc += '';
+			}
+				// Add bloodline-trigger note when relevant
+				try {
+					const bl = (this.player && (this.player.bloodline || this.player.selectedBloodline)) || null;
+					if (bl && bl.flags) {
+						const blName = bl.name || (bl.id || '血脈');
+						let note = '';
+						// helper: detect if skill implies burn/doT by keywords or id
+						const skillKeywords = (dispDesc + ' ' + (s.id||'')).toLowerCase();
+						const isBurnSkill = /灼|灼燒|burn|scorch|flame|烈焰/.test(skillKeywords);
+						if (bl.flags.onSpell_applyStatus && isBurnSkill) {
+							const f = bl.flags.onSpell_applyStatus;
+							const statusName = f.name || 'burn';
+							note = `（${blName} 血脈：在施放法術時會觸發 ${statusName}）`;
+						} else if (bl.flags.onLightningSkill_applyStatus && isBurnSkill) {
+							const f = bl.flags.onLightningSkill_applyStatus;
+							const statusName = f.name || 'burn';
+							note = `（${blName} 血脈：在閃電符號觸發時會施加 ${statusName}）`;
+						} else if (bl.flags.onSpell_applyStatus) {
+							// generic note when bloodline has spell-on flags but skill may not be burn
+							note = `（${blName} 血脈：會在施放法術時觸發血脈效果）`;
+						} else if (bl.flags.onLightningSkill_applyStatus) {
+							note = `（${blName} 血脈：會在閃電符號觸發時發動）`;
+						}
+						if (note) dispDesc = dispDesc + '\n' + note;
+					}
+				} catch (e) { /* ignore */ }
+				html += `<div style='border:1px solid #ddd;padding:8px;border-radius:6px;width:160px;'><div style='font-weight:700'>${s.name}</div><div class='small' style='margin:6px 0'>${dispDesc}</div><div style='text-align:center'><button class='pick-skill' data-skill='${s.id}'>選擇</button></div></div>`;
 		});
 		html += `</div><div style='text-align:center;margin-top:12px'><button id='close-skill-modal'>取消</button></div></div>`;
 		panel.innerHTML = html;
