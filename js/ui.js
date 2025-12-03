@@ -36,7 +36,7 @@ const UIMixin = {
 			try {
 				if (this.player && this.player.bloodline) {
 					const bn = this.player.bloodline.name || this.player.bloodline.id || '';
-					bloodlineHtml = `<div class="combo-row bloodline-row">已覺醒 ${bn} 血脈</div>`;
+					bloodlineHtml = `<div class="combo-row bloodline-row">${t('bloodline_awakened',{name:bn})}</div>`;
 				}
 			} catch (e) { bloodlineHtml = ''; }
 
@@ -72,7 +72,7 @@ const UIMixin = {
 				<div class="stats-row">
 					<div>${t('stamina')}: ${this.player.stamina}/${this.player.max_stamina}</div>
 						<div>${t('mana') || '魔力'}: ${this.player.mana || 0}/${this.player.max_mana || 0}</div>
-						${this.player.selectedClass === 'mage' ? `<div id='mage-skill-row'>法術：${this.player.mage_selected_skill ? (window.MageSkills && MageSkills.SKILLS && MageSkills.SKILLS[this.player.mage_selected_skill] ? MageSkills.SKILLS[this.player.mage_selected_skill].name : this.player.mage_selected_skill) : '（未設定）'} <button id='change-skill-btn' class='small'>切換</button></div>` : ''}
+						${this.player.selectedClass === 'mage' ? `<div id='mage-skill-row'>${t('mageSpell')}: ${this.player.mage_selected_skill ? (window.MageSkills && MageSkills.SKILLS && MageSkills.SKILLS[this.player.mage_selected_skill] ? MageSkills.SKILLS[this.player.mage_selected_skill].name : this.player.mage_selected_skill) : t('notSet')} <button id='change-skill-btn' class='small'>${t('switch')}</button></div>` : ''}
 					<div>${t('shield')}: ${this.player.shield}</div>
 					<div>${t('potions')}: ${this.player.potions}</div>
 					<div>${t('gold')}: ${this.player.gold}</div>
@@ -116,8 +116,8 @@ const UIMixin = {
 		// Build player temporary buffs display (shown inside player status)
 		let playerBuffHtml = '';
 		try {
-			if (this.player && this.player.temp_buffs) {
-				const LABELS = { attack: '攻擊', penetration: '穿透', shield: '護盾', regen: '回復', stamina: '體力', mana: '魔力' };
+				if (this.player && this.player.temp_buffs) {
+				const LABELS = { attack: t('buff_attack'), penetration: t('buff_penetration'), shield: t('buff_shield'), regen: t('buff_regen'), stamina: t('buff_stamina'), mana: t('buff_mana') };
 				const parts = [];
 				for (const key in this.player.temp_buffs) {
 					if (!Object.prototype.hasOwnProperty.call(this.player.temp_buffs, key)) continue;
@@ -176,7 +176,7 @@ const UIMixin = {
 			let enemyDebuffHtml = '';
 			try {
 				if (this.inBattle && this.enemy && this.enemy.debuffs) {
-					const STATUS_LABELS = { burn: '灼燒', burn_mage: '灼燒', burn_strong: '焚身', bleed: '流血', poison: '中毒', frozen: '冰凍', shock_mage: '震懾', curse_mage: '詛咒' };
+					const STATUS_LABELS = { burn: t('status_burn'), burn_mage: t('status_burn_mage'), burn_strong: t('status_burn_strong'), bleed: t('status_bleed'), poison: t('status_poison'), frozen: t('status_frozen'), shock_mage: t('status_shock_mage'), curse_mage: t('status_curse_mage') };
 					const parts = [];
 					for (const key in this.enemy.debuffs) {
 						if (!Object.prototype.hasOwnProperty.call(this.enemy.debuffs, key)) continue;
@@ -258,7 +258,7 @@ const UIMixin = {
 		}
 		const panel = document.createElement('div');
 		panel.style.cssText = 'position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);z-index:10000;';
-		let html = `<div style="background:#fff;padding:16px;border-radius:8px;min-width:360px;max-width:90%"><h3>選擇法術</h3><div style='display:flex;flex-wrap:wrap;gap:8px;'>`;
+		let html = `<div style="background:#fff;padding:16px;border-radius:8px;min-width:360px;max-width:90%"><h3>${t('chooseSpell')}</h3><div style='display:flex;flex-wrap:wrap;gap:8px;'>`;
 		const supportsGroups = enemySupportsGroups(this);
 		Object.values(skills).forEach(s => {
 			let dispDesc = s.description || '';
@@ -276,35 +276,39 @@ const UIMixin = {
 				dispDesc = filtered.join('。');
 				if(dispDesc && !dispDesc.endsWith('。')) dispDesc += '';
 			}
-				// Add bloodline-trigger note when relevant
+				// Add bloodline-trigger note when relevant (use tags for reliable detection)
 				try {
 					const bl = (this.player && (this.player.bloodline || this.player.selectedBloodline)) || null;
 					if (bl && bl.flags) {
-						const blName = bl.name || (bl.id || '血脈');
+						const blName = bl.name || (bl.id || t('bloodline') || '血脈');
 						let note = '';
-						// helper: detect if skill implies burn/doT by keywords or id
-						const skillKeywords = (dispDesc + ' ' + (s.id||'')).toLowerCase();
-						const isBurnSkill = /灼|灼燒|burn|scorch|flame|烈焰/.test(skillKeywords);
+						const STATUS_LABELS = { burn: t('status_burn'), burn_mage: t('status_burn_mage'), burn_strong: t('status_burn_strong'), bleed: t('status_bleed'), poison: t('status_poison'), frozen: t('status_frozen'), shock_mage: t('status_shock_mage'), curse_mage: t('status_curse_mage') };
+						const tags = Array.isArray(s.tags) ? s.tags : [];
+						const isBurnSkill = tags.includes('burn');
+						const isAOE = tags.includes('aoe') || tags.includes('area');
 						if (bl.flags.onSpell_applyStatus && isBurnSkill) {
 							const f = bl.flags.onSpell_applyStatus;
-							const statusName = f.name || 'burn';
-							note = `（${blName} 血脈：在施放法術時會觸發 ${statusName}）`;
+							const statusKey = f.name || 'burn';
+							const statusLabel = STATUS_LABELS[statusKey] || statusKey;
+							note = `（${blName} 血脈：在施放法術時會觸發 ${statusLabel}）`;
 						} else if (bl.flags.onLightningSkill_applyStatus && isBurnSkill) {
 							const f = bl.flags.onLightningSkill_applyStatus;
-							const statusName = f.name || 'burn';
-							note = `（${blName} 血脈：在閃電符號觸發時會施加 ${statusName}）`;
+							const statusKey = f.name || 'burn';
+							const statusLabel = STATUS_LABELS[statusKey] || statusKey;
+							note = `（${blName} 血脈：在閃電符號觸發時會施加 ${statusLabel}）`;
 						} else if (bl.flags.onSpell_applyStatus) {
 							// generic note when bloodline has spell-on flags but skill may not be burn
 							note = `（${blName} 血脈：會在施放法術時觸發血脈效果）`;
 						} else if (bl.flags.onLightningSkill_applyStatus) {
 							note = `（${blName} 血脈：會在閃電符號觸發時發動）`;
 						}
+						// If bloodline triggers only on lightning but current skill is AoE/spell that the bloodline might not apply to, clarify
 						if (note) dispDesc = dispDesc + '\n' + note;
 					}
 				} catch (e) { /* ignore */ }
-				html += `<div style='border:1px solid #ddd;padding:8px;border-radius:6px;width:160px;'><div style='font-weight:700'>${s.name}</div><div class='small' style='margin:6px 0'>${dispDesc}</div><div style='text-align:center'><button class='pick-skill' data-skill='${s.id}'>選擇</button></div></div>`;
-		});
-		html += `</div><div style='text-align:center;margin-top:12px'><button id='close-skill-modal'>取消</button></div></div>`;
+				html += `<div style='border:1px solid #ddd;padding:8px;border-radius:6px;width:160px;'><div style='font-weight:700'>${s.name}</div><div class='small' style='margin:6px 0'>${dispDesc}</div><div style='text-align:center'><button class='pick-skill' data-skill='${s.id}'>${t('choose')}</button></div></div>`;
+			});
+			html += `</div><div style='text-align:center;margin-top:12px'><button id='close-skill-modal'>${t('cancel')}</button></div></div>`;
 		panel.innerHTML = html;
 		document.body.appendChild(panel);
 		panel.querySelectorAll('.pick-skill').forEach(b => {
@@ -732,7 +736,7 @@ const UIMixin = {
 				`<h3 style="margin:0 0 8px 0">選擇血脈 — ${cls}</h3><div id="bloodline-opts" style="display:flex;gap:10px;flex-wrap:wrap;"></div><div style="text-align:center;margin-top:12px"><button id="bloodline-cancel">取消</button></div></div>`;
 			document.body.appendChild(panel);
 			const optsEl = panel.querySelector('#bloodline-opts');
-			const TIER_LABELS = { common: '普通', fine: '精良', rare: '優良', epic: '史詩', legendary: '傳說' };
+			const TIER_LABELS = { common: t('tier_common'), fine: t('tier_fine'), rare: t('tier_rare'), epic: t('tier_epic'), legendary: t('tier_legendary') };
 			opts.forEach(o => {
 				const card = document.createElement('div');
 				// apply tier class so CSS accent (border-left) and badge color show

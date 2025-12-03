@@ -69,8 +69,43 @@
 
     </div>
 
+    <script src="../i18n.js"></script>
     <script src="../js/core/bloodline_data.js"></script>
     <script src="./character_select.fixed.js"></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', ()=>{
+        if(typeof t !== 'function') return;
+        document.title = t('test_character_select_title');
+        const h1 = document.querySelector('h1');
+        if(h1) h1.textContent = t('test_character_select_heading');
+        const smallEls = document.querySelectorAll('.container > .small');
+        if(smallEls[0]) smallEls[0].textContent = t('test_character_select_desc');
+        if(smallEls[1]) smallEls[1].textContent = t('test_playthrough_info');
+        const playLabel = document.querySelector('.controls > div');
+        if(playLabel) playLabel.firstChild.textContent = t('playthrough_label') + ' ';
+        const useUiLabel = document.querySelector('label span.small');
+        if(useUiLabel) useUiLabel.textContent = t('use_game_ui');
+        const decBtn = document.querySelector('#decBtn'); if(decBtn) decBtn.textContent = '-';
+        const incBtn = document.querySelector('#incBtn'); if(incBtn) incBtn.textContent = '+';
+        const resetBtn = document.querySelector('#resetBtn'); if(resetBtn) resetBtn.textContent = t('reset_to_zero');
+        const simBtn = document.querySelector('#simulateFinishBtn'); if(simBtn) simBtn.textContent = t('simulate_finish_btn');
+        // class cards
+        document.querySelectorAll('.card').forEach(card=>{
+            const btn = card.querySelector('.selectBtn');
+            if(!btn) return;
+            const cls = btn.getAttribute('data-class');
+            const classLabel = t('class_' + cls) || cls;
+            const titleEl = card.querySelector('h3');
+            if(titleEl) titleEl.textContent = `${classLabel} (${cls.charAt(0).toUpperCase() + cls.slice(1)})`;
+            btn.textContent = `${t('select_button') || t('select')} ${classLabel}`;
+        });
+        const sel = document.querySelector('#selectedClass'); if(sel) sel.textContent = t('not_selected');
+        const skillBtn = document.querySelector('#simulateLightningBtn'); if(skillBtn) skillBtn.textContent = t('simulate_skill_btn');
+        const modalH2 = document.querySelector('#bloodline-selection-panel h2'); if(modalH2) modalH2.textContent = t('choose_bloodline', { cls: '' });
+        const closeModalBtn = document.querySelector('#closeModalBtn'); if(closeModalBtn) closeModalBtn.textContent = t('close');
+    });
+    </script>
 
 </body>
 </html>

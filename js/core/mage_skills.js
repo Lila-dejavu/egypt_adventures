@@ -22,6 +22,7 @@
             id: 'firebolt',
             name: '火焰箭',
             description: '消耗魔力攻擊單一目標並造成灼燒',
+            tags: ['single','burn'],
             manaCost: 8,
             effect(game, matchCount, comboMultiplier){
                 const mult = getTierMultiplier(game);
@@ -46,6 +47,7 @@
             id: 'flame_wave',
             name: '烈焰波',
             description: '消耗較多魔力對敵人施加範圍灼燒（強化 DoT）',
+            tags: ['aoe','burn'],
             manaCost: 12,
             effect(game, matchCount, comboMultiplier){
                 const mult = getTierMultiplier(game);
@@ -69,6 +71,7 @@
             id: 'mana_shield',
             name: '魔力護盾',
             description: '消耗魔力轉化為護盾',
+            tags: ['self','shield'],
             manaCost: 6,
             effect(game, matchCount, comboMultiplier){
                 const mult = getTierMultiplier(game);
@@ -85,6 +88,7 @@
             id: 'freeze',
             name: '冰凍',
             description: '使敵人在數回合內無法攻擊',
+            tags: ['single','control','stun'],
             manaCost: 10,
             effect(game, matchCount, comboMultiplier){
                 const mult = getTierMultiplier(game);
@@ -106,6 +110,7 @@
             id: 'scorch',
             name: '灼燒',
             description: '強化單體灼燒，造成持續流失生命',
+            tags: ['single','burn'],
             manaCost: 9,
             effect(game, matchCount, comboMultiplier){
                 const mult = getTierMultiplier(game);
@@ -129,6 +134,7 @@
             id: 'lightning_chain',
             name: '閃電連鎖',
             description: '對敵人造成連續多次攻擊',
+            tags: ['single','chain','shock'],
             manaCost: 11,
             effect(game, matchCount, comboMultiplier){
                 const mult = getTierMultiplier(game);
@@ -153,6 +159,7 @@
             id: 'curse',
             name: '詛咒',
             description: '降低敵人攻擊與閃避率',
+            tags: ['single','debuff'],
             manaCost: 7,
             effect(game, matchCount, comboMultiplier){
                 const mult = getTierMultiplier(game);
@@ -185,7 +192,7 @@
         const cost = (s.manaCost || 0) * Math.max(1, matchCount);
         if(!game.player || typeof game.player.mana !== 'number') return null;
         if(game.player.mana < cost){
-            if(typeof game.showMessage === 'function') game.showMessage('魔力不足，無法施放技能');
+            if(typeof game.showMessage === 'function') game.showMessage(t('err_not_enough_mana'));
             return null;
         }
         game.player.mana = Math.max(0, game.player.mana - cost);

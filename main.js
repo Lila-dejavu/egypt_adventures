@@ -179,12 +179,12 @@ document.addEventListener('DOMContentLoaded', function() {
 	if (spinBtn) {
 		spinBtn.addEventListener('click', ()=>{
 			if (!game.inBattle) {
-				showMessage('目前不在戰鬥中，無法使用旋轉。');
+				showMessage(t('err_not_in_battle_cant_spin'));
 				return;
 			}
 			if (spinBtn) spinBtn.disabled = true;
 			if (stopBtn) stopBtn.disabled = false;
-			showMessage('開始旋轉...');
+			showMessage(t('start_spinning'));
 			startSpin();
 		});
 	}
@@ -199,8 +199,8 @@ document.addEventListener('DOMContentLoaded', function() {
 	if (button && input) {
 		button.addEventListener('click', function() {
 			const cmd = (input.value || '').trim();
-			if (!cmd) { showMessage('請輸入指令。'); return; }
-			showMessage(`你輸入了：${cmd}`);
+			if (!cmd) { showMessage(t('please_enter_command')); return; }
+			showMessage(t('input_echo', { cmd }));
 			input.value = '';
 		});
 
@@ -210,9 +210,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 	// Movement buttons (using DOMRefs)
-	if (DOMRefs.moveFront) DOMRefs.moveFront.addEventListener('click', ()=> { if (game.inBattle) { showMessage('目前在戰鬥中，無法移動。'); return; } game.moveStep('前'); });
-	if (DOMRefs.moveLeft) DOMRefs.moveLeft.addEventListener('click', ()=> { if (game.inBattle) { showMessage('目前在戰鬥中，無法移動。'); return; } game.moveStep('左'); });
-	if (DOMRefs.moveRight) DOMRefs.moveRight.addEventListener('click', ()=> { if (game.inBattle) { showMessage('目前在戰鬥中，無法移動。'); return; } game.moveStep('右'); });
+	if (DOMRefs.moveFront) DOMRefs.moveFront.addEventListener('click', ()=> { if (game.inBattle) { showMessage(t('cannot_move_in_battle')); return; } game.moveStep('前'); });
+	if (DOMRefs.moveLeft) DOMRefs.moveLeft.addEventListener('click', ()=> { if (game.inBattle) { showMessage(t('cannot_move_in_battle')); return; } game.moveStep('左'); });
+	if (DOMRefs.moveRight) DOMRefs.moveRight.addEventListener('click', ()=> { if (game.inBattle) { showMessage(t('cannot_move_in_battle')); return; } game.moveStep('右'); });
 
 	// Equipment panel close button
 	if (DOMRefs.closeEquipBtn) {
@@ -251,11 +251,11 @@ document.addEventListener('DOMContentLoaded', function() {
 	if (DOMRefs.autoSpinBtn) {
 		DOMRefs.autoSpinBtn.addEventListener('click', ()=>{
 			if (!game.inBattle) {
-				showMessage('目前不在戰鬥中，無法使用自動旋轉。');
+				showMessage(t('err_not_in_battle_cant_spin'));
 				return;
 			}
 			const isAuto = toggleAutoSpin();
-			DOMRefs.autoSpinBtn.textContent = isAuto ? '停止自動' : '自動旋轉';
+			DOMRefs.autoSpinBtn.textContent = isAuto ? t('auto_spin_text_stop') : t('auto_spin_text_start');
 		});
 	}
 	if (DOMRefs.fleeBtn) {

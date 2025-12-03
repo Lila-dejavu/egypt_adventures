@@ -339,7 +339,7 @@ const BattleMixin = {
 
 		// Brief prompt showing primary symbol, match count and current combo
 		const bonusMsg = matchCount === 3 ? '【三連加成 x2.5】' : '';
-		showMessage(`主要符號：${primary}，匹配數：${matchCount}${bonusMsg}，連續 x${effectiveCombo}（乘數 x${comboMultiplier}）`);
+		showMessage(t('primary_symbol_msg', { primary, matchCount, bonusMsg, effectiveCombo, comboMultiplier }));
 
 		this._processSymbolEffect(primary, matchCount, tripleBonus, comboMultiplier, effectiveCombo);
 
@@ -351,7 +351,7 @@ const BattleMixin = {
 				this.consecutivePrimarySymbol = primary;
 				this.consecutivePrimaryCount = 1;
 			}
-			showMessage(`目前連續主符號：${this.consecutivePrimarySymbol} x${this.consecutivePrimaryCount}`);
+			showMessage(t('current_consecutive_primary', { symbol: this.consecutivePrimarySymbol, count: this.consecutivePrimaryCount }));
 
 			// Update status and messages first
 			this.updateStatus();

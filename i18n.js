@@ -310,6 +310,114 @@ const TRANSLATIONS = {
 		damageText: '傷害',
 		shieldAbsorbed: '護盾吸收',
 		playerHp: '玩家 HP',
+		// Status / effect labels (used by UI for debuffs and temporary buffs)
+		status_burn: '灼燒',
+		status_burn_mage: '灼燒',
+		status_burn_strong: '焚身',
+		status_bleed: '流血',
+		status_poison: '中毒',
+		status_frozen: '冰凍',
+		status_shock_mage: '震懾',
+		status_curse_mage: '詛咒',
+
+		// Temporary buff labels (player.temp_buffs)
+		buff_attack: '攻擊',
+		buff_penetration: '穿透',
+		buff_shield: '護盾',
+		buff_regen: '回復',
+		buff_stamina: '體力',
+		buff_mana: '魔力',
+
+		// Mage UI / skill selector
+		chooseSpell: '選擇法術',
+		mageSpell: '法術',
+		notSet: '（未設定）',
+		bloodline: '血脈',
+		// General UI actions
+		choose: '選擇',
+		cancel: '取消',
+		notUnlocked: '未解鎖',
+		choose_bloodline: '選擇血脈 — {cls}',
+		bloodline_awakened: '已覺醒 {name} 血脈',
+		bloodline_chosen: '已選擇血脈：{name}',
+		bloodline_choose_cancelled: '已取消血脈選擇',
+		not_selected_bloodline: '尚未選擇血脈',
+		no_flag_on_lightning: '你的血脈在閃電技能時沒有特殊效果',
+		bloodline_trigger_pct: '觸發血脈效果：使敵人獲得 {pct}% 每回合灼燒（持續 {duration} 回合）',
+		bloodline_trigger_range: '觸發血脈效果（範圍數值），顯示值會在生成時鎖定',
+		bloodline_trigger_name: '觸發血脈效果：{name}（更多細節見描述）',
+		generic_bloodline_trigger_detected: '觸發血脈效果（已偵測到 flag）',
+
+		// Mage / skill errors
+		err_not_enough_mana: '魔力不足，無法施放技能',
+
+		// Spinning / movement / input
+		err_not_in_battle_cant_spin: '目前不在戰鬥中，無法使用旋轉。',
+		start_spinning: '開始旋轉...',
+		please_enter_command: '請輸入指令。',
+		cannot_move_in_battle: '目前在戰鬥中，無法移動。',
+		auto_spin_text_start: '自動旋轉',
+		auto_spin_text_stop: '停止自動',
+
+		// Playthrough / test harness
+		test_pref: '測試偏好：{which}',
+		playthrough_decremented: '已將週目數減 1',
+		playthrough_incremented: '已將週目數加 1',
+		playthrough_reset: '已重置週目與選角',
+		simulate_finish: '模擬：完成一個周目，週目數 +1',
+		// Test page / character select (EN)
+		test_character_select_title: 'Test — Character Select & Bloodlines',
+		test_character_select_heading: 'Character Select & Bloodlines Test Page',
+		test_character_select_desc: 'Note: Complete playthrough 1 to unlock Mage; 2 to unlock Warrior; 3 to unlock Archer. When choosing a class, three random bloodlines will appear; pick one primary bloodline (permanent). Bloodlines are class-specific.',
+		test_playthrough_info: 'Completing a playthrough unlocks classes and talents',
+		playthrough_label: 'Current playthroughs (completed):',
+		use_game_ui: 'Use game UI',
+		reset_to_zero: 'Reset to 0',
+		simulate_finish_btn: 'Simulate finishing a playthrough',
+		class_mage: 'Mage',
+		class_warrior: 'Warrior',
+		class_archer: 'Archer',
+		not_selected: '(Not selected)',
+		simulate_skill_btn: 'Simulate: trigger skill (lightning icon)',
+		// Test page / character select
+		test_character_select_title: '測試 — 角色選擇與血脈',
+		test_character_select_heading: '角色選擇與血脈測試頁面',
+		test_character_select_desc: '說明：完成第 1 周目 解鎖 法師；第 2 周目 解鎖 武士；第 3 周目 解鎖 弓箭手。選角時會隨機跳出三種血脈，請選一個主要血脈（永久）。血脈依職業區別，沒有共用。',
+		test_playthrough_info: '完成一週目可解鎖職業和天賦',
+		playthrough_label: '目前週目（已完成次數）：',
+		use_game_ui: '使用遊戲 UI',
+		reset_to_zero: '重置為 0',
+		simulate_finish_btn: '模擬完成一個周目',
+		class_mage: '法師',
+		class_warrior: '武士',
+		class_archer: '弓箭手',
+		not_selected: '（尚未選擇）',
+		simulate_skill_btn: '模擬：觸發技能（閃電圖示）',
+		not_unlocked_class: '該職業尚未解鎖',
+		level_detection_ng: '偵測到你已完成 {pts} 次周目；選擇「周目+」以啟用額外職業與起始加成。',
+
+		// Temporary messages
+		temporary_buff_expired: '🔻 暫時增益 {key} 已消失',
+
+		// Rewards
+		reward_gold: '獲得金幣 {gold}',
+		input_echo: '你輸入了：{cmd}',
+		primary_symbol_msg: '主要符號：{primary}，匹配數：{matchCount}{bonusMsg}，連續 x{effectiveCombo}（乘數 x{comboMultiplier}）',
+		current_consecutive_primary: '目前連續主符號：{symbol} x{count}',
+		battle_luck_evaded_corpse_poison: '🎲 戰鬥幸運發揮，避免屍毒！',
+		corpse_poison_spread: '💀 屍毒蔓延！每回合失血 {perTick}（持續 3 回合）',
+		// Tier labels
+		tier_common: '普通',
+		tier_fine: '精良',
+		tier_rare: '優良',
+		tier_epic: '史詩',
+		tier_legendary: '傳說',
+
+		// Small actions
+		switch: '切換',
+		choose_class_title: '選擇職業',
+		badge_unlocked_ngplus: '解鎖於周目+',
+		select_button: '選擇',
 		
 		// Caravan events
 		caravanMet: '遇到商隊：若資金足夠可補給藥水（50金/瓶）。',
