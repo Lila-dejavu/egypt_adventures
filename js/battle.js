@@ -131,22 +131,33 @@ const BattleMixin = {
 		// Disable movement buttons during battle
 		DOMRefs.disableMovement();
 
-		// Get battle constants from Config
-		const B = Config.BATTLE;
+	// Get battle constants from Config
+	const B = Config.BATTLE;
 
-		// Adjust enemy HP and attack based on type
-		// Pyramid enemies scale with map difficulty, non-pyramid use normal multipliers
-		let hpMultiplier = this.inPyramid
-			? (B.HP_MULT.pyramid + this.difficulty * B.HP_SCALE_PER_DIFF)
-			: B.HP_MULT.normal;
-		let atkMultiplier = this.inPyramid
-			? (B.ATK_MULT.pyramid + this.difficulty * B.ATK_SCALE_PER_DIFF)
-			: B.ATK_MULT.normal;
-		let strengthBonus = this.inPyramid
-			? (B.STRENGTH_MULT.pyramid + this.difficulty * B.STRENGTH_SCALE_PER_DIFF)
-			: B.STRENGTH_MULT.normal;
+	// Get playthrough multiplier for New Game+ scaling
+	const playthroughs = parseInt(localStorage.getItem('egypt_playthroughs') || '0', 10);
+	let ngPlusMultiplier = 1.0;
+	if (playthroughs > 0) {
+		// Each playthrough adds 20% more difficulty to enemies
+		ngPlusMultiplier = 1.0 + (playthroughs * 0.2);
+	}
 
-		// Get enemy type base stats from Config (support boss)
+	// Adjust enemy HP and attack based on type
+	// Pyramid enemies scale with map difficulty, non-pyramid use normal multipliers
+	let hpMultiplier = this.inPyramid
+		? (B.HP_MULT.pyramid + this.difficulty * B.HP_SCALE_PER_DIFF)
+		: B.HP_MULT.normal;
+	let atkMultiplier = this.inPyramid
+		? (B.ATK_MULT.pyramid + this.difficulty * B.ATK_SCALE_PER_DIFF)
+		: B.ATK_MULT.normal;
+	let strengthBonus = this.inPyramid
+		? (B.STRENGTH_MULT.pyramid + this.difficulty * B.STRENGTH_SCALE_PER_DIFF)
+		: B.STRENGTH_MULT.normal;
+
+	// Apply New Game+ multiplier
+	hpMultiplier *= ngPlusMultiplier;
+	atkMultiplier *= ngPlusMultiplier;
+	strengthBonus *= ngPlusMultiplier;		// Get enemy type base stats from Config (support boss)
 		const stats = type === 'boss' ? B.BOSS
 			: type === 'elite' ? B.ELITE
 			: type === 'mini_boss' ? B.MINI_BOSS
@@ -620,47 +631,65 @@ const BattleMixin = {
 			this.player.banditsLoot = 0;
 		}
 
-		// Pyramid multiplier from Config
-		const pyramidMultiplier = this.inPyramid ? Config.BATTLE.PYRAMID_XP_MULTIPLIER : 1;
+	// Pyramid multiplier from Config
+	const pyramidMultiplier = this.inPyramid ? Config.BATTLE.PYRAMID_XP_MULTIPLIER : 1;
 
-		// Enemy type reward multiplier (elite x2, mini-boss x3)
-		let enemyTypeMultiplier = 1;
-		// Boss has very large multiplier
-		if (this.enemy.strength >= 3.6) { // boss
-			enemyTypeMultiplier = 5;
-		} else if (this.enemy.strength >= 2.4) { // mini_boss
-			enemyTypeMultiplier = 3;
-		} else if (this.enemy.strength >= 1.6) { // elite
-			enemyTypeMultiplier = 2;
+	// New Game+ reward multiplier (increases gold and XP for higher playthroughs)
+	const playthroughs = parseInt(localStorage.getItem('egypt_playthroughs') || '0', 10);
+	let ngPlusRewardMultiplier = 1.0;
+	if (playthroughs > 0) {
+		// Each playthrough adds 30% more rewards
+		ngPlusRewardMultiplier = 1.0 + (playthroughs * 0.3);
+	}
+
+	// Enemy type reward multiplier (elite x2, mini-boss x3)
+	let enemyTypeMultiplier = 1;
+	// Boss has very large multiplier
+	if (this.enemy.strength >= 3.6) { // boss
+		enemyTypeMultiplier = 5;
+	} else if (this.enemy.strength >= 2.4) { // mini_boss
+		enemyTypeMultiplier = 3;
+	} else if (this.enemy.strength >= 1.6) { // elite
+		enemyTypeMultiplier = 2;
+	}
+
+	// Gold reward based on difficulty with New Game+ bonus
+	const baseReward = 20 * this.difficulty;
+	const reward = Math.floor(baseReward * pyramidMultiplier * enemyTypeMultiplier * ngPlusRewardMultiplier);
+	this.player.gold += reward;
+
+	let rewardMsg = `獲得金幣 ${reward}`;
+	if (playthroughs > 0) {
+		rewardMsg += ` [周目 ${playthroughs + 1}]`;
+	}
+	if (this.inPyramid) {
+		rewardMsg = `🔺 金字塔獎勵 x${pyramidMultiplier}！獲得金幣 ${reward} (基礎 ${baseReward} x${pyramidMultiplier}`;
+		if (enemyTypeMultiplier > 1) {
+			rewardMsg += ` x${enemyTypeMultiplier}`;
 		}
-
-		// Gold reward based on difficulty
-		const baseReward = 20 * this.difficulty;
-		const reward = baseReward * pyramidMultiplier * enemyTypeMultiplier;
-		this.player.gold += reward;
-
-		let rewardMsg = `獲得金幣 ${reward}`;
-		if (this.inPyramid) {
-			rewardMsg = `🔺 金字塔獎勵 x${pyramidMultiplier}！獲得金幣 ${reward} (基礎 ${baseReward} x${pyramidMultiplier}`;
-			if (enemyTypeMultiplier > 1) {
-				rewardMsg += ` x${enemyTypeMultiplier}`;
-			}
-			rewardMsg += ')';
-		} else if (enemyTypeMultiplier > 1) {
-			rewardMsg += ` (基礎 ${baseReward} x${enemyTypeMultiplier})`;
+		if (ngPlusRewardMultiplier > 1) {
+			rewardMsg += ` x${ngPlusRewardMultiplier.toFixed(1)}`;
 		}
-		showMessage(rewardMsg);
+		rewardMsg += ')';
+	} else if (enemyTypeMultiplier > 1 || ngPlusRewardMultiplier > 1) {
+		let multipliers = [];
+		if (enemyTypeMultiplier > 1) multipliers.push(`x${enemyTypeMultiplier}`);
+		if (ngPlusRewardMultiplier > 1) multipliers.push(`x${ngPlusRewardMultiplier.toFixed(1)}`);
+		rewardMsg += ` (基礎 ${baseReward} ${multipliers.join(' ')})`;
+	}
+	showMessage(rewardMsg);
 
-		// XP calculation
-		const mapMultiplier = Math.pow(2, this.difficulty - 1);
-		const baseXP = Math.floor(15 * this.difficulty * (this.enemy.strength || 1));
-		const xpGain = Math.floor(baseXP * mapMultiplier * pyramidMultiplier * enemyTypeMultiplier);
-		if (this.inPyramid) {
-			showMessage(`🔺 金字塔經驗值 x${pyramidMultiplier}！`);
-		}
-		this.addXP(xpGain);
-
-		// Drop mechanism
+	// XP calculation with New Game+ bonus
+	const mapMultiplier = Math.pow(2, this.difficulty - 1);
+	const baseXP = Math.floor(15 * this.difficulty * (this.enemy.strength || 1));
+	const xpGain = Math.floor(baseXP * mapMultiplier * pyramidMultiplier * enemyTypeMultiplier * ngPlusRewardMultiplier);
+	if (this.inPyramid) {
+		showMessage(`🔺 金字塔經驗值 x${pyramidMultiplier}！`);
+	}
+	if (playthroughs > 0) {
+		showMessage(`🔄 周目獎勵加成 x${ngPlusRewardMultiplier.toFixed(1)}！`);
+	}
+	this.addXP(xpGain);		// Drop mechanism
 		this._handleLootDrop(pyramidMultiplier, enemyTypeMultiplier);
 
 		// End battle

@@ -322,8 +322,37 @@ const NavigationMixin = {
 	nextMap() {
 		showMessage(t('desertCleared'));
 		this.map_steps = 0;
-		this.difficulty += 1;
-		this.map_goal += 5;
+		
+		// 根據周目數調整難度增長
+		// 從 localStorage 獲取已完成的周目數
+		const playthroughs = parseInt(localStorage.getItem('egypt_playthroughs') || '0', 10);
+		
+		// 基礎難度增長：每張地圖 +1
+		let difficultyIncrease = 1;
+		
+		// 周目加成：每個完成的周目增加額外難度
+		// 第1周目（playthroughs=1）: 每張地圖 +1.3 難度
+		// 第2周目（playthroughs=2）: 每張地圖 +1.6 難度
+		// 第3周目（playthroughs=3）: 每張地圖 +2.0 難度
+		// 第4周目+: 每張地圖 +2.5 難度
+		if (playthroughs >= 1) {
+			const ngBonus = Math.min(playthroughs * 0.3, 1.5); // 最多增加 1.5
+			difficultyIncrease += ngBonus;
+		}
+		
+		this.difficulty += difficultyIncrease;
+		
+		// 地圖目標步數也隨周目增加
+		// 基礎：每張地圖 +5 步
+		// 周目加成：每個周目額外 +2 步
+		const goalIncrease = 5 + Math.min(playthroughs * 2, 10);
+		this.map_goal += goalIncrease;
+		
+		// 顯示周目相關訊息
+		if (playthroughs > 0) {
+			showMessage(`⚡ 周目 ${playthroughs + 1} 難度提升：地圖難度 +${difficultyIncrease.toFixed(1)}，目標步數 +${goalIncrease}`);
+		}
+		
 		// Reset caravan rest tracking for new map
 		this.hasEncounteredCaravanRest = false;
 		this.updateStatus();

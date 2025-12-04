@@ -79,6 +79,27 @@ document.addEventListener('DOMContentLoaded', function() {
 			Object.assign(this, GameState.createGameFlags());
 			Object.assign(this, GameState.createMapState());
 			Object.assign(this, GameState.createComboState());
+			
+			// 根據周目數調整初始難度和地圖目標
+			const playthroughs = parseInt(localStorage.getItem('egypt_playthroughs') || '0', 10);
+			if (playthroughs > 0) {
+				// 每個周目增加初始難度
+				// 第1周目: 難度 1.5
+				// 第2周目: 難度 2.0
+				// 第3周目: 難度 2.5
+				// 第4周目+: 難度 3.0 + (周目-3)*0.3
+				if (playthroughs <= 3) {
+					this.difficulty = 1 + (playthroughs * 0.5);
+				} else {
+					this.difficulty = 3 + ((playthroughs - 3) * 0.3);
+				}
+				
+				// 每個周目增加初始地圖目標
+				// 基礎 30 步 + 周目數 * 5 步
+				this.map_goal = 30 + (playthroughs * 5);
+				
+				console.log(`周目 ${playthroughs + 1} 開始 - 初始難度: ${this.difficulty.toFixed(1)}, 地圖目標: ${this.map_goal}`);
+			}
 		}
 
 		// All methods are provided by mixins:
