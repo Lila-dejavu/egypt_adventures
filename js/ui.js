@@ -62,6 +62,24 @@ const UIMixin = {
 				}
 			}
 
+			// Build player temporary buffs display (shown inside player status)
+			let playerBuffHtml = '';
+			try {
+				if (this.player && this.player.temp_buffs) {
+					const LABELS = { attack: t('buff_attack'), penetration: t('buff_penetration'), shield: t('buff_shield'), regen: t('buff_regen'), stamina: t('buff_stamina'), mana: t('buff_mana') };
+					const buffs = [];
+					for (const [key, val] of Object.entries(this.player.temp_buffs)) {
+						if (val && val.value) {
+							const label = LABELS[key] || key;
+							buffs.push(`${label} +${val.value} (${val.turns}T)`);
+						}
+					}
+					if (buffs.length) {
+						playerBuffHtml = `<div style="margin-top:6px;color:#2c7a2c;font-weight:bold;">✨ ${buffs.join(', ')}</div>`;
+					}
+				}
+			} catch (e) { playerBuffHtml = ''; }
+
 			playerStatusEl.innerHTML = `
 				<div class="stat-label">${t('player')} Lv.${this.player.level}</div>
 				<div class="hp-row">${t('hp')}: <span class="hp-text">${this.player.hp}/${this.player.max_hp}</span></div>
@@ -112,38 +130,6 @@ const UIMixin = {
 				if(btn){ btn.addEventListener('click', ()=>{ try{ this.showMageSkillSelector(); }catch(e){ console.warn('showMageSkillSelector failed', e); } }); }
 			}
 		}
-
-		// Build player temporary buffs display (shown inside player status)
-		let playerBuffHtml = '';
-		try {
-				if (this.player && this.player.temp_buffs) {
-				const LABELS = { attack: t('buff_attack'), penetration: t('buff_penetration'), shield: t('buff_shield'), regen: t('buff_regen'), stamina: t('buff_stamina'), mana: t('buff_mana') };
-				const parts = [];
-				for (const key in this.player.temp_buffs) {
-					if (!Object.prototype.hasOwnProperty.call(this.player.temp_buffs, key)) continue;
-					const b = this.player.temp_buffs[key];
-					if (!b) continue;
-					const label = LABELS[key] || key;
-					// Support stacked-like or single object shapes
-					if (Array.isArray(b.stacks)) {
-						const stacks = b.stacks.length;
-						const minTurns = b.stacks.reduce((m, s) => Math.min(m, s.turns || Infinity), Infinity) || 0;
-						parts.push(`<div class='combo-row buff-row'>${label} ${stacks} 層（最短 ${minTurns} 回合）</div>`);
-						continue;
-					}
-					const turns = (typeof b.turns === 'number') ? b.turns : (typeof b.duration === 'number' ? b.duration : null);
-					const val = (typeof b.value !== 'undefined') ? b.value : (typeof b.pct !== 'undefined' ? (Math.round(b.pct*100)+'%') : '');
-					if (turns !== null) {
-						parts.push(`<div class='combo-row buff-row'>${label} ${val ? ('+'+val+' ') : ''}${turns} 回合</div>`);
-					} else if (val) {
-						parts.push(`<div class='combo-row buff-row'>${label} +${val}</div>`);
-					} else {
-						parts.push(`<div class='combo-row buff-row'>${label}</div>`);
-					}
-				}
-				playerBuffHtml = parts.join('');
-			}
-		} catch (e) { console.warn('player buff render failed', e); }
 
 		// Update enemy status to right panel
 		if (enemyStatusEl) {
