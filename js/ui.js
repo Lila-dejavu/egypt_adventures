@@ -87,11 +87,10 @@ const UIMixin = {
 				<div class="xp-row">${t('xp')}: <span class="xp-text">${this.player.xp}/${xpNeeded === Infinity ? 'MAX' : xpNeeded}</span></div>
 				<div class="xp-bar"><div class="xp-inner" style="width:${xpPct}%"></div></div>
 				${bloodlineHtml}
-				<div class="stats-row">
-					<div>${t('stamina')}: ${this.player.stamina}/${this.player.max_stamina}</div>
-						<div>${t('mana') || '魔力'}: ${this.player.mana || 0}/${this.player.max_mana || 0}</div>
-						${this.player.selectedClass === 'mage' ? `<div id='mage-skill-row'>${t('mageSpell')}: ${this.player.mage_selected_skill ? (window.MageSkills && MageSkills.SKILLS && MageSkills.SKILLS[this.player.mage_selected_skill] ? MageSkills.SKILLS[this.player.mage_selected_skill].name : this.player.mage_selected_skill) : t('notSet')} <button id='change-skill-btn' class='small'>${t('switch')}</button></div>` : ''}
-					<div>${t('shield')}: ${this.player.shield}</div>
+			<div class="stats-row">
+				<div>${t('stamina')}: ${this.player.stamina}/${this.player.max_stamina}</div>
+					<div>${t('mana') || '魔力'}: ${this.player.mana || 0}/${this.player.max_mana || 0}</div>
+				<div>${t('shield')}: ${this.player.shield}</div>
 					<div>${t('potions')}: ${this.player.potions}</div>
 					<div>${t('gold')}: ${this.player.gold}</div>
 					<div>${t('luckCombat')}: ${this.player.luck_combat}</div>
@@ -121,17 +120,9 @@ const UIMixin = {
 						<button class="open-equip-btn" data-slot="amulet">${t('equip')}</button>
 						<button class="unequip-btn" data-slot="amulet">${t('unequip')}</button>
 					</div>
-				</div>
-			`;
-
-			// Attach handler for change-skill button (since innerHTML was replaced)
-			if(this.player.selectedClass === 'mage'){
-				const btn = playerStatusEl.querySelector('#change-skill-btn');
-				if(btn){ btn.addEventListener('click', ()=>{ try{ this.showMageSkillSelector(); }catch(e){ console.warn('showMageSkillSelector failed', e); } }); }
-			}
-		}
-
-		// Update enemy status to right panel
+			</div>
+		`;
+	}		// Update enemy status to right panel
 		if (enemyStatusEl) {
 			const enemyPct = this.enemy && this.enemy.max_hp ? Math.max(0, Math.min(100, Math.floor((this.enemy.hp / this.enemy.max_hp) * 100))) : 0;
 
@@ -225,90 +216,7 @@ const UIMixin = {
 		}
 	},
 
-	/**
-	 * Show a modal to pick mage skill (if MageSkills available)
-	 */
-	showMageSkillSelector(){
-		if(!window.MageSkills || !MageSkills.SKILLS) return;
-		const skills = MageSkills.SKILLS;
-		// helper: determine whether current enemy context includes grouped enemies
-		function enemySupportsGroups(game){
-			if(!game) return false;
-			if(!game.inBattle || !game.enemy) return false;
-			// common signals: explicit count, group flag, or type indicating swarm
-			if(typeof game.enemy.count === 'number' && game.enemy.count > 1) return true;
-			if(game.enemy.isGroup || game.enemy.multiple || game.enemy.group) return true;
-			// fallback: certain enemy types may indicate multiple attackers (e.g., 'swarm')
-			if(game.enemy.type && String(game.enemy.type).toLowerCase().includes('swarm')) return true;
-			return false;
-		}
-		const panel = document.createElement('div');
-		panel.style.cssText = 'position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);z-index:10000;';
-		let html = `<div style="background:#fff;padding:16px;border-radius:8px;min-width:360px;max-width:90%"><h3>${t('chooseSpell')}</h3><div style='display:flex;flex-wrap:wrap;gap:8px;'>`;
-		const supportsGroups = enemySupportsGroups(this);
-		Object.values(skills).forEach(s => {
-			let dispDesc = s.description || '';
-			// If current context doesn't support grouped enemies, remove sentences that specifically mention 範圍/群體/全體 or 單體/單一
-			if(!supportsGroups){
-				// split into sentences by comma, fullwidth comma, or punctuation, then filter
-				const parts = dispDesc.split(/[。！？\n]+/).map(p=>p.trim()).filter(Boolean);
-				const filtered = parts.filter(p => {
-					// if sentence mentions area keywords, drop it; also drop explicit single-target phrasing
-					const lower = p.toLowerCase();
-					if(/範圍|群體|全體|群攻|範圍法術|對敵人施加範圍|群體出現/.test(p)) return false;
-					if(/單一|單體|單目標|單個目標/.test(p)) return false;
-					return true;
-				});
-				dispDesc = filtered.join('。');
-				if(dispDesc && !dispDesc.endsWith('。')) dispDesc += '';
-			}
-				// Add bloodline-trigger note when relevant (use tags for reliable detection)
-				try {
-					const bl = (this.player && (this.player.bloodline || this.player.selectedBloodline)) || null;
-					if (bl && bl.flags) {
-						const blName = bl.name || (bl.id || t('bloodline') || '血脈');
-						let note = '';
-						const STATUS_LABELS = { burn: t('status_burn'), burn_mage: t('status_burn_mage'), burn_strong: t('status_burn_strong'), bleed: t('status_bleed'), poison: t('status_poison'), frozen: t('status_frozen'), shock_mage: t('status_shock_mage'), curse_mage: t('status_curse_mage') };
-						const tags = Array.isArray(s.tags) ? s.tags : [];
-						const isBurnSkill = tags.includes('burn');
-						const isAOE = tags.includes('aoe') || tags.includes('area');
-						if (bl.flags.onSpell_applyStatus && isBurnSkill) {
-							const f = bl.flags.onSpell_applyStatus;
-							const statusKey = f.name || 'burn';
-							const statusLabel = STATUS_LABELS[statusKey] || statusKey;
-							note = `（${blName} 血脈：在施放法術時會觸發 ${statusLabel}）`;
-						} else if (bl.flags.onLightningSkill_applyStatus && isBurnSkill) {
-							const f = bl.flags.onLightningSkill_applyStatus;
-							const statusKey = f.name || 'burn';
-							const statusLabel = STATUS_LABELS[statusKey] || statusKey;
-							note = `（${blName} 血脈：在閃電符號觸發時會施加 ${statusLabel}）`;
-						} else if (bl.flags.onSpell_applyStatus) {
-							// generic note when bloodline has spell-on flags but skill may not be burn
-							note = `（${blName} 血脈：會在施放法術時觸發血脈效果）`;
-						} else if (bl.flags.onLightningSkill_applyStatus) {
-							note = `（${blName} 血脈：會在閃電符號觸發時發動）`;
-						}
-						// If bloodline triggers only on lightning but current skill is AoE/spell that the bloodline might not apply to, clarify
-						if (note) dispDesc = dispDesc + '\n' + note;
-					}
-				} catch (e) { /* ignore */ }
-				html += `<div style='border:1px solid #ddd;padding:8px;border-radius:6px;width:160px;'><div style='font-weight:700'>${s.name}</div><div class='small' style='margin:6px 0'>${dispDesc}</div><div style='text-align:center'><button class='pick-skill' data-skill='${s.id}'>${t('choose')}</button></div></div>`;
-			});
-			html += `</div><div style='text-align:center;margin-top:12px'><button id='close-skill-modal'>${t('cancel')}</button></div></div>`;
-		panel.innerHTML = html;
-		document.body.appendChild(panel);
-		panel.querySelectorAll('.pick-skill').forEach(b => {
-			b.addEventListener('click', (ev) => {
-				const id = ev.currentTarget.getAttribute('data-skill');
-				this.player.mage_selected_skill = id;
-				if(typeof this.saveGame === 'function') this.saveGame();
-				this.updateStatus();
-				document.body.removeChild(panel);
-			});
-		});
-		const close = panel.querySelector('#close-skill-modal');
-		if(close) close.addEventListener('click', ()=>{ document.body.removeChild(panel); });
-	},
+
 
 	/**
 	 * Helper to get localized rarity text
