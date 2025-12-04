@@ -514,6 +514,577 @@ const ChoiceEvents = {
             showMessage('金字塔副本：8步探險，敵人強度極高（隨地圖提升），獎勵豐厚（15倍經驗/金幣），保證掉落優良以上裝備！');
             this.showPyramidChoice();
         }
+    },
+
+    sphinx_riddle: {
+        weight: 5,
+        handler() {
+            showMessage('🦁 你遇到了傳說中的斯芬克斯！');
+            showMessage('「旅人啊，回答我的謎題，或者接受挑戰...」');
+            const choices = [
+                { id: 'answer_riddle', label: '嘗試回答謎題（考驗智慧）', weight: 40 },
+                { id: 'bargain', label: '請求用財富換取通行（需200金幣）', weight: 30 },
+                { id: 'challenge', label: '拒絕並挑戰斯芬克斯', weight: 30 }
+            ];
+            this.showChoicePanel(
+                '斯芬克斯的謎題',
+                choices,
+                (choiceId) => {
+                    if (choiceId === 'answer_riddle') {
+                        showMessage('🤔 斯芬克斯提出了謎題：「什麼東西早上四條腿，中午兩條腿，晚上三條腿？」');
+                        const intelligence = Math.random();
+                        if (intelligence < 0.4) {
+                            showMessage('💡 「答案是...人！」');
+                            showMessage('✨ 「正確！你的智慧令我欽佩。」');
+                            showMessage('🎁 斯芬克斯賜予你珍貴的獎勵！');
+                            
+                            const gold = 200 + Math.floor(Math.random() * 200);
+                            this.player.gold += gold;
+                            showMessage(`💰 獲得 ${gold} 金幣！`);
+                            
+                            const item = generateItem(Math.random() < 0.5 ? 'epic' : 'excellent', this.difficulty);
+                            this.player.inventory.push(item);
+                            showMessage(`⚔️ 獲得史詩裝備：${this.formatItem(item)}！`);
+                            
+                            this.player.max_hp += 30;
+                            this.player.max_mana += 20;
+                            this.player.max_stamina += 20;
+                            showMessage('🌟 智慧的力量永久提升你的能力：最大HP +30，最大魔力/體力 +20！');
+                            
+                            const xp = 150 + Math.floor(Math.random() * 100);
+                            this.addXP(xp);
+                        } else if (intelligence < 0.7) {
+                            showMessage('😅 「答案是...四腳獸？」');
+                            showMessage('「錯誤。不過我欣賞你的勇氣。」');
+                            const gold = 50 + Math.floor(Math.random() * 100);
+                            this.player.gold += gold;
+                            showMessage(`💰 斯芬克斯給了你一些金幣作為安慰：${gold} 金幣。`);
+                            const xp = 40;
+                            this.addXP(xp);
+                        } else {
+                            showMessage('😰 你答錯了，斯芬克斯憤怒了！');
+                            showMessage('「無知者不配通過此地！」');
+                            const damage = 40 + Math.floor(Math.random() * 30);
+                            this.player.hp = Math.max(1, this.player.hp - damage);
+                            showMessage(`⚡ 魔法懲罰造成 ${damage} 點傷害！`);
+                        }
+                        this.updateStatus();
+                        this.generateDirectionHints();
+                    } else if (choiceId === 'bargain') {
+                        if (this.player.gold >= 200) {
+                            this.player.gold -= 200;
+                            showMessage('💰 你獻上了 200 金幣。');
+                            showMessage('「財富也是一種智慧...你可以通過。」');
+                            const item = generateItem('rare', this.difficulty);
+                            this.player.inventory.push(item);
+                            showMessage(`🎁 斯芬克斯作為回禮給了你：${this.formatItem(item)}`);
+                            this.player.luck_gold += 2;
+                            showMessage('✨ 斯芬克斯的祝福：金幣幸運 +2！');
+                        } else {
+                            showMessage('💸 你沒有足夠的金幣...');
+                            showMessage('「既無智慧也無財富，那就用力量證明自己吧！」');
+                            this.battle('elite');
+                            return;
+                        }
+                        this.updateStatus();
+                        this.generateDirectionHints();
+                    } else if (choiceId === 'challenge') {
+                        showMessage('⚔️ 「愚蠢的凡人，敢挑戰我！」');
+                        showMessage('💪 你將面對斯芬克斯的考驗！');
+                        this.battle('mini_boss');
+                    }
+                }
+            );
+        }
+    },
+
+    desert_temple: {
+        weight: 5,
+        handler() {
+            showMessage('🏛️ 你發現了一座被沙漠掩埋的古老神殿...');
+            showMessage('神殿的門上刻著三個圖騰：太陽、月亮、星辰。');
+            const choices = [
+                { id: 'sun_path', label: '選擇太陽之路（力量與火焰）', weight: 33 },
+                { id: 'moon_path', label: '選擇月亮之路（智慧與治療）', weight: 33 },
+                { id: 'star_path', label: '選擇星辰之路（幸運與寶藏）', weight: 34 }
+            ];
+            this.showChoicePanel(
+                '沙漠神殿',
+                choices,
+                (choiceId) => {
+                    if (choiceId === 'sun_path') {
+                        showMessage('☀️ 你推開了太陽之門...');
+                        const sunTrial = Math.random();
+                        if (sunTrial < 0.4) {
+                            showMessage('🔥 神殿認可了你的力量！');
+                            showMessage('✨ 太陽神賜予你火焰的祝福！');
+                            this.player.fireBless = 8;
+                            showMessage('🔥 接下來 8 場戰鬥，攻擊附帶火焰傷害！');
+                            this.player.max_stamina += 30;
+                            this.player.stamina = Math.min(this.player.max_stamina, this.player.stamina + 30);
+                            showMessage('💪 力量湧入身體：最大體力 +30！');
+                            const item = generateItem(Math.random() < 0.6 ? 'rare' : 'epic', this.difficulty);
+                            if (item.slot === 'weapon') {
+                                this.player.inventory.push(item);
+                                showMessage(`⚔️ 獲得武器：${this.formatItem(item)}！`);
+                            } else {
+                                const weapon = generateItem('rare', this.difficulty);
+                                weapon.slot = 'weapon';
+                                this.player.inventory.push(weapon);
+                                showMessage(`⚔️ 獲得武器：${this.formatItem(weapon)}！`);
+                            }
+                        } else if (sunTrial < 0.7) {
+                            showMessage('🔥 試煉之火燃燒著你！');
+                            const damage = 30 + Math.floor(Math.random() * 25);
+                            this.player.hp = Math.max(1, this.player.hp - damage);
+                            showMessage(`受到 ${damage} 點火焰傷害！`);
+                            showMessage('但你在痛苦中成長...');
+                            this.player.max_hp += 40;
+                            showMessage('💓 最大HP永久 +40！');
+                            const gold = 100 + Math.floor(Math.random() * 150);
+                            this.player.gold += gold;
+                            showMessage(`💰 從神殿中獲得 ${gold} 金幣。`);
+                        } else {
+                            showMessage('🔥 太陽試煉失敗！烈焰守衛現身！');
+                            this.battle('elite');
+                            return;
+                        }
+                        this.updateStatus();
+                        this.generateDirectionHints();
+                    } else if (choiceId === 'moon_path') {
+                        showMessage('🌙 你推開了月亮之門...');
+                        showMessage('💫 柔和的月光灑在身上，感到無比平靜...');
+                        
+                        this.player.hp = this.player.max_hp;
+                        this.player.mana = this.player.max_mana;
+                        this.player.stamina = this.player.max_stamina;
+                        showMessage('✨ 完全恢復了HP、魔力和體力！');
+                        
+                        this.player.max_mana += 25;
+                        this.player.max_hp += 35;
+                        showMessage('🌟 月神的祝福：最大HP +35，最大魔力 +25！');
+                        
+                        this.player.potions += 3;
+                        showMessage('🧪 獲得 3 瓶高級藥水！');
+                        
+                        const moonRoll = Math.random();
+                        if (moonRoll < 0.5) {
+                            const item = generateItem(Math.random() < 0.4 ? 'epic' : 'excellent', this.difficulty);
+                            this.player.inventory.push(item);
+                            showMessage(`🎁 月神贈予：${this.formatItem(item)}！`);
+                        }
+                        
+                        this.player.shield += 40;
+                        showMessage('🛡️ 月光護盾：獲得 40 點護盾！');
+                        
+                        const xp = 100 + Math.floor(Math.random() * 80);
+                        this.addXP(xp);
+                        
+                        this.updateStatus();
+                        this.generateDirectionHints();
+                    } else if (choiceId === 'star_path') {
+                        showMessage('⭐ 你推開了星辰之門...');
+                        const starTrial = Math.random();
+                        if (starTrial < 0.35) {
+                            showMessage('🌟 滿天星辰為你降下祝福！');
+                            showMessage('✨ 這是極大的幸運！');
+                            
+                            const gold = 300 + Math.floor(Math.random() * 300);
+                            this.player.gold += gold;
+                            showMessage(`💰💰💰 獲得巨額金幣：${gold}！`);
+                            
+                            const itemCount = 2 + Math.floor(Math.random() * 2);
+                            for (let i = 0; i < itemCount; i++) {
+                                const rarity = Math.random() < 0.3 ? 'epic' : (Math.random() < 0.6 ? 'excellent' : 'rare');
+                                const item = generateItem(rarity, this.difficulty);
+                                this.player.inventory.push(item);
+                                showMessage(`⚔️ 獲得：${this.formatItem(item)}！`);
+                            }
+                            
+                            this.player.luck_combat += 3;
+                            this.player.luck_gold += 3;
+                            showMessage('🍀 幸運大幅提升：戰鬥幸運 +3，金幣幸運 +3！');
+                            
+                            const xp = 120 + Math.floor(Math.random() * 100);
+                            this.addXP(xp);
+                        } else if (starTrial < 0.7) {
+                            showMessage('✨ 星光照耀著寶物...');
+                            const gold = 150 + Math.floor(Math.random() * 200);
+                            this.player.gold += gold;
+                            showMessage(`💰 獲得 ${gold} 金幣！`);
+                            
+                            const item = generateItem(Math.random() < 0.5 ? 'excellent' : 'rare', this.difficulty);
+                            this.player.inventory.push(item);
+                            showMessage(`⚔️ 獲得：${this.formatItem(item)}！`);
+                            
+                            this.player.luck_gold += 2;
+                            showMessage('🍀 金幣幸運 +2！');
+                        } else {
+                            showMessage('💫 星光黯淡...你的運氣不佳。');
+                            showMessage('🌠 但流星劃過，帶來了危險的守護者！');
+                            this.battle('elite');
+                            return;
+                        }
+                        this.updateStatus();
+                        this.generateDirectionHints();
+                    }
+                }
+            );
+        }
+    },
+
+    time_rift: {
+        weight: 4,
+        handler() {
+            showMessage('⏳ 空間出現扭曲...你發現了一個時空裂縫！');
+            showMessage('💫 透過裂縫，你看到了三個不同的時間線...');
+            const choices = [
+                { id: 'past', label: '進入過去（重溫歷史）', weight: 33 },
+                { id: 'present', label: '穩定現在（強化當下）', weight: 33 },
+                { id: 'future', label: '窺探未來（獲得先知）', weight: 34 }
+            ];
+            this.showChoicePanel(
+                '時空裂縫',
+                choices,
+                (choiceId) => {
+                    if (choiceId === 'past') {
+                        showMessage('🕰️ 你踏入了過去的時間線...');
+                        const pastEvent = Math.random();
+                        if (pastEvent < 0.4) {
+                            showMessage('📜 你見證了古代法老王的寶庫！');
+                            const gold = 250 + Math.floor(Math.random() * 250);
+                            this.player.gold += gold;
+                            showMessage(`💰 從過去帶回了 ${gold} 金幣！`);
+                            
+                            showMessage('📚 你學到了古代的戰鬥技巧！');
+                            const xp = 150 + Math.floor(Math.random() * 150);
+                            this.addXP(xp);
+                            
+                            const item = generateItem('epic', this.difficulty);
+                            this.player.inventory.push(item);
+                            showMessage(`⚔️ 獲得古代遺物：${this.formatItem(item)}！`);
+                        } else if (pastEvent < 0.75) {
+                            showMessage('👥 你遇到了年輕時的自己！');
+                            showMessage('💭 對話中獲得了寶貴的人生經驗...');
+                            this.player.max_hp += 25;
+                            this.player.max_stamina += 20;
+                            this.player.max_mana += 20;
+                            showMessage('🌟 全能力上限提升：最大HP +25，最大體力/魔力 +20！');
+                            
+                            const gold = 100 + Math.floor(Math.random() * 150);
+                            this.player.gold += gold;
+                            showMessage(`💰 年輕的自己給了你 ${gold} 金幣。`);
+                        } else {
+                            showMessage('⚠️ 時間悖論！你被困在時間迴圈中！');
+                            showMessage('😵 混亂的時空能量傷害了你！');
+                            const damage = 35 + Math.floor(Math.random() * 30);
+                            this.player.hp = Math.max(1, this.player.hp - damage);
+                            showMessage(`受到 ${damage} 點時空傷害！`);
+                            
+                            showMessage('但你從混亂中得到了啟發...');
+                            this.player.luck_combat += 2;
+                            showMessage('戰鬥幸運 +2！');
+                        }
+                        this.updateStatus();
+                        this.generateDirectionHints();
+                    } else if (choiceId === 'present') {
+                        showMessage('⚡ 你選擇穩定當下的時間線！');
+                        showMessage('🌟 時間之力強化了你的存在！');
+                        
+                        this.player.hp = Math.min(this.player.max_hp, this.player.hp + 60);
+                        this.player.mana = Math.min(this.player.max_mana, this.player.mana + 40);
+                        this.player.stamina = Math.min(this.player.max_stamina, this.player.stamina + 40);
+                        showMessage('✨ 恢復 60 HP、40 魔力和 40 體力！');
+                        
+                        this.player.shield += 50;
+                        showMessage('🛡️ 時空護盾：獲得 50 點護盾！');
+                        
+                        this.player.timeBlessing = 5;
+                        showMessage('⏰ 時間祝福：接下來 5 場戰鬥，所有屬性提升 20%！');
+                        
+                        const item = generateItem(Math.random() < 0.5 ? 'excellent' : 'rare', this.difficulty);
+                        this.player.inventory.push(item);
+                        showMessage(`⚔️ 獲得：${this.formatItem(item)}！`);
+                        
+                        const xp = 80 + Math.floor(Math.random() * 80);
+                        this.addXP(xp);
+                        
+                        this.updateStatus();
+                        this.generateDirectionHints();
+                    } else if (choiceId === 'future') {
+                        showMessage('🔮 你窺探了未來的時間線...');
+                        const futureVision = Math.random();
+                        if (futureVision < 0.35) {
+                            showMessage('👁️ 你看到了自己輝煌的未來！');
+                            showMessage('💫 預知讓你做好了完美準備！');
+                            
+                            this.player.luck_combat += 4;
+                            this.player.luck_gold += 3;
+                            showMessage('🍀 大幅幸運提升：戰鬥幸運 +4，金幣幸運 +3！');
+                            
+                            this.player.futureVision = 10;
+                            showMessage('🔮 預知能力：接下來 10 場戰鬥閃避率大幅提升！');
+                            
+                            const gold = 180 + Math.floor(Math.random() * 220);
+                            this.player.gold += gold;
+                            showMessage(`💰 從「未來」預支了 ${gold} 金幣！`);
+                            
+                            const xp = 120 + Math.floor(Math.random() * 100);
+                            this.addXP(xp);
+                        } else if (futureVision < 0.7) {
+                            showMessage('😰 你看到了一些不太樂觀的未來...');
+                            showMessage('但知道就是力量！');
+                            
+                            this.player.luck_combat += 2;
+                            showMessage('🍀 戰鬥幸運 +2！');
+                            
+                            this.player.potions += 2;
+                            showMessage('🧪 你準備了 2 瓶藥水以備不時之需。');
+                            
+                            const gold = 100 + Math.floor(Math.random() * 100);
+                            this.player.gold += gold;
+                            showMessage(`💰 獲得 ${gold} 金幣。`);
+                        } else {
+                            showMessage('😱 你看到了可怕的未來！');
+                            showMessage('❌ 知道太多反而是負擔...');
+                            
+                            this.player.max_hp = Math.max(50, this.player.max_hp - 15);
+                            showMessage('💔 恐懼削弱了你：最大HP -15！');
+                            
+                            showMessage('但你下定決心要改變命運！');
+                            this.player.determination = 5;
+                            showMessage('💪 決心：接下來 5 場戰鬥傷害提升 25%！');
+                        }
+                        this.updateStatus();
+                        this.generateDirectionHints();
+                    }
+                }
+            );
+        }
+    },
+
+    djinn_encounter: {
+        weight: 5,
+        handler() {
+            showMessage('🧞 沙漠中突然冒出一縷青煙...一個精靈出現了！');
+            showMessage('「我可以實現你的一個願望...但這是有代價的。」');
+            const choices = [
+                { id: 'wish_power', label: '許願獲得力量', weight: 35 },
+                { id: 'wish_wealth', label: '許願獲得財富', weight: 35 },
+                { id: 'wish_wisdom', label: '許願獲得智慧', weight: 30 }
+            ];
+            this.showChoicePanel(
+                '精靈的願望',
+                choices,
+                (choiceId) => {
+                    if (choiceId === 'wish_power') {
+                        showMessage('💪 「你渴望力量...很好！」');
+                        const powerRoll = Math.random();
+                        if (powerRoll < 0.5) {
+                            showMessage('✨ 精靈的魔法充滿了你的身體！');
+                            this.player.max_hp += 50;
+                            this.player.max_stamina += 35;
+                            this.player.hp = this.player.max_hp;
+                            this.player.stamina = this.player.max_stamina;
+                            showMessage('💓 永久提升：最大HP +50，最大體力 +35！');
+                            
+                            this.player.djinnPower = 8;
+                            showMessage('⚡ 精靈之力：接下來 8 場戰鬥攻擊力提升 30%！');
+                            
+                            const item = generateItem(Math.random() < 0.4 ? 'epic' : 'excellent', this.difficulty);
+                            this.player.inventory.push(item);
+                            showMessage(`⚔️ 精靈還贈予了一件寶物：${this.formatItem(item)}！`);
+                        } else {
+                            showMessage('💸 「代價是...你的部分財富！」');
+                            const goldLoss = Math.floor(this.player.gold * 0.3);
+                            this.player.gold -= goldLoss;
+                            showMessage(`💰 失去了 ${goldLoss} 金幣（30%）！`);
+                            
+                            this.player.max_hp += 35;
+                            this.player.max_stamina += 25;
+                            showMessage('💪 但獲得了力量：最大HP +35，最大體力 +25！');
+                            
+                            this.player.djinnPower = 6;
+                            showMessage('⚡ 精靈之力：接下來 6 場戰鬥攻擊力提升 25%！');
+                        }
+                        this.updateStatus();
+                        this.generateDirectionHints();
+                    } else if (choiceId === 'wish_wealth') {
+                        showMessage('💰 「你渴望財富...貪婪的凡人！」');
+                        const wealthRoll = Math.random();
+                        if (wealthRoll < 0.5) {
+                            showMessage('✨ 金幣從天而降！');
+                            const gold = 400 + Math.floor(Math.random() * 400);
+                            this.player.gold += gold;
+                            showMessage(`💰💰💰 獲得巨額金幣：${gold}！`);
+                            
+                            this.player.luck_gold += 4;
+                            showMessage('🍀 精靈的祝福：金幣幸運 +4！');
+                            
+                            const itemCount = 2;
+                            for (let i = 0; i < itemCount; i++) {
+                                const item = generateItem(Math.random() < 0.4 ? 'excellent' : 'rare', this.difficulty);
+                                this.player.inventory.push(item);
+                                showMessage(`⚔️ 獲得：${this.formatItem(item)}！`);
+                            }
+                        } else {
+                            showMessage('😈 「代價是...你的部分生命力！」');
+                            this.player.max_hp = Math.max(60, this.player.max_hp - 20);
+                            const damage = 30;
+                            this.player.hp = Math.max(1, this.player.hp - damage);
+                            showMessage(`💔 最大HP -20，當前HP -${damage}！`);
+                            
+                            const gold = 300 + Math.floor(Math.random() * 300);
+                            this.player.gold += gold;
+                            showMessage(`💰 但獲得了大量金幣：${gold}！`);
+                            
+                            this.player.luck_gold += 3;
+                            showMessage('🍀 金幣幸運 +3！');
+                        }
+                        this.updateStatus();
+                        this.generateDirectionHints();
+                    } else if (choiceId === 'wish_wisdom') {
+                        showMessage('📚 「你渴望智慧...真正的智者！」');
+                        showMessage('✨ 精靈對你的選擇感到滿意！');
+                        
+                        const xp = 200 + Math.floor(Math.random() * 200);
+                        this.addXP(xp);
+                        showMessage(`📖 獲得大量經驗值：${xp}！`);
+                        
+                        this.player.max_mana += 40;
+                        this.player.mana = this.player.max_mana;
+                        showMessage('🔮 智慧之力：最大魔力 +40！');
+                        
+                        this.player.luck_combat += 3;
+                        this.player.luck_gold += 2;
+                        showMessage('🍀 全面幸運提升：戰鬥幸運 +3，金幣幸運 +2！');
+                        
+                        this.player.potions += 3;
+                        showMessage('🧪 獲得 3 瓶智慧藥水！');
+                        
+                        const wisdomRoll = Math.random();
+                        if (wisdomRoll < 0.6) {
+                            const item = generateItem(Math.random() < 0.3 ? 'epic' : 'excellent', this.difficulty);
+                            this.player.inventory.push(item);
+                            showMessage(`🎁 精靈額外贈予：${this.formatItem(item)}！`);
+                        }
+                        
+                        showMessage('😊 「智慧的選擇不需要代價...你已經通過了考驗。」');
+                        
+                        this.updateStatus();
+                        this.generateDirectionHints();
+                    }
+                }
+            );
+        }
+    },
+
+    ancient_library: {
+        weight: 4,
+        handler() {
+            showMessage('📚 你發現了一座被沙漠吞沒的古代圖書館！');
+            showMessage('🔍 三個區域保存完好：武術典籍、魔法卷軸、歷史檔案。');
+            const choices = [
+                { id: 'martial_arts', label: '研讀武術典籍（提升戰鬥能力）', weight: 35 },
+                { id: 'magic_scrolls', label: '學習魔法卷軸（提升魔法能力）', weight: 35 },
+                { id: 'history_archive', label: '閱讀歷史檔案（獲得寶藏線索）', weight: 30 }
+            ];
+            this.showChoicePanel(
+                '古代圖書館',
+                choices,
+                (choiceId) => {
+                    if (choiceId === 'martial_arts') {
+                        showMessage('⚔️ 你專心研讀武術典籍...');
+                        this.player.stamina = Math.max(0, this.player.stamina - 20);
+                        showMessage('😓 專注學習消耗了 20 體力。');
+                        
+                        const xp = 120 + Math.floor(Math.random() * 100);
+                        this.addXP(xp);
+                        showMessage(`📖 從古代武術中獲得啟發：經驗值 +${xp}！`);
+                        
+                        this.player.max_stamina += 30;
+                        this.player.max_hp += 40;
+                        showMessage('💪 掌握了強化身體的秘訣：最大HP +40，最大體力 +30！');
+                        
+                        this.player.martialMastery = 10;
+                        showMessage('🥋 武術精通：接下來 10 場戰鬥，物理傷害提升 20%！');
+                        
+                        if (Math.random() < 0.5) {
+                            const weapon = generateItem(Math.random() < 0.4 ? 'epic' : 'excellent', this.difficulty);
+                            weapon.slot = 'weapon';
+                            this.player.inventory.push(weapon);
+                            showMessage(`⚔️ 在典籍中找到了古代武器：${this.formatItem(weapon)}！`);
+                        }
+                        
+                        this.updateStatus();
+                        this.generateDirectionHints();
+                    } else if (choiceId === 'magic_scrolls') {
+                        showMessage('🔮 你仔細研究魔法卷軸...');
+                        this.player.mana = Math.max(0, this.player.mana - 25);
+                        showMessage('😓 施展魔法消耗了 25 魔力。');
+                        
+                        const xp = 140 + Math.floor(Math.random() * 120);
+                        this.addXP(xp);
+                        showMessage(`📜 從古代魔法中獲得頓悟：經驗值 +${xp}！`);
+                        
+                        this.player.max_mana += 50;
+                        this.player.max_hp += 30;
+                        showMessage('🔮 魔力大幅提升：最大HP +30，最大魔力 +50！');
+                        
+                        this.player.arcaneKnowledge = 10;
+                        showMessage('✨ 奧術知識：接下來 10 場戰鬥，魔法傷害提升 25%！');
+                        
+                        this.player.shield += 40;
+                        showMessage('🛡️ 學會了魔法護盾：獲得 40 點護盾！');
+                        
+                        if (Math.random() < 0.6) {
+                            const item = generateItem(Math.random() < 0.3 ? 'epic' : 'excellent', this.difficulty);
+                            this.player.inventory.push(item);
+                            showMessage(`🎁 卷軸中藏著寶物：${this.formatItem(item)}！`);
+                        }
+                        
+                        this.updateStatus();
+                        this.generateDirectionHints();
+                    } else if (choiceId === 'history_archive') {
+                        showMessage('📖 你翻閱著古老的歷史檔案...');
+                        showMessage('🗺️ 找到了數個寶藏的位置！');
+                        
+                        const treasureCount = 2 + Math.floor(Math.random() * 2);
+                        let totalGold = 0;
+                        for (let i = 0; i < treasureCount; i++) {
+                            const gold = 80 + Math.floor(Math.random() * 120);
+                            totalGold += gold;
+                        }
+                        this.player.gold += totalGold;
+                        showMessage(`💰 根據線索找到了 ${treasureCount} 處寶藏，共獲得 ${totalGold} 金幣！`);
+                        
+                        this.player.luck_gold += 3;
+                        showMessage('🍀 古代智慧提升了你的運氣：金幣幸運 +3！');
+                        
+                        const itemCount = 1 + Math.floor(Math.random() * 2);
+                        for (let i = 0; i < itemCount; i++) {
+                            const rarity = Math.random() < 0.3 ? 'epic' : (Math.random() < 0.6 ? 'excellent' : 'rare');
+                            const item = generateItem(rarity, this.difficulty);
+                            this.player.inventory.push(item);
+                            showMessage(`⚔️ 尋獲古代遺物：${this.formatItem(item)}！`);
+                        }
+                        
+                        const xp = 100 + Math.floor(Math.random() * 80);
+                        this.addXP(xp);
+                        showMessage(`📚 歷史知識讓你成長：經驗值 +${xp}！`);
+                        
+                        if (Math.random() < 0.4) {
+                            showMessage('🗺️ 你還找到了一張藏寶圖！');
+                            this.player.treasureMap = true;
+                            showMessage('💎 下次遇到寶藏事件時會有額外獎勵！');
+                        }
+                        
+                        this.updateStatus();
+                        this.generateDirectionHints();
+                    }
+                }
+            );
+        }
     }
 };
 

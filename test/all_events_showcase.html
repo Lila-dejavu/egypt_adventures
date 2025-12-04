@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>完整事件列表 - Egypt Adventures</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Microsoft JhengHei', 'Noto Sans TC', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e22ce 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+        h1 {
+            text-align: center;
+            color: #8b6914;
+            font-size: 42px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 20px;
+        }
+        .section-title {
+            font-size: 32px;
+            color: #2d3436;
+            margin: 40px 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #8b6914;
+        }
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        .event-card {
+            background: linear-gradient(135deg, #fff5e6 0%, #ffe8cc 100%);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+            border-left: 6px solid #8b6914;
+            transition: all 0.3s ease;
+        }
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(139,105,20,0.3);
+        }
+        .event-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            gap: 15px;
+        }
+        .event-icon {
+            font-size: 48px;
+            line-height: 1;
+        }
+        .event-title-wrapper {
+            flex: 1;
+        }
+        .event-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2d3436;
+            margin-bottom: 5px;
+        }
+        .event-weight {
+            font-size: 14px;
+            color: #636e72;
+            background: #dfe6e9;
+            padding: 3px 10px;
+            border-radius: 12px;
+            display: inline-block;
+        }
+        .event-desc {
+            color: #2d3436;
+            margin-bottom: 15px;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+        .choices-section {
+            margin-top: 15px;
+        }
+        .choices-title {
+            font-weight: bold;
+            color: #8b6914;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        .choice-item {
+            background: white;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            border: 2px solid #e0e0e0;
+            transition: all 0.2s ease;
+        }
+        .choice-item:hover {
+            border-color: #8b6914;
+            box-shadow: 0 3px 10px rgba(139,105,20,0.15);
+        }
+        .choice-name {
+            font-weight: bold;
+            color: #8b6914;
+            margin-bottom: 5px;
+            font-size: 15px;
+        }
+        .choice-desc {
+            color: #636e72;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .rewards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .reward-badge {
+            background: #74b9ff;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .reward-badge.positive { background: #00b894; }
+        .reward-badge.negative { background: #d63031; }
+        .reward-badge.neutral { background: #0984e3; }
+        .stats-box {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 30px 0;
+            border: 2px solid #dee2e6;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #8b6914;
+        }
+        .stat-label {
+            color: #636e72;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .feature-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            box-shadow: 0 8px 25px rgba(102,126,234,0.3);
+        }
+        .feature-box h3 {
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        .feature-item {
+            background: rgba(255,255,255,0.15);
+            padding: 15px;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+        }
+        .feature-item strong {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+        @media (max-width: 768px) {
+            .events-grid {
+                grid-template-columns: 1fr;
+            }
+            h1 { font-size: 32px; }
+            .section-title { font-size: 24px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 完整事件系統</h1>
+        <p class="subtitle">Egypt Adventures - 12個全新多選擇分支事件</p>
+
+        <div class="stats-box">
+            <h3 style="text-align: center; color: #2d3436; margin-bottom: 15px;">📊 事件系統統計</h3>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">12</div>
+                    <div class="stat-label">全新事件</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">36</div>
+                    <div class="stat-label">選擇分支</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">100+</div>
+                    <div class="stat-label">不同結果</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">20+</div>
+                    <div class="stat-label">特殊Buff效果</div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">🌟 Choices Events（選擇類事件）</h2>
+
+        <div class="events-grid">
+            <!-- 斯芬克斯的謎題 -->
+            <div class="event-card">
+                <div class="event-header">
+                    <div class="event-icon">🦁</div>
+                    <div class="event-title-wrapper">
+                        <div class="event-title">斯芬克斯的謎題</div>
+                        <span class="event-weight">權重: 5</span>
+                    </div>
+                </div>
+                <div class="event-desc">
+                    遇到傳說中的斯芬克斯，回答經典謎題「什麼東西早上四條腿，中午兩條腿，晚上三條腿？」
+                </div>
+                <div class="choices-section">
+                    <div class="choices-title">💭 三個選擇：</div>
+                    <div class="choice-item">
+                        <div class="choice-name">🤔 回答謎題</div>
+                        <div class="choice-desc">40%成功→史詩獎勵+永久提升 | 30%部分正確→安慰獎 | 30%失敗→魔法懲罰</div>
+                    </div>
+                    <div class="choice-item">
+                        <div class="choice-name">💰 財富換通行</div>
+                        <div class="choice-desc">需要200金幣，獲得稀有裝備+金幣幸運+2</div>
+                    </div>
+                    <div class="choice-item">
+                        <div class="choice-name">⚔️ 挑戰斯芬克斯</div>
+                        <div class="choice-desc">觸發小boss戰</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 沙漠神殿 -->
+            <div class="event-card">
+                <div class="event-header">
+                    <div class="event-icon">🏛️</div>
+                    <div class="event-title-wrapper">
+                        <div class="event-title">沙漠神殿</div>
+                        <span class="event-weight">權重: 5</span>
+                    </div>
+                </div>
+                <div class="event-desc">
+                    古老神殿有三道門：太陽（力量）、月亮（治療）、星辰（幸運），選擇不同的路徑獲得不同屬性的強化。
+                </div>
+                <div class="choices-section">
+                    <div class="choices-title">🚪 三條道路：</div>
+                    <div class="choice-item">
+                        <div class="choice-name">☀️ 太陽之路</div>
+                        <div class="choice-desc">火焰祝福x8 + 體力+30 + 武器 或 火焰試煉</div>
+                        <div class="rewards">
+                            <span class="reward-badge positive">攻擊強化</span>
+                            <span class="reward-badge neutral">高風險</span>
+                        </div>
+                    </div>
+                    <div class="choice-item">
+                        <div class="choice-name">🌙 月亮之路</div>
+                        <div class="choice-desc">完全恢復 + HP+35、MP+25 + 藥水x3 + 護盾</div>
+                        <div class="rewards">
+                            <span class="reward-badge positive">最安全</span>
+                            <span class="reward-badge positive">全面恢復</span>
+                        </div>
+                    </div>
+                    <div class="choice-item">
+                        <div class="choice-name">⭐ 星辰之路</div>
+                        <div class="choice-desc">35%大獎→巨額財富 | 35%中獎 | 30%觸發戰鬥</div>
+                        <div class="rewards">
+                            <span class="reward-badge positive">高回報</span>
+                            <span class="reward-badge negative">高風險</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 時空裂縫 -->
+            <div class="event-card">
+                <div class="event-header">
+                    <div class="event-icon">⏳</div>
+                    <div class="event-title-wrapper">
+                        <div class="event-title">時空裂縫</div>
+                        <span class="event-weight">權重: 4</span>
+                    </div>
+                </div>
+                <div class="event-desc">
+                    發現神秘的時空裂縫，可選擇進入過去見證歷史、穩定現在強化自身，或窺探未來獲得預知。
+                </div>
+                <div class="choices-section">
+                    <div class="choices-title">🕰️ 時間選擇：</div>
+                    <div class="choice-item">
+                        <div class="choice-name">🕰️ 進入過去</div>
+                        <div class="choice-desc">古代遺物 + 經驗值 或 遇見年輕自己 或 時間悖論傷害</div>
+                    </div>
+                    <div class="choice-item">
+                        <div class="choice-name">⚡ 穩定現在</div>
+                        <div class="choice-desc">大量恢復 + 時間祝福x5 + 護盾50</div>
+                    </div>
+                    <div class="choice-item">
+                        <div class="choice-name">🔮 窺探未來</div>
+                        <div class="choice-desc">預知能力+幸運 或 中等獎勵 或 削弱但獲得決心buff</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 精靈的願望 -->
+            <div class="event-card">
+                <div class="event-header">
+                    <div class="event-icon">🧞</div>
+                    <div class="event-title-wrapper">
+                        <div class="event-title">精靈的願望</div>
+                        <span class="event-weight">權重: 5</span>
+                    </div>
+                </div>
+                <div class="event-desc">
+                    沙漠精靈願意實現一個願望，但每個願望都有代價。智慧的選擇最划算！
+                </div>
+                <div class="choices-section">
+                    <div class="choices-title">🧞 三個願望：</div>
+                    <div class="choice-item">
+                        <div class="choice-name">💪 許願力量</div>
+                        <div class="choice-desc">HP+35-50 + 精靈之力x6-8 + 可能史詩裝備 | 代價：損失30%金幣</div>
+                    </div>
+                    <div class="choice-item">
+                        <div class="choice-name">💰 許願財富</div>
+                        <div class="choice-desc">金幣300-800 + 幸運+3-4 + 多件裝備 | 代價：最大HP-20</div>
+                    </div>
+                    <div class="choice-item">
+                        <div class="choice-name">📚 許願智慧</div>
+                        <div class="choice-desc">無代價！經驗值+200-400 + MP+40 + 全面幸運 + 藥水</div>
+                        <div class="rewards">
+                            <span class="reward-badge positive">最佳選擇</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 古代圖書館 -->
+            <div class="event-card">
+                <div class="event-header">
+                    <div class="event-icon">📚</div>
+                    <div class="event-title-wrapper">
+                        <div class="event-title">古代圖書館</div>
+                        <span class="event-weight">權重: 4</span>
+                    </div>
+                </div>
+                <div class="event-desc">
+                    被沙漠吞沒的圖書館，三個區域提供不同的知識：武術、魔法、歷史。
+                </div>
+                <div class="choices-section">
+                    <div class="choices-title">📖 學習方向：</div>
+                    <div class="choice-item">
+                        <div class="choice-name">⚔️ 武術典籍</div>
+                        <div class="choice-desc">消耗20體力 | 武術精通x10 + HP+40、體力+30 + 可能古代武器</div>
+                    </div>
+                    <div class="choice-item">
+                        <div class="choice-name">🔮 魔法卷軸</div>
+                        <div class="choice-desc">消耗25魔力 | 奧術知識x10 + MP+50、HP+30 + 護盾40</div>
+                    </div>
+                    <div class="choice-item">
+                        <div class="choice-name">📜 歷史檔案</div>
+                        <div class="choice-desc">寶藏線索 + 大量金幣+裝備 + 金幣幸運+3 + 40%藏寶圖</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 月光祭壇 -->
+            <div class="event-card">
+                <div class="event-header">
+                    <div class="event-icon">🌙</div>
+                    <div class="event-title-wrapper">
+                        <div class="event-title">月光祭壇</div>
+                        <span class="event-weight">權重: 4</span>
+                    </div>
+                </div>
+                <div class="event-desc">
+                    月光下的神秘祭壇，可以祈禱、獻祭或冒險取寶。
+                </div>
+                <div class="choices-section">
+                    <div class="choices-title">🌙 祭壇選擇：</div>
+                    <div class="choice-item">
+                        <div class="choice-name">🙏 虔誠祈禱</div>
+                        <div class="choice-desc">50%月神祝福（暴擊x5）| 30%恢復+幸運 | 20%小幅恢復</div>
+                    </div>
+                    <div class="choice-item">
+                        <div class="choice-name">💰 獻上金幣</div>
+                        <div class="choice-desc">需100金幣 | 40%三倍返還 | 30%史詩裝備 | 30%永久能力提升</div>
+                    </div>
+                    <div class="choice-item">
+                        <div class="choice-name">👁️ 拿走寶物</div>
+                        <div class="choice-desc">30%完美 | 30%詛咒但有寶 | 40%小boss戰</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">📖 Story Events（劇情類事件）</h2>
+
+        <div class="events-grid">
+            <!-- 被詛咒的古墓 -->
+            <div class="event-card">
+                <div class="event-header">
+                    <div class="event-icon">⚰️</div>
+                    <div class="event-title-wrapper">
+                        <div class="event-title">被詛咒的古墓</div>
+                        <span class="event-weight">權重: 5</span>
+                    </div>
+                </div>
+                <div class="event-desc">
+                    發現法老王的陵墓，財富與死亡共存。可以勇敢進入、驅邪或留下供品。
+                </div>
+                <div class="choices-section">
+                    <div class="choices-title">⚰️ 如何應對：</div>
+                    <div class="choice-item">
+                        <div class="choice-name">🚪 勇敢進入</div>
+                        <div class="choice-desc">30%寶藏室 | 30%觸發機關 | 40%守衛戰</div>
+                    </div>
+                    <div class="choice-item">
+                        <div class="choice-name">🕯️ 驅邪儀式</div>
+                        <div class="choice-desc">需藥水 | 淨化詛咒獲聖物 + 聖光祝福x5</div>
+                    </div>
+                    <div class="choice-item">
+                        <div class="choice-name">🙏 留下供品</div>
+                        <div class="choice-desc">需50金幣 | 亡靈庇護x8 + 經驗值</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 神秘古井 -->
+            <div class="event-card">
+                <div class="event-header">
+                    <div class="event-icon">🌊</div>
+                    <div class="event-title-wrapper">
+                        <div class="event-title">神秘古井</div>
+                        <span class="event-weight">權重: 4</span>
+                    </div>
+                </div>
+                <div class="event-desc">
+                    泛著奇異光芒的古井，可能是生命之泉、魔力之泉或詛咒之泉。
+                </div>
+                <div class="choices-section">
+                    <div class="choices-title">💧 探索方式：</div>
+                    <div class="choice-item">
+                        <div class="choice-name">💧 直接飲用</div>
+                        <div class="choice-desc">35%生命之泉 | 30%魔力之泉 | 35%詛咒之泉</div>
+                    </div>
+                    <div class="choice-item">
+                        <div class="choice-name">🪙 投幣許願</div>
+                        <div class="choice-desc">需100金幣 | 財富/裝備/全面祝福（隨機）</div>
+                    </div>
+                    <div class="choice-item">
+                        <div class="choice-name">🔍 仔細調查</div>
+                        <div class="choice-desc">40%隱藏密室 | 35%古老卷軸 | 25%守護者戰</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 旅行商人 -->
+            <div class="event-card">
+                <div class="event-header">
+                    <div class="event-icon">🐪</div>
+                    <div class="event-title-wrapper">
+                        <div class="event-title">旅行商人</div>
+                        <span class="event-weight">權重: 5</span>
+                    </div>
+                </div>
+                <div class="event-desc">
+                    遇到友善的商隊，可以買賣裝備或購買情報。價格隨機但公平。
+                </div>
+                <div class="choices-section">
+                    <div class="choices-title">🛒 交易選項：</div>
+                    <div class="choice-item">
+                        <div class="choice-name">🛍️ 購買裝備</div>
+                        <div class="choice-desc">隨機品質（稀有~傳說），價格100-1200金幣</div>
+                    </div>
+                    <div class="choice-item">
+                        <div class="choice-name">💼 出售物品</div>
+                        <div class="choice-desc">高價收購背包裝備，可能額外獎勵</div>
+                    </div>
+                    <div class="choice-item">
+                        <div class="choice-name">🗺️ 購買情報</div>
+                        <div class="choice-desc">需150金幣 | 尋寶提示/戰鬥技巧/安全地圖（隨機）</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 古代戰場 -->
+            <div class="event-card">
+                <div class="event-header">
+                    <div class="event-icon">⚔️</div>
+                    <div class="event-title-wrapper">
+                        <div class="event-title">古代戰場</div>
+                        <span class="event-weight">權重: 4</span>
+                    </div>
+                </div>
+                <div class="event-desc">
+                    戰爭遺跡散落著武器盔甲。可以搜尋裝備、祭奠英靈或研究戰術。
+                </div>
+                <div class="choices-section">
+                    <div class="choices-title">⚔️ 行動方案：</div>
+                    <div class="choice-item">
+                        <div class="choice-name">🔍 搜尋武器</div>
+                        <div class="choice-desc">40%傳奇武器+戰士之魂 | 35%多件裝備 | 25%不死戰士</div>
+                    </div>
+                    <div class="choice-item">
+                        <div class="choice-name">🙏 祭奠英靈</div>
+                        <div class="choice-desc">恢復+護盾 + 英雄祝福x10 + 經驗值 + 可能遺物</div>
+                        <div class="rewards">
+                            <span class="reward-badge positive">推薦</span>
+                        </div>
+                    </div>
+                    <div class="choice-item">
+                        <div class="choice-name">📚 研究戰術</div>
+                        <div class="choice-desc">大量經驗 + 戰術大師x10 + 幸運+3 + 永久攻防+5</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 星空之夜 -->
+            <div class="event-card">
+                <div class="event-header">
+                    <div class="event-icon">🌌</div>
+                    <div class="event-title-wrapper">
+                        <div class="event-title">星空之夜</div>
+                        <span class="event-weight">權重: 4</span>
+                    </div>
+                </div>
+                <div class="event-desc">
+                    璀璨星空下可以冥想、占星或安眠。不同選擇帶來不同的宇宙啟示。
+                </div>
+                <div class="choices-section">
+                    <div class="choices-title">🌟 夜間活動：</div>
+                    <div class="choice-item">
+                        <div class="choice-name">🧘 星空冥想</div>
+                        <div class="choice-desc">永久能力提升 + 宇宙洞察x12 + 大量經驗</div>
+                    </div>
+                    <div class="choice-item">
+                        <div class="choice-name">🔮 占星預言</div>
+                        <div class="choice-desc">35%吉兆（巨大獎勵）| 35%挑戰預警 | 30%凶兆（危險感知）</div>
+                    </div>
+                    <div class="choice-item">
+                        <div class="choice-name">😴 星空安眠</div>
+                        <div class="choice-desc">完全恢復 + 美夢獎勵（經驗/財富/能力提升）</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 商隊遺骸 -->
+            <div class="event-card">
+                <div class="event-header">
+                    <div class="event-icon">🐪</div>
+                    <div class="event-title-wrapper">
+                        <div class="event-title">商隊遺骸</div>
+                        <span class="event-weight">權重: 5</span>
+                    </div>
+                </div>
+                <div class="event-desc">
+                    發現商隊遺骸，可以仔細搜尋、快速搜刮或檢查倖存者。
+                </div>
+                <div class="choices-section">
+                    <div class="choices-title">🔍 搜索方式：</div>
+                    <div class="choice-item">
+                        <div class="choice-name">🔎 仔細搜尋</div>
+                        <div class="choice-desc">消耗體力 | 大量金幣+裝備+藥水（穩定）</div>
+                    </div>
+                    <div class="choice-item">
+                        <div class="choice-name">💨 快速搜刮</div>
+                        <div class="choice-desc">50%找到資源 | 30%觸發陷阱 | 20%掠奪者戰</div>
+                    </div>
+                    <div class="choice-item">
+                        <div class="choice-name">🔍 檢查倖存者</div>
+                        <div class="choice-desc">30%救到人（豐厚獎勵）| 40%全員罹難 | 30%盜賊陷阱</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="feature-box">
+            <h3>✨ 事件系統特色</h3>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <strong>🎯 策略深度</strong>
+                    每個選擇都需要權衡當前資源（HP、金幣、魔力、體力、藥水）和預期回報。
+                </div>
+                <div class="feature-item">
+                    <strong>🎲 風險管理</strong>
+                    高風險選項提供更高回報，保守選項提供穩定收益，讓不同玩家風格都能找到樂趣。
+                </div>
+                <div class="feature-item">
+                    <strong>🔮 長期增益</strong>
+                    20+種特殊Buff（精靈之力、武術精通、時間祝福等），持續5-15場戰鬥。
+                </div>
+                <div class="feature-item">
+                    <strong>💎 多樣獎勵</strong>
+                    金幣、裝備、經驗值、永久能力提升、臨時Buff、幸運加成等多元化獎勵系統。
+                </div>
+                <div class="feature-item">
+                    <strong>📚 豐富敘事</strong>
+                    每個事件都有完整的故事背景，融合埃及神話、時空元素和角色成長。
+                </div>
+                <div class="feature-item">
+                    <strong>🎭 角色扮演</strong>
+                    選擇反映玩家性格：貪婪vs謹慎、力量vs智慧、冒險vs保守。
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-box" style="margin-top: 40px;">
+            <h3 style="text-align: center; color: #2d3436; margin-bottom: 15px;">🎁 獎勵類型統計</h3>
+            <div class="feature-list" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                <div class="feature-item" style="background: #e8f5e9; color: #2e7d32;">
+                    <strong>💰 金幣獎勵</strong>
+                    50-1000+ 金幣<br>周目加成可達數千
+                </div>
+                <div class="feature-item" style="background: #fff3e0; color: #e65100;">
+                    <strong>⚔️ 裝備掉落</strong>
+                    稀有~傳說品質<br>特殊事件必掉史詩
+                </div>
+                <div class="feature-item" style="background: #e3f2fd; color: #1565c0;">
+                    <strong>📖 經驗獎勵</strong>
+                    30-400 經驗值<br>智慧路線最高
+                </div>
+                <div class="feature-item" style="background: #f3e5f5; color: #6a1b9a;">
+                    <strong>💪 能力提升</strong>
+                    HP/MP/體力永久+15-50<br>攻防+3-8
+                </div>
+                <div class="feature-item" style="background: #fce4ec; color: #c2185b;">
+                    <strong>🍀 幸運加成</strong>
+                    戰鬥/金幣幸運+1-4<br>影響後續事件
+                </div>
+                <div class="feature-item" style="background: #fff9c4; color: #f57f17;">
+                    <strong>✨ 特殊Buff</strong>
+                    20+種臨時增益<br>持續5-15場戰鬥
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 40px; padding: 30px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 15px; color: white; text-align: center;">
+            <h3 style="margin-bottom: 15px; font-size: 28px;">🎮 遊戲體驗升級</h3>
+            <p style="font-size: 18px; line-height: 1.8; max-width: 900px; margin: 0 auto;">
+                12個全新事件，36個選擇分支，100+種不同結果組合，確保每次遊玩都有新鮮感！
+                從經典的斯芬克斯謎題到奇幻的時空裂縫，從神秘的精靈願望到寧靜的星空冥想，
+                豐富的劇情和策略選擇讓 Egypt Adventures 的可玩性大幅提升！🌟
+            </p>
+        </div>
+    </div>
+</body>
+</html>
