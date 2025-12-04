@@ -515,11 +515,11 @@ const UIMixin = {
 		` : '';
 
 		panel.innerHTML = `
-			<div style="background:#fff;padding:18px;border-radius:10px;min-width:360px;max-width:90vw;box-shadow:0 8px 30px rgba(0,0,0,0.3);">
-				<h2 style="margin-top:0">🔰 選擇職業</h2>
+			<div style="background:#fff;padding:18px;border-radius:10px;min-width:280px;max-width:90vw;box-shadow:0 8px 30px rgba(0,0,0,0.3);overflow-x:hidden;">
+				<h2 style="margin-top:0;font-size:1.3em;">🔰 選擇職業</h2>
 				${pts > 0 ? `<div class="small" style="margin-bottom:8px;color:#666;">偵測到你已完成 ${pts} 次周目；選擇「周目+」以啟用額外職業與起始加成。</div>` : ''}
 				${modeToggle}
-				<div id="class-grid" style="display:grid;grid-template-columns:repeat(3,150px);gap:12px;justify-content:center;align-items:start;"></div>
+				<div id="class-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;max-width:100%;"></div>
 				<div style="text-align:center;margin-top:12px;"><button id="bloodline-start-close" style="padding:8px 16px">取消</button></div>
 			</div>
 		`;
@@ -545,7 +545,7 @@ const UIMixin = {
 			});
 			candidates.forEach(c => {
 				const card = document.createElement('div');
-				card.style.cssText = 'width:150px;padding:12px;border-radius:8px;border:1px solid #ddd;background:#fff;';
+				card.style.cssText = 'width:100%;min-width:130px;padding:10px;border-radius:8px;border:1px solid #ddd;background:#fff;';
 				const badges = [];
 				if (c.unlock === 'ngplus') badges.push('<span class="badge">解鎖於周目+</span>');
 
@@ -553,10 +553,10 @@ const UIMixin = {
 				const allowed = modeIsNG || (pts >= (unlockReq[c.id] || 0));
 
 				card.innerHTML = `
-					<div style="font-weight:700">${c.name}</div>
-					<div class="small" style="margin:8px 0;color:#444">${c.desc}</div>
-					<div style="font-size:12px;color:#666">${c.ngBonus || ''}</div>
-					<div style="text-align:center;margin-top:8px"><button class="choose-class" data-class="${c.id}"${allowed ? '' : ' disabled'}>選擇</button></div>
+					<div style="font-weight:700;font-size:0.95em;">${c.name}</div>
+					<div class="small" style="margin:6px 0;color:#444;font-size:0.85em;line-height:1.3;">${c.desc}</div>
+					<div style="font-size:11px;color:#666;line-height:1.2;">${c.ngBonus || ''}</div>
+					<div style="text-align:center;margin-top:8px"><button class="choose-class" data-class="${c.id}" style="padding:6px 10px;font-size:0.9em;"${allowed ? '' : ' disabled'}>選擇</button></div>
 				`;
 
 				if (!allowed) {

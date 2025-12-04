@@ -2197,3 +2197,42 @@ button[disabled] {
 #pyramid-choice-panel .panel-body {
     padding-bottom: 96px;
 }
+
+/* iPhone 15 and mobile devices -職業選擇視窗響應式設計 */
+@media (max-width: 430px) {
+    #bloodline-start-panel > div {
+        min-width: 280px !important;
+        max-width: 92vw !important;
+        padding: 15px !important;
+        margin: 0 10px !important;
+    }
+    
+    #bloodline-start-panel h2 {
+        font-size: 1.2em !important;
+        margin-bottom: 10px !important;
+    }
+    
+    #bloodline-start-panel #class-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)) !important;
+        gap: 8px !important;
+    }
+    
+    #bloodline-start-panel .choose-class {
+        padding: 6px 8px !important;
+        font-size: 0.85em !important;
+    }
+}
+
+/* Extra small screens - 確保內容不會超出螢幕 */
+@media (max-width: 380px) {
+    #bloodline-start-panel > div {
+        min-width: 260px !important;
+        max-width: 95vw !important;
+        padding: 12px !important;
+    }
+    
+    #bloodline-start-panel #class-grid {
+        grid-template-columns: 1fr !important;
+        gap: 8px !important;
+    }
+}
