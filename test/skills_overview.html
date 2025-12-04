@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="utf-8">
+    <title>技能系統測試</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            padding: 20px;
+            background: linear-gradient(180deg, #fff9e6, #ffe4b3);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .skills-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 2px solid #d4a855;
+            border-radius: 8px;
+        }
+        .skills-section h2 {
+            color: #8b4513;
+            margin-top: 0;
+        }
+        .skill-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .skill-item {
+            padding: 10px;
+            background: #f9f9f9;
+            border-left: 4px solid #666;
+            border-radius: 4px;
+        }
+        .skill-item.mage { border-left-color: #e74c3c; }
+        .skill-item.warrior { border-left-color: #3498db; }
+        .skill-item.archer { border-left-color: #2ecc71; }
+        .skill-name {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        .skill-desc {
+            font-size: 12px;
+            color: #666;
+        }
+        .skill-cost {
+            font-size: 11px;
+            color: #999;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 技能系統總覽</h1>
+        <p>這個頁面展示所有職業的技能庫內容。在戰鬥中，攻擊圖示（⚔️）會隨機觸發對應職業的技能。</p>
+
+        <!-- 法師技能 -->
+        <div class="skills-section">
+            <h2>🔥 法師技能（消耗魔力）</h2>
+            <div id="mageSkills" class="skill-list"></div>
+        </div>
+
+        <!-- 武士技能 -->
+        <div class="skills-section">
+            <h2>⚔️ 武士技能（消耗體力）</h2>
+            <div id="warriorSkills" class="skill-list"></div>
+        </div>
+
+        <!-- 弓箭手技能 -->
+        <div class="skills-section">
+            <h2>🏹 弓箭手技能（消耗體力）</h2>
+            <div id="archerSkills" class="skill-list"></div>
+        </div>
+    </div>
+
+    <script src="../js/core/mage_skills.js"></script>
+    <script src="../js/core/warrior_skills.js"></script>
+    <script src="../js/core/archer_skills.js"></script>
+
+    <script>
+        function displaySkills(skills, containerId, className) {
+            const container = document.getElementById(containerId);
+            if (!skills || !container) return;
+
+            Object.values(skills).forEach(skill => {
+                const div = document.createElement('div');
+                div.className = `skill-item ${className}`;
+                
+                const costType = skill.manaCost ? '魔力' : '體力';
+                const costValue = skill.manaCost || skill.staminaCost || 0;
+                
+                div.innerHTML = `
+                    <div class="skill-name">${skill.name}</div>
+                    <div class="skill-desc">${skill.description}</div>
+                    <div class="skill-cost">消耗：${costValue} ${costType} | 標籤：${skill.tags.join(', ')}</div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // 等待 DOM 加載完成
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.MageSkills) {
+                displaySkills(MageSkills.SKILLS, 'mageSkills', 'mage');
+            }
+            if (window.WarriorSkills) {
+                displaySkills(WarriorSkills.SKILLS, 'warriorSkills', 'warrior');
+            }
+            if (window.ArcherSkills) {
+                displaySkills(ArcherSkills.SKILLS, 'archerSkills', 'archer');
+            }
+        });
+    </script>
+</body>
+</html>
