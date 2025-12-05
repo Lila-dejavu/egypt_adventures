@@ -538,6 +538,8 @@ const UIMixin = {
 				if (c.unlock === 'ngplus' && !modeIsNG) return false;
 				// Include core classes regardless of 'avail' so they appear in the grid
 				if (c.id === 'mage' || c.id === 'warrior' || c.id === 'archer') return true;
+				// Include desert_mage when NG+ mode is active
+				if (c.id === 'desert_mage' && modeIsNG) return true;
 				// For any other classes, follow avail (or NG+ mode)
 				if (!modeIsNG && !avail.includes(c.id)) return false;
 				return true;

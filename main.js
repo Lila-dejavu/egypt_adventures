@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				// Read playthroughs count (uses test key if present)
 				const pts = parseInt(localStorage.getItem('egypt_playthroughs') || '0', 10) || 0;
 				const unlockReq = { mage: 1, warrior: 2, archer: 3 };
-				let avail = ['mage','warrior','archer'].filter(c => pts >= (unlockReq[c]||99));
+				let avail = ['mage','warrior','archer','desert_mage'].filter(c => pts >= (unlockReq[c]||99));
 				if (avail.length === 0) avail = ['mage']; // fallback for first-time players
 				// Defer slightly so UI is ready
 				setTimeout(() => {
