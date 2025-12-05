@@ -73,20 +73,68 @@ const NavigationMixin = {
 		// Store current direction event mapping
 		this.currentDirections = directions;
 
-		// Generate hint text (multi-language)
+		// Generate hint text (multi-language) - Enhanced with more variations
 		const hints = {
-			'monster': [t('hintBattle'), t('hintDust'), t('hintKilling'), t('hintRoar'), t('hintFootprints')],
-			'elite': [t('hintPowerful'), t('hintGiantShadow'), t('hintDeepRoar'), t('hintDanger')],
-			'mini_boss': [t('hintTemple'), t('hintTerror'), t('hintFootsteps'), t('hintHugeShadow')],
-			'merchant': [t('hintCaravanBells'), t('hintTent'), t('hintSpices'), t('hintMerchantFlag')],
-			'black_market': [t('hintMysteryDeal'), t('hintBlackTent'), t('hintBlackMarket'), t('hintMaskedMerchant')],
-			'oasis': [t('hintWater'), t('hintGreen'), t('hintMoist'), t('hintPalms'), t('hintFreshWater')],
-			'sandstorm': [t('hintSandstorm'), t('hintStrongWind'), t('hintWindSound'), t('hintDarkSky')],
-			'buried_treasure': [t('hintStrangeMark'), t('hintAncientSign'), t('hintShining'), t('hintTreasure')],
-			'pyramid': [t('hintPyramidTop'), t('hintAncientTemple'), t('hintStone'), t('hintMystery')],
-			'dead_traveler': [t('hintDeadTraveler'), t('hintAbandonedItems'), t('hintOldBackpack'), t('hintTragedy')],
-			'ancient_shrine': [t('hintShrine'), t('hintStatue'), t('hintHoly'), t('hintRune')],
-			'caravan_rest': [t('hintCaravanRest'), t('hintLaughter'), t('hintCampfire'), t('hintFood')],
+			'monster': [
+				t('hintBattle'), t('hintDust'), t('hintKilling'), t('hintRoar'), t('hintFootprints'),
+				t('hintMonster1'), t('hintMonster2'), t('hintMonster3'), t('hintMonster4'), t('hintMonster5'),
+				t('hintMonster6'), t('hintMonster7'), t('hintMonster8'), t('hintMonster9'), t('hintMonster10')
+			],
+			'elite': [
+				t('hintPowerful'), t('hintGiantShadow'), t('hintDeepRoar'), t('hintDanger'),
+				t('hintElite1'), t('hintElite2'), t('hintElite3'), t('hintElite4'), t('hintElite5'),
+				t('hintElite6'), t('hintElite7'), t('hintElite8'), t('hintElite9'), t('hintElite10')
+			],
+			'mini_boss': [
+				t('hintTemple'), t('hintTerror'), t('hintFootsteps'), t('hintHugeShadow'),
+				t('hintMiniBoss1'), t('hintMiniBoss2'), t('hintMiniBoss3'), t('hintMiniBoss4'), t('hintMiniBoss5'),
+				t('hintMiniBoss6'), t('hintMiniBoss7'), t('hintMiniBoss8'), t('hintMiniBoss9'), t('hintMiniBoss10')
+			],
+			'merchant': [
+				t('hintCaravanBells'), t('hintTent'), t('hintSpices'), t('hintMerchantFlag'),
+				t('hintMerchant1'), t('hintMerchant2'), t('hintMerchant3'), t('hintMerchant4'), t('hintMerchant5'),
+				t('hintMerchant6'), t('hintMerchant7'), t('hintMerchant8'), t('hintMerchant9'), t('hintMerchant10')
+			],
+			'black_market': [
+				t('hintMysteryDeal'), t('hintBlackTent'), t('hintBlackMarket'), t('hintMaskedMerchant'),
+				t('hintBlackMarket1'), t('hintBlackMarket2'), t('hintBlackMarket3'), t('hintBlackMarket4'), t('hintBlackMarket5'),
+				t('hintBlackMarket6'), t('hintBlackMarket7'), t('hintBlackMarket8'), t('hintBlackMarket9'), t('hintBlackMarket10')
+			],
+			'oasis': [
+				t('hintWater'), t('hintGreen'), t('hintMoist'), t('hintPalms'), t('hintFreshWater'),
+				t('hintOasis1'), t('hintOasis2'), t('hintOasis3'), t('hintOasis4'), t('hintOasis5'),
+				t('hintOasis6'), t('hintOasis7'), t('hintOasis8'), t('hintOasis9'), t('hintOasis10')
+			],
+			'sandstorm': [
+				t('hintSandstorm'), t('hintStrongWind'), t('hintWindSound'), t('hintDarkSky'),
+				t('hintSandstorm1'), t('hintSandstorm2'), t('hintSandstorm3'), t('hintSandstorm4'), t('hintSandstorm5'),
+				t('hintSandstorm6'), t('hintSandstorm7'), t('hintSandstorm8'), t('hintSandstorm9'), t('hintSandstorm10')
+			],
+			'buried_treasure': [
+				t('hintStrangeMark'), t('hintAncientSign'), t('hintShining'), t('hintTreasure'),
+				t('hintTreasure1'), t('hintTreasure2'), t('hintTreasure3'), t('hintTreasure4'), t('hintTreasure5'),
+				t('hintTreasure6'), t('hintTreasure7'), t('hintTreasure8'), t('hintTreasure9'), t('hintTreasure10')
+			],
+			'pyramid': [
+				t('hintPyramidTop'), t('hintAncientTemple'), t('hintStone'), t('hintMystery'),
+				t('hintPyramid1'), t('hintPyramid2'), t('hintPyramid3'), t('hintPyramid4'), t('hintPyramid5'),
+				t('hintPyramid6'), t('hintPyramid7'), t('hintPyramid8'), t('hintPyramid9'), t('hintPyramid10')
+			],
+			'dead_traveler': [
+				t('hintDeadTraveler'), t('hintAbandonedItems'), t('hintOldBackpack'), t('hintTragedy'),
+				t('hintDeadTraveler1'), t('hintDeadTraveler2'), t('hintDeadTraveler3'), t('hintDeadTraveler4'), t('hintDeadTraveler5'),
+				t('hintDeadTraveler6'), t('hintDeadTraveler7'), t('hintDeadTraveler8'), t('hintDeadTraveler9'), t('hintDeadTraveler10')
+			],
+			'ancient_shrine': [
+				t('hintShrine'), t('hintStatue'), t('hintHoly'), t('hintRune'),
+				t('hintShrine1'), t('hintShrine2'), t('hintShrine3'), t('hintShrine4'), t('hintShrine5'),
+				t('hintShrine6'), t('hintShrine7'), t('hintShrine8'), t('hintShrine9'), t('hintShrine10')
+			],
+			'caravan_rest': [
+				t('hintCaravanRest'), t('hintLaughter'), t('hintCampfire'), t('hintFood'),
+				t('hintCaravanRest1'), t('hintCaravanRest2'), t('hintCaravanRest3'), t('hintCaravanRest4'), t('hintCaravanRest5'),
+				t('hintCaravanRest6'), t('hintCaravanRest7'), t('hintCaravanRest8'), t('hintCaravanRest9'), t('hintCaravanRest10')
+			],
 			'lost_merchant': ['🐪 迷失的商隊呼救聲', '商隊的旗幟在風中飄揚', '你聽到駱駝的哀鳴'],
 			'cursed_shrine': ['⚠️ 不祥的氣息', '神殿散發詭異光芒', '低語聲從廢墟中傳來'],
 			'bandit_ambush': ['⚔️ 沙丘後有人影移動', '刀劍碰撞的聲音', '你感覺被人盯上了'],
