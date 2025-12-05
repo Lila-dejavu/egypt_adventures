@@ -420,6 +420,16 @@ const BattleMixin = {
 						skillTriggered = true;
 					}
 				}
+				// 沙漠巫師：隨機觸發沙系法術
+				else if (playerClass === 'desert_mage' && window.DesertMageSkills) {
+					const skillList = window.DesertMageSkills.list.filter(s => !s.tags.includes('ultimate'));
+					const randomSkill = skillList[Math.floor(Math.random() * skillList.length)];
+					const result = DesertMageSkills.applySkill(this, randomSkill.id, matchCount, comboMultiplier);
+					if (result) {
+						showMessage(`⚔️ 沙漠巫師攻擊：觸發 ${randomSkill.name}`);
+						skillTriggered = true;
+					}
+				}
 				// 武士：隨機觸發武技
 				else if (playerClass === 'warrior' && window.WarriorSkills) {
 					const availableSkills = Object.keys(WarriorSkills.SKILLS);

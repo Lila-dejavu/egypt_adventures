@@ -533,6 +533,7 @@ const TRANSLATIONS = {
 		class_mage: '法師',
 		class_warrior: '武士',
 		class_archer: '弓箭手',
+		class_desert_mage: '沙漠巫師',
 		not_selected: '（尚未選擇）',
 		simulate_skill_btn: '模擬：觸發技能（閃電圖示）',
 		not_unlocked_class: '該職業尚未解鎖',

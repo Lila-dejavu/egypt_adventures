@@ -498,8 +498,7 @@ const UIMixin = {
 			mage: { id: 'mage', name: '法師', desc: '法術傷害高，耐久較低', unlock: 'normal', ngBonus: '起始魔力/耐力 +10' },
 			warrior: { id: 'warrior', name: '戰士', desc: '高生命值與近戰輸出', unlock: 'normal', ngBonus: '起始護盾 +20' },
 			archer: { id: 'archer', name: '弓手', desc: '遠程攻擊，擅長單體輸出', unlock: 'normal', ngBonus: '起始箭矢 x10' },
-			// Example NG+ only class
-			special_mage: { id: 'special_mage', name: '沙塵巫師', desc: '周目+ 專屬，擅長灼燒與控制', unlock: 'ngplus', ngBonus: '起始金幣 +200，特殊技能「沙塵護盾」' }
+			desert_mage: { id: 'desert_mage', name: '沙漠巫師', desc: '周目+ 專屬，掌控沙暴與日炎', unlock: 'ngplus', ngBonus: '起始魔力 +30，特殊沙系技能' }
 		};
 
 		// Build modal

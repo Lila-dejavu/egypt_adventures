@@ -126,6 +126,47 @@
             // Legendary / 傳說 (2)
             { id:'arch_legend_everwind', name:'永風之裔', description:'箭矢化作風暴，穿透並持續造成傷害', tier:'legendary', modifiers:{windstorm_ability:true}, flags:{} },
             { id:'arch_legend_song', name:'弦歌傳承', description:'每次攻擊皆附帶強力元素效果並回復隊友', tier:'legendary', modifiers:{attack_heal_team_pct:0.05, elemental_on_hit:true}, flags:{} }
+        ],
+        desert_mage: [
+            // Common (10)
+            { id:'desert_common_sand', name:'沙之印記', description:'沙系技能傷害 +8%', tier:'common', modifiers:{sand_skill_damage_pct:0.08}, flags:{} },
+            { id:'desert_common_sun', name:'日光親和', description:'日炎技能持續時間 +1 回合', tier:'common', modifiers:{solar_duration_bonus:1}, flags:{} },
+            { id:'desert_common_nomad', name:'遊牧血統', description:'魔力消耗降低 5%', tier:'common', modifiers:{mana_cost_pct:-0.05}, flags:{} },
+            { id:'desert_common_mirage', name:'幻象之力', description:'閃避技能效果 +10%', tier:'common', modifiers:{evasion_bonus_pct:0.10}, flags:{} },
+            { id:'desert_common_oasis', name:'綠洲祝福', description:'最大魔力增加 +20', tier:'common', modifiers:{max_mana:20}, flags:{} },
+            { id:'desert_common_storm', name:'風沙掌控', description:'沙暴技能額外傷害 +5%', tier:'common', modifiers:{sandstorm_bonus_pct:0.05}, flags:{} },
+            { id:'desert_common_ancient', name:'古老智慧', description:'隨機技能有更高機率觸發控制技能', tier:'common', modifiers:{control_skill_chance_pct:0.08}, flags:{} },
+            { id:'desert_common_wanderer', name:'流浪者血脈', description:'每回合回復 3 點魔力', tier:'common', modifiers:{mana_regen_per_turn:3}, flags:{} },
+            { id:'desert_common_shield', name:'沙之護佑', description:'施法時有 10% 機率獲得護盾', tier:'common', modifiers:{chance_shield_on_spell:0.10}, flags:{} },
+            { id:'desert_common_adapt', name:'適應血統', description:'不同類型技能連續使用傷害遞增', tier:'common', modifiers:{diverse_skill_bonus_pct:0.06}, flags:{} },
+
+            // Fine / 精良 (8)
+            { id:'desert_fine_focus', name:'沙漠冥想', description:'所有技能魔力消耗降低 12%', tier:'fine', modifiers:{mana_cost_pct:-0.12}, flags:{} },
+            { id:'desert_fine_control', name:'元素掌控', description:'控制類技能（致盲、減速）效果 +30%', tier:'fine', modifiers:{control_skill_bonus_pct:0.30}, flags:{} },
+            { id:'desert_fine_solar', name:'烈日之力', description:'日炎技能附加的灼燒傷害 +50%', tier:'fine', modifiers:{solar_burn_damage_pct:0.50}, flags:{} },
+            { id:'desert_fine_barrier', name:'沙障精通', description:'沙之壁障額外生成 +8 點護盾', tier:'fine', modifiers:{barrier_skill_bonus:8}, flags:{} },
+            { id:'desert_fine_efficiency', name:'魔力效率', description:'攻擊圖示觸發技能時魔力消耗降低 50%', tier:'fine', modifiers:{random_skill_mana_discount_pct:0.50}, flags:{} },
+            { id:'desert_fine_combo', name:'連擊血脈', description:'連續使用相同類型技能傷害 +15%', tier:'fine', modifiers:{same_type_bonus_pct:0.15}, flags:{} },
+            { id:'desert_fine_surge', name:'魔力湧現', description:'魔力充足時技能傷害 +10%', tier:'fine', modifiers:{high_mana_damage_pct:0.10}, flags:{} },
+            { id:'desert_fine_harvest', name:'收割之力', description:'擊殺敵人回復 30% 最大魔力', tier:'fine', modifiers:{onKill_restore_mana_pct:0.30}, flags:{} },
+
+            // Rare / 優良 (6)
+            { id:'desert_rare_sandlord', name:'沙之領主', description:'沙暴技能造成強力致盲，降低 40% 命中率', tier:'rare', modifiers:{sandstorm_damage_pct:0.12}, flags:{onSandstorm_applyBlind:0.40} },
+            { id:'desert_rare_sunking', name:'日炎君主', description:'日炎技能額外降低敵人 20% 防禦', tier:'rare', modifiers:{solar_skill_bonus_pct:0.15}, flags:{onSolar_reduceDefense:0.20} },
+            { id:'desert_rare_mirage_master', name:'幻象大師', description:'幻影技能持續時間 +1 回合且閃避率提升至 70%', tier:'rare', modifiers:{mirage_duration:1, mirage_evasion:0.20}, flags:{} },
+            { id:'desert_rare_sandstorm', name:'沙暴精通', description:'所有沙系技能傷害 +15%，魔力回復速度 +50%', tier:'rare', modifiers:{sand_skill_damage_pct:0.15, mana_regen_pct:0.50}, flags:{} },
+            { id:'desert_rare_versatile', name:'沙漠全能', description:'每場戰鬥使用不同技能種類越多，傷害遞增', tier:'rare', modifiers:{versatility_stacking:true}, flags:{} },
+            { id:'desert_rare_resilience', name:'沙之韌性', description:'護盾破裂時爆發沙塵，造成範圍傷害', tier:'rare', modifiers:{shield_break_damage:true}, flags:{} },
+
+            // Epic / 史詩 (4)
+            { id:'desert_epic_phoenix', name:'沙漠不死鳥', description:'開場獲得一次復甦效果（自動回復 30% HP）', tier:'epic', modifiers:{max_hp:20}, flags:{onBattleStart_revivePercent:0.3} },
+            { id:'desert_epic_ancient_power', name:'古代力量', description:'法術強度大幅提升 (+15%)', tier:'epic', modifiers:{spell_damage_pct:0.15}, flags:{} },
+            { id:'desert_epic_sandstorm_aoe', name:'沙暴君主', description:'沙暴技能造成額外範圍爆發效果', tier:'epic', modifiers:{sandstorm_aoe_bonus:true}, flags:{} },
+            { id:'desert_epic_timekeeper', name:'時光守護者', description:'有限次數的回合加速/延緩控制能力', tier:'epic', modifiers:{time_control_charges:1}, flags:{} },
+
+            // Legendary / 傳說 (2)
+            { id:'desert_legend_apocalypse', name:'末日沙暴', description:'終極技能：召喚毀滅性沙暴，造成大量傷害並施加多重負面效果', tier:'legendary', modifiers:{spell_damage_pct:0.20}, flags:{ultimate_sandstorm:true} },
+            { id:'desert_legend_immortal', name:'不朽沙王', description:'大幅提升所有沙系技能屬性與冷卻大幅縮短', tier:'legendary', modifiers:{sand_skill_damage_pct:0.25, cooldown_pct:-0.20}, flags:{} }
         ]
     };
 
