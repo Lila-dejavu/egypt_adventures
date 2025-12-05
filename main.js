@@ -1,7 +1,11 @@
 // ===== 主程式 (UI 初始化與遊戲邏輯) =====
 // 依賴: js/core/App.js, js/core/GameState.js, js/data.js, js/music.js, js/enemyNames.js, i18n.js
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
+	// Wait for i18n JSON files to load (if initI18n is available)
+	if (typeof initI18n === 'function') {
+		try { await initI18n(); } catch (e) { console.warn('initI18n failed', e); }
+	}
 	// Initialize App singleton
 	App.init();
 

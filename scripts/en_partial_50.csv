@@ -1,0 +1,52 @@
+
+key,zh_text,en_translation
+addedToInventory,已放入背包,Added to inventory
+addedToInventoryMsg,（已加入背包）, (added to inventory)
+amulet,護符,Amulet
+armor,防具,Armor
+atkShort,攻,ATK
+attack,攻擊,Attack
+attackIn,攻擊倒數,Attack in
+attackX,攻擊x,Attack x
+autoSpin,自動旋轉,Auto Spin
+auto_spin_text_start,自動旋轉,Auto spin
+auto_spin_text_stop,停止自動,Stop auto
+badge_unlocked_ngplus,解鎖於周目+,Unlocked on NG+
+banditLootRecovered,💰 從強盜那裡奪回了戰利品：{gold} 金幣！,💰 Recovered loot from bandits: {gold} gold!
+battle_luck_evaded_corpse_poison,🎲 戰鬥幸運發揮，避免屍毒！,🎲 Battle luck activated — avoided corpse poison!
+blackMarket,黑市商人,Black Market
+blackMarketBought,在黑市購買,Purchased at the black market
+blackMarketDesc,黑市中可以以賭博方式購買裝備（普通～史詩），最多可購買兩件。請小心行事！,Purchase equipment (Common to Epic) via gambling at the Black Market; you can buy up to two items. Proceed with caution!
+blackMarketEnd,黑市交易結束。,Black market trading ended.
+blackMarketError,（系統錯誤：黑市介面未載入）, (System error: Black Market interface not loaded)
+blackMarketLimit,已達黑市購買上限（2 件）。,Black market purchase limit reached (2 items).
+blackMarketMet,遇到黑市商人：能在黑市中獲得普通到史詩級裝備，此為賭博交易，最多購買兩件。,Encountered the Black Market merchant: gamble for equipment from Common to Epic; up to two purchases.
+bloodline,血脈,Bloodline
+bloodline_awakened,已覺醒 {name} 血脈,Bloodline {name} awakened
+bloodline_choose_cancelled,已取消血脈選擇,Bloodline selection cancelled
+bloodline_chosen,已選擇血脈：{name},Chosen bloodline: {name}
+bloodline_trigger_name,觸發血脈效果：{name}（更多細節見描述）,Bloodline triggered: {name} (see description for details)
+bloodline_trigger_pct,觸發血脈效果：使敵人獲得 {pct}% 每回合灼燒（持續 {duration} 回合）,Bloodline trigger: inflicts {pct}% burn per turn on the enemy (lasts {duration} turns)
+bloodline_trigger_range,觸發血脈效果（範圍數值），顯示值會在生成時鎖定,Bloodline trigger (range value); shown value is locked at generation
+bonus,加成,Bonus
+boughtFood,🍖 購買食物，HP +30，體力 +15,🍖 Bought food: HP +30, Stamina +15
+boughtPotion,🧪 購買藥水 x1,🧪 Bought 1 potion
+boughtPotions,🧪 你向商隊購買了2瓶藥水（花費60金幣）,🧪 You bought 2 potions from the caravan (cost 60 gold)
+branchAllyJoin,👥 一位流浪戰士加入協助你戰鬥！（下次戰鬥攻擊+20%）,👥 A wandering warrior joins to assist you! (Next battle attack +20%)
+branchAmbush,⚠️ 突然遭遇伏擊！額外的敵人出現！,⚠️ Suddenly ambushed! Additional enemies appeared!
+branchAncientPower,🔥 吸收古老力量！永久攻擊+5,🔥 Absorbed ancient power! Permanent +5 Attack
+branchBossInsight,🔍 洞察敵人弱點！下次對BOSS傷害+30%,🔍 Insight into the boss! Next damage to boss +30%
+branchCurse,💀 被詛咒！最大生命-10%,💀 Cursed! Max HP -10%
+branchCurseItem,😈 獲得詛咒物品！強大但有代價,😈 Acquired a cursed item! Powerful but with a cost
+branchDesertGuide,🧭 遇到沙漠嚮導！下5步顯示事件類型,🧭 Met a desert guide! Shows event types for next 5 steps
+branchDiscount,💰 商人給你折扣！所有物品8折,💰 Merchant gives you a discount! All items 20% off
+branchDivineTrial,⚔️ 神聖試煉！擊敗額外守衛獲得神器,⚔️ Divine trial! Defeat extra guards to obtain an artifact
+branchDoubleLoot,💰💰 雙倍寶藏！,💰💰 Double treasure!
+branchEpicLoot,💎 獲得史詩級戰利品！,💎 Obtained epic loot!
+branchEscapeRoute,🏃 發現逃生路線！（可選擇逃跑）,🏃 Found an escape route! (Option to flee)
+branchGodBlessing,✨ 獲得神祇祝福！全屬性+10%,✨ Blessed by a deity! All stats +10%
+branchHealingSpring,💧 治癒之泉！完全恢復生命值,💧 Healing spring! Fully restore HP
+branchHiddenPassage,🚪 發現隱藏通道！跳過3步,🚪 Discovered a hidden passage! Skip 3 steps
+branchHiddenTreasure,🗝️ 發現隱藏寶藏！,🗝️ Found a hidden treasure!
+branchLegendaryLoot,👑 傳說級寶物！,👑 Legendary loot!
+branchOasisBlessing,🌴 綠洲祝福！生命恢復速度+50%（持續）,🌴 Oasis blessing! HP recovery rate +50% (duration)

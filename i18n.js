@@ -1686,3 +1686,58 @@ function updateMapInfoText() {
 		mapInfo.innerHTML = `${t('remainingSteps')}: <span id="map-steps">${steps}/${maxSteps}</span>`;
 	}
 }
+
+// 嘗試從 `locales` 資料夾載入 JSON 檔以覆寫/擴充 TRANSLATIONS（若存在）。
+(function loadLocales() {
+	// 建立一個 Promise，放到 window.i18nReady，供外部等待翻譯載入完成
+	window.i18nReady = (async function() {
+		try {
+			const scriptSrc = (document.currentScript && document.currentScript.src) || window.location.href;
+			const base = new URL('.', scriptSrc).href; // base 相對於 i18n.js 檔案位置
+
+			// 先嘗試讀取 locales/manifest.json，若不存在則退回預設清單
+			const manifestUrl = new URL('locales/manifest.json', base).href;
+			let files = null;
+			try {
+				const mr = await fetch(manifestUrl);
+				if (mr.ok) {
+					const manifest = await mr.json();
+					if (Array.isArray(manifest.files)) files = manifest.files;
+				}
+			} catch (e) {
+				// manifest 可能不存在或不可存取，忽略
+			}
+
+			if (!files || !files.length) files = ['zh-TW.json', 'en.json'];
+
+			const loads = await Promise.all(files.map(async fname => {
+				const url = new URL('locales/' + fname, base).href;
+				try {
+					const r = await fetch(url);
+					if (!r.ok) return null;
+					return await r.json();
+				} catch (e) { return null; }
+			}));
+
+			loads.forEach(json => {
+				if (!json) return;
+				// json 支援 { 'zh-TW': {...} } 或 { 'en': {...} }
+				Object.keys(json).forEach(lang => {
+					// Merge with existing TRANSLATIONS[lang] without losing fallback keys
+					TRANSLATIONS[lang] = Object.assign({}, TRANSLATIONS[lang] || {}, json[lang]);
+				});
+			});
+
+			if (typeof updateUILanguage === 'function') {
+				try { updateUILanguage(); } catch (e) { console.warn('updateUILanguage failed', e); }
+			}
+		} catch (e) {
+			console.warn('loadLocales error', e);
+		}
+	})();
+})();
+
+// 提供外部可等待的初始化函式，回傳在 locales 載入完成時解析的 Promise
+function initI18n() {
+	return window.i18nReady || Promise.resolve();
+}
