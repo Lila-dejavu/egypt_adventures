@@ -12,8 +12,9 @@ body {
     padding: 0;
     position: relative;
     min-height: 100vh;
-    touch-action: auto;
+    touch-action: pan-y pan-x;
     -webkit-overflow-scrolling: touch;
+    overflow-x: hidden;
 }
 
 /* 莎草紙紋理效果 - 加強版 */
@@ -184,7 +185,7 @@ body::after {
         inset 0 0 30px rgba(218, 165, 32, 0.08);
     position: relative;
     z-index: 5;
-    touch-action: auto;
+    touch-action: pan-y;
     -webkit-overflow-scrolling: touch;
 }
 

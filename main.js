@@ -253,10 +253,8 @@ document.addEventListener('DOMContentLoaded', async function() {
 			const button = e.target.closest('.unequip-btn, .open-equip-btn');
 
 			if (button) {
-				// stopPropagation is enough to isolate the click handling
-				// for these buttons; do NOT call preventDefault here as it
-				// can interfere with touch interactions on mobile browsers.
-				e.stopPropagation();
+				// 不使用 stopPropagation，讓觸控滾動正常運作
+				// 也不使用 preventDefault，確保手機觸控行為不被阻擋
 
 				const slot = button.getAttribute('data-slot');
 

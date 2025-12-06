@@ -208,6 +208,12 @@ const TRANSLATIONS = {
 		hintPyramid10: '感覺被無數雙眼睛注視',
 		
 		// Event hints - Dead Traveler (旅者遺體)
+
+		// Some event message keys (ensure Chinese translations are always available)
+		"evt_js_events_choices_js_267": "💪 你展現出強大的氣勢，成功嚇跑了野獸！（消耗 ${staminaCost} 體力）",
+		"evt_js_events_choices_js_267_1": "💪 你展現出強大的氣勢，成功嚇跑了野獸！（消耗 ${staminaCost} 體力）",
+		"evt_js_events_choices_js_271": "💰 野獸逃跑時掉落了 ${gold} 金幣！",
+		"evt_js_events_choices_js_271_1": "💰 野獸逃跑時掉落了 ${gold} 金幣！",
 		hintDeadTraveler: '看到倒下的旅人',
 		hintAbandonedItems: '發現遺棄的物品',
 		hintOldBackpack: '看見破舊的背包',
