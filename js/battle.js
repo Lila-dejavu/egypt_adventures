@@ -562,7 +562,12 @@ const BattleMixin = {
 				break;
 			}
 			case '🛡️': {
-				const shieldGain = this._calcScaledValue(10, matchCount, tripleBonus, comboMultiplier);
+				// Shield scales with map progress, difficulty, and playthroughs
+				const playthroughs = parseInt(localStorage.getItem('egypt_playthroughs') || '0', 10);
+				const progressBonus = Math.floor(this.map_steps * 2); // +2 per map step
+				const ngPlusBonus = playthroughs * 15; // +15 per playthrough
+				const baseShield = 30 + progressBonus + (this.difficulty * 8) + ngPlusBonus;
+				const shieldGain = this._calcScaledValue(baseShield, matchCount, tripleBonus, comboMultiplier);
 				this.player.shield += shieldGain;
 				showMessage(t('shieldGain', { count: matchCount, combo: effectiveCombo, shield: shieldGain }));
 				break;
@@ -609,7 +614,13 @@ const BattleMixin = {
 				break;
 			}
 			case '💰': {
-				const got = this._calcScaledValue(20, matchCount, tripleBonus, comboMultiplier);
+				// Gold scales with map progress, difficulty, and playthroughs
+				const playthroughs = parseInt(localStorage.getItem('egypt_playthroughs') || '0', 10);
+				const progressBonus = Math.floor(this.map_steps * 5); // +5 per map step
+				const difficultyBonus = this.difficulty * 20; // +20 per difficulty level
+				const ngPlusBonus = playthroughs * 50; // +50 per playthrough
+				const baseGold = 80 + progressBonus + difficultyBonus + ngPlusBonus;
+				const got = this._calcScaledValue(baseGold, matchCount, tripleBonus, comboMultiplier);
 				this.player.gold += got;
 				showMessage(t('goldGain', { gold: got, count: matchCount, combo: effectiveCombo }));
 				break;
