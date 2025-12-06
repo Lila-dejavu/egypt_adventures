@@ -153,7 +153,7 @@ const ShopsMixin = {
 				<div style="display: flex; flex-direction: column; gap: 6px;">
 					<div style="display: flex; justify-content: space-between; align-items: center; padding: 6px; background: #f8f8f8; border-radius: 4px; font-size: 0.9em;">
 						<span>🧪 ${t('potionItem')}</span>
-						<button class="tp-buy-btn" data-item="potion" data-price="200" style="padding: 5px 10px; background: #2ecc71; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9em; white-space: nowrap;">200 ${t('gold')}</button>
+						<button class="tp-buy-btn" data-item="potion" data-price="500" style="padding: 5px 10px; background: #2ecc71; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9em; white-space: nowrap;">500 ${t('gold')}</button>
 					</div>
 					<div style="display: flex; justify-content: space-between; align-items: center; padding: 6px; background: #f8f8f8; border-radius: 4px; font-size: 0.85em;">
 						<span>🍖 ${t('foodItem')}</span>

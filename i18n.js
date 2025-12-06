@@ -574,7 +574,7 @@ const TRANSLATIONS = {
 		select_button: '選擇',
 		
 		// Caravan events
-		caravanMet: '遇到商隊：若資金足夠可補給藥水（50金/瓶）。',
+		caravanMet: '遇到商隊：若資金足夠可補給藥水（1000金/瓶）。',
 		supplySuccess: '補給成功，藥水+1',
 		supplyNoGold: '金幣不足，無法購買補給。',
 		blackMarketMet: '遇到黑市商人：能在黑市中獲得普通到史詩級裝備，此為賭博交易，最多購買兩件。',
@@ -1032,7 +1032,7 @@ const TRANSLATIONS = {
 		playerHp: 'Player HP',
 		
 		// Caravan events
-		caravanMet: 'Met a caravan: Can purchase potions if you have enough gold (50 gold/potion).',
+		caravanMet: 'Met a caravan: Can purchase potions if you have enough gold (1000 gold/potion).',
 		supplySuccess: 'Supply successful, potion +1',
 		supplyNoGold: 'Not enough gold to purchase supplies.',
 		blackMarketMet: 'Met black market merchant: Can obtain Common~Epic equipment through gambling, max 2 items.',
@@ -1485,7 +1485,7 @@ const TRANSLATIONS = {
 		playerHp: 'PV du joueur',
 		
 		// Caravan events
-		caravanMet: 'Rencontré une caravane : Peut acheter des potions si vous avez assez d\'or (50 or/potion).',
+		caravanMet: 'Rencontré une caravane : Peut acheter des potions si vous avez assez d\'or (1000 or/potion).',
 		supplySuccess: 'Approvisionnement réussi, potion +1',
 		supplyNoGold: 'Pas assez d\'or pour acheter des fournitures.',
 		blackMarketMet: 'Rencontré un marchand du marché noir : Peut obtenir équipement Commun~Épique par pari, max 2 objets.',

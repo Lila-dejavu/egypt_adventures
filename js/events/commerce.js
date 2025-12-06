@@ -5,11 +5,11 @@ const CommerceEvents = {
     merchant: {
         weight: 7,
         handler() {
-            showMessage('遇到商隊：若資金足夠可補給藥水（50金/瓶）。');
-            if (this.player.gold >= 50) {
-                this.player.gold -= 50;
-                this.player.potions += 1;
-                showMessage('補給成功，藥水+1');
+            showMessage('遇到商隊：若資金足夠可補給藥水（1000金/瓶）。');
+                if (this.player.gold >= 1000) {
+                    this.player.gold -= 1000;
+                    this.player.potions += 1;
+                    showMessage('補給成功，藥水+1');
             } else {
                 showMessage('金幣不足，無法購買補給。');
             }
