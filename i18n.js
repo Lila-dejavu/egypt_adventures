@@ -44,7 +44,7 @@ const TRANSLATIONS = {
 		// Game messages
 		chooseDirection: '你選擇哪個方向？',
 		desertJourney: '你沿著沙漠前行...',
-		pyramidPassage: '你在金字塔的通道中，感受著古老的氣息...',
+		pyramidPassage: '你站在金字塔幽暗的石室中，火把的光芒在牆上搖曳...',
 		youChose: '你選擇往',
 		direction: '走。',
 		movedSteps: '已移動',
@@ -55,6 +55,11 @@ const TRANSLATIONS = {
 		dirFront: '前方',
 		dirLeft: '左邊',
 		dirRight: '右邊',
+		
+		// Direction hints - Pyramid (金字塔內部方向)
+		pyramidDirFront: '前方的通道',
+		pyramidDirLeft: '左側的石門',
+		pyramidDirRight: '右側的石門',
 		
 		// Event hints - Monster (普通敵人)
 		hintBattle: '聽見戰鬥的聲音',
@@ -748,7 +753,7 @@ const TRANSLATIONS = {
 		// Game messages
 		chooseDirection: 'Which direction do you choose?',
 		desertJourney: 'You journey through the desert...',
-		pyramidPassage: 'You are in the pyramid passage, feeling the ancient aura...',
+		pyramidPassage: 'You stand in a dimly lit chamber within the pyramid, torchlight flickering on the walls...',
 		youChose: 'You chose to go',
 		direction: '.',
 		movedSteps: 'Moved',
@@ -759,6 +764,11 @@ const TRANSLATIONS = {
 		dirFront: 'Ahead',
 		dirLeft: 'To the left',
 		dirRight: 'To the right',
+		
+		// Direction hints - Pyramid (Pyramid interior directions)
+		pyramidDirFront: 'The passage ahead',
+		pyramidDirLeft: 'The stone door on the left',
+		pyramidDirRight: 'The stone door on the right',
 		
 		// Event hints
 		hintBattle: 'you hear battle sounds',

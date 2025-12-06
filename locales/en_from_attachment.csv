@@ -1,0 +1,229 @@
+key,zh,en_translation
+addedToInventory,已放入背包,Added to inventory
+amulet,護符,Amulet
+armor,防具,Armor
+blackMarketBought,在黑市購買,Bought at black market
+blackMarketEnd,黑市交易結束。,Black market trading ended.
+blackMarketLimit,已達黑市購買上限（2 件）。,Black market purchase limit reached (2 items).
+branchAllyJoin,👥 一位流浪戰士加入協助你戰鬥！（下次戰鬥攻擊+20%）,👥 A wandering warrior joins to assist you in battle! (Next battle attack +20%)
+branchAmbush,⚠️ 突然遭遇伏擊！額外的敵人出現！,⚠️ Sudden ambush! Additional enemies appear!
+branchAncientPower,🔥 吸收古老力量！永久攻擊+5,🔥 Ancient power absorbed! Permanent attack +5
+branchBossInsight,🔍 洞察敵人弱點！下次對BOSS傷害+30%,🔍 Enemy weakness revealed! Next boss damage +30%
+branchCurse,💀 被詛咒！最大生命-10%,💀 Cursed! Max HP -10%
+branchCurseItem,😈 獲得詛咒物品！強大但有代價,😈 Cursed item obtained! Powerful but at a cost
+branchDesertGuide,🧭 遇到沙漠嚮導！下5步顯示事件類型,🧭 Desert guide encountered! Next 5 steps show event types
+branchDiscount,💰 商人給你折扣！所有物品8折,💰 Merchant discount! All items 20% off
+branchDivineTrial,⚔️ 神聖試煉！擊敗額外守衛獲得神器,⚔️ Divine trial! Defeat extra guards for artifact
+branchDoubleLoot,💰💰 雙倍寶藏！,💰💰 Double treasure!
+branchEpicLoot,💎 獲得史詩級戰利品！,💎 Epic loot obtained!
+branchEscapeRoute,🏃 發現逃生路線！（可選擇逃跑）,🏃 Escape route found! (Can choose to flee)
+branchGodBlessing,✨ 獲得神祇祝福！全屬性+10%,✨ God's blessing received! All attributes +10%
+branchHealingSpring,💧 治癒之泉！完全恢復生命值,💧 Healing spring! Full HP restored
+branchHiddenPassage,🚪 發現隱藏通道！跳過3步,🚪 Hidden passage found! Skip 3 steps
+branchHiddenTreasure,🗝️ 發現隱藏寶藏！,🗝️ Hidden treasure discovered!
+branchLegendaryLoot,👑 傳說級寶物！,👑 Legendary treasure!
+branchOasisBlessing,🌴 綠洲祝福！生命恢復速度+50%（持續）,🌴 Oasis blessing! HP recovery rate +50% (ongoing)
+branchPowerSurge,⚡ 力量激增！攻擊力暫時+50%（3回合）,⚡ Power surge! Attack temporarily +50% (3 turns)
+branchQuicksand,⚠️ 陷入流沙！損失一些金幣,⚠️ Trapped in quicksand! Lost some gold
+branchRareItem,🎁 商人展示稀有商品！,🎁 Merchant shows rare goods!
+branchRevengeQuest,⚔️ 接受復仇任務！擊敗特定敵人獲得獎勵,⚔️ Revenge quest accepted! Defeat specific enemy for reward
+branchSecretChamber,🔓 發現秘密房間！獲得大量金幣,🔓 Secret chamber found! Large amount of gold obtained
+branchSpecialEvent,🎲 觸發特殊事件,🎲 Special event triggered
+branchTreasureDrop,✨ 敵人掉落了稀有寶物！,✨ Enemy dropped rare treasure!
+buriedTreasureFound,🏺 你發現了一個掩埋在沙中的古老陶罐…,🏺 You discovered an ancient jar buried in the sand…
+buy,購買,Buy
+cannotEquip,此物品無法裝備。,This item cannot be equipped.
+caravanBuyFood,🍖 你向商隊購買了食物和休息（花費60金幣），HP和體力完全恢復！,"🍖 You bought food and rest from the caravan (cost 60 gold), HP and stamina fully restored!"
+caravanGift,🍞 商隊分享了食物和水，HP,"🍞 The caravan shared food and water, HP"
+combatLuck,戰鬥幸運,Combat luck
+consumeStamina,消耗體力,Consume stamina
+curseGoldLoss,💸 你的金幣憑空消失了,💸 Your gold vanished into thin air
+curseHpLoss,💀 詛咒侵蝕你的身體,💀 The curse erodes your body
+damageTaken,受到傷害,Damage taken
+deadTravelerFound,💀 你發現了一具罹難旅人的遺體…,💀 You found the remains of a fallen traveler…
+equip,裝備,Equip
+equipTo,裝備,Equip
+equipped,已裝備,Equipped
+eventName_ancient_puzzle,古老謎題,Ancient Puzzle
+eventName_ancient_shrine,神殿,Ancient Shrine
+eventName_bandit_ambush,強盜,Bandit Ambush
+eventName_black_market,黑市,Black Market
+eventName_boss,頭目,Boss
+eventName_buried_treasure,寶藏,Buried Treasure
+eventName_caravan_rest,驛站,Caravan Rest
+eventName_cursed_shrine,詛咒神殿,Cursed Shrine
+eventName_dead_traveler,旅者遺體,Dead Traveler
+eventName_desert_oasis,沙漠綠洲,Desert Oasis
+eventName_elite,精英敵人,Elite Enemy
+eventName_empty,平靜路段,Peaceful Road
+eventName_lost_merchant,迷失商隊,Lost Merchant
+eventName_merchant,商人,Merchant
+eventName_mini_boss,小頭目,Mini Boss
+eventName_mirage,海市蜃樓,Mirage
+eventName_monster,普通敵人,Normal Enemy
+eventName_oasis,綠洲,Oasis
+eventName_pyramid,金字塔,Pyramid
+eventName_quicksand,流沙,Quicksand
+eventName_sandstorm,沙塵暴,Sandstorm
+eventName_scorpion_nest,毒蠍巢穴,Scorpion Nest
+eventName_trading_post,交易站,Trading Post
+gainShield,獲得30點護盾,Gained 30 shield points
+gainedExp,獲得經驗值,Gained experience
+gainedGoldLuck,獲得金幣幸運,Gained gold luck
+goldCoins,金幣！,gold coins!
+goldLuck,金幣幸運,Gold luck
+goldLuckBonus,（金幣幸運加成,(Gold luck bonus
+goldLuckRemaining,金幣幸運,Gold luck
+hintAbandonedItems,發現遺棄的物品,Found abandoned items
+hintAncientSign,發現古老的記號,Found ancient markings
+hintAncientTemple,發現古老的神殿,Found ancient temple
+hintCalm,一片平靜,All is calm
+hintCampfire,看見營火的亮光,Saw campfire light
+hintCaravanRest,看到駱駝商隊休息,Saw caravan resting
+hintCaravanRest1,傳來樂器演奏的聲音,Heard instrument music
+hintCaravanRest10,前方有旅店的燈火,Inn lights ahead
+hintCaravanRest2,看見晾曬的衣物,Saw clothes hanging to dry
+hintCaravanRest3,聽到孩童的嬉鬧聲,Heard children playing
+hintCaravanRest4,遠處有人在吟唱詩歌,Someone singing poetry in distance
+hintCaravanRest5,聞到烤麵餅的香氣,Smelled baking bread
+hintCaravanRest6,看見駱駝在休憩,Saw camels resting
+hintCaravanRest7,營地升起裊裊炊煙,Cooking smoke rising from camp
+hintCaravanRest8,傳來友善的招呼聲,Heard friendly greetings
+hintCaravanRest9,感受到溫暖的氛圍,Felt warm atmosphere
+hintDeadTraveler,看到倒下的旅人,Saw fallen traveler
+hintDeadTraveler1,沙地上有人類的足跡突然中斷,Human footprints suddenly end in sand
+hintDeadTraveler10,散落的補給品半埋在沙中,Scattered supplies half-buried in sand
+hintDeadTraveler2,看見破碎的水壺,Saw broken water flask
+hintDeadTraveler3,風中飄來腐朽的氣味,Smell of decay in the wind
+hintDeadTraveler4,遠處有禿鷹在盤旋,Vultures circling in distance
+hintDeadTraveler5,發現被丟棄的地圖,Found discarded map
+hintDeadTraveler6,沙面露出白骨的一角,Bones peeking through sand
+hintDeadTraveler7,看見生鏽的武器,Saw rusted weapons
+hintDeadTraveler8,前方有遺留的營地痕跡,Abandoned camp remains ahead
+hintDeadTraveler9,感覺這裡發生過什麼不幸,Something unfortunate happened here
+hintEmpty1,前方只見無盡沙丘，風聲輕拂。,"Only endless dunes ahead, gentle wind."
+hintEmpty2,四周一片寧靜，遠處傳來微弱的風聲。,"All quiet, faint wind in distance."
+hintEmpty3,空曠的沙地，偶爾有鳥影掠過天空。,"Empty sands, occasional bird shadow crosses sky."
+hintEmpty4,遠處地平線上有微弱光影，或許值得靠近查看。,"Faint light on distant horizon, worth investigating."
+hintEmpty5,沙面有稀疏腳印，顯示有人經過，但此處看似平靜。,"Sparse footprints show passage, but area seems calm."
+hintEmptyFallback1,前方平靜無驚，只有沙與風。,"Calm ahead, only sand and wind."
+hintEmptyFallback2,這一帶看似空曠，但仍需保持警覺。,"Area seems empty, stay alert."
+hintEmptyFallback3,沙丘連綿，看似平凡的一段路程。,"Rolling dunes, seems like ordinary path."
+hintFood,聞到食物的香味,Smelled food
+hintHoly,感受到神聖的力量,Felt holy power
+hintLaughter,聽到旅人的歡笑聲,Heard travelers' laughter
+hintMystery,感受到神秘的力量,Felt mysterious power
+hintNothing,什麼都沒有,Nothing here
+hintOldBackpack,看見破舊的背包,Saw worn backpack
+hintOnlyDesert,只有沙漠,Only desert
+hintPeaceful,風平浪靜,Calm and peaceful
+hintPyramid1,遠方聳立著宏偉的建築,Magnificent structure towers in distance
+hintPyramid10,感覺被無數雙眼睛注視,Feel countless eyes watching
+hintPyramid2,沙漠中出現巨大的幾何形狀,Massive geometric shape in desert
+hintPyramid3,感受到古文明的召喚,Ancient civilization calls
+hintPyramid4,石塊上刻滿象形文字,Hieroglyphs cover stone blocks
+hintPyramid5,空氣中瀰漫著歷史的厚重感,Air heavy with history
+hintPyramid6,看見斯芬克斯的身影,Sphinx silhouette visible
+hintPyramid7,金字塔入口散發幽暗的光,Pyramid entrance glows dimly
+hintPyramid8,聽到來自地底的迴響,Heard echoes from underground
+hintPyramid9,前方有法老的詛咒警告,Pharaoh's curse warning ahead
+hintPyramidTop,看到金字塔的尖頂,Saw pyramid peak
+hintRune,看見發光的符文,Saw glowing runes
+hintSandstorm10,周圍的景物開始扭曲變形,Surroundings begin to distort
+hintSandstorm6,天空泛起詭異的黃褐色,Sky turns eerie tan color
+hintSandstorm7,前方能見度急劇下降,Visibility drops sharply ahead
+hintSandstorm8,感覺皮膚被沙粒刺痛,Skin stings from sand
+hintSandstorm9,狂風捲起漫天沙塵,Wild wind whips up sand
+hintShining,看見反光的物體,Saw shining object
+hintShrine,看到神秘的祭壇,Saw mysterious altar
+hintShrine1,空氣中飄蕩著香火的氣息,Incense scent in air
+hintShrine10,感覺心靈得到了淨化,Soul feels purified
+hintShrine2,聽到虔誠的祈禱聲迴響,Devout prayers echo
+hintShrine3,神像的眼睛似乎在發光,Statue's eyes seem to glow
+hintShrine4,祭壇上擺放著供品,Offerings on altar
+hintShrine5,感受到神明的庇佑,Feel divine protection
+hintShrine6,牆上的壁畫栩栩如生,Wall murals lifelike
+hintShrine7,神殿散發出柔和的聖光,Temple radiates soft holy light
+hintShrine8,聞到乳香與沒藥的香味,Smell frankincense and myrrh
+hintShrine9,地面上有朝拜者的印記,Worshiper marks on ground
+hintSilent,寂靜無聲,Dead silent
+hintStatue,發現古老的雕像,Found ancient statue
+hintStone,看見巨大的石碑,Saw giant stone tablet
+hintStrangeMark,看到奇怪的地標,Saw strange landmark
+hintTragedy,察覺到悲劇的痕跡,Sensed tragedy's traces
+hintTreasure,察覺到寶藏的氣息,Sensed treasure nearby
+hintTreasure1,沙地下似乎有金屬的光澤,Metal gleam beneath sand
+hintTreasure10,發現被風吹出的金幣,Found gold coin blown by wind
+hintTreasure2,發現半掩埋的寶箱邊角,Found half-buried chest corner
+hintTreasure3,地面有人工挖掘的痕跡,Dig marks on ground
+hintTreasure4,石碑上刻著藏寶圖的線索,Treasure map clue on tablet
+hintTreasure5,聽到地底傳來空洞的回聲,Hollow echo from underground
+hintTreasure6,遠處有奇特的岩石排列,Strange rock formation in distance
+hintTreasure7,沙面下露出古老的木板,Ancient wooden plank under sand
+hintTreasure8,月光下看見地面的異樣,Ground looks odd in moonlight
+hintTreasure9,感覺這裡埋藏著什麼,Something buried here
+hp,HP,HP
+hpStaminaRecovered,(HP/體力完全恢復),(HP/stamina fully restored)
+inventory,背包,Inventory
+inventoryEmpty,背包是空的,Inventory is empty
+language,語言,Language
+languageChinese,繁體中文,Traditional Chinese
+languageEnglish,English,English
+languageFrench,Français,French
+leaveBlackMarket,離開黑市。,Leave black market.
+levelUp,升級！你現在等級,Level up! You are now level
+maxHpBonus,最大生命,Max HP
+maxStamina,最大體力,Max stamina
+maxStaminaBonus,最大體力,Max stamina
+mirageAppear,💫 你看到了遠處的幻象…,💫 You see a mirage in the distance…
+mirageDanger,⚠️ 幻象引導你走入危險區域！,⚠️ The mirage led you into danger!
+mirageHallucination,😵 那只是海市蜃樓…你追逐幻象消耗了體力。,😵 Just a mirage… chasing it drained your stamina.
+mirageReal,🌴 幻象是真的！你找到了一處隱藏的綠洲！,🌴 The mirage is real! You found a hidden oasis!
+mirageRecovery,完全恢復HP和體力，並且找到,"Fully restored HP and stamina, and found"
+mirageTreasure,✨ 幻象指引你找到了真正的寶藏！,✨ The mirage led you to real treasure!
+noEquipmentInSlot,此欄位沒有裝備。,No equipment in this slot.
+noMatchingItems,（無對應物品）,(No matching items)
+noSpecialAttributes,無特殊屬性,No special attributes
+none,無,None
+notEnoughGold,金幣不足，無法購買此物品。,Not enough gold to buy this item.
+oasisFound,發現綠洲，恢復生命與體力。,"Found oasis, restored HP and stamina."
+obtained,獲得,Obtained
+price,價格,Price
+prophecyCombat,「你將在下一次戰鬥中獲得勝利的力量」,You will gain victorious strength in the next battle
+prophecyDefense,「危險即將降臨，但你會倖存」,"Danger approaches, but you will survive"
+prophecyGold,「財富之神將眷顧你」,The god of wealth will favor you
+purchased,已購買,Purchased
+quicksandStruggle,😰 你在流沙中掙扎，消耗了大量體力和生命。,"😰 You struggled in quicksand, draining HP and stamina."
+remaining,剩餘,Remaining
+revealAttributes,揭露裝備屬性,Reveal equipment attributes
+sandstormDamage,風暴造成生命損失,Storm caused HP loss
+sandstormEncounter,遭遇沙漠風暴，受到些微損傷。,"Encountered sandstorm, took minor damage."
+setBonus,套裝效果,Set bonus
+shrineBlessing,✨ 神殿的祝福降臨！最大體力,✨ Temple's blessing descended! Max stamina
+spent,花費,Spent
+stamina,體力,Stamina
+staminaLoss,體力,Stamina
+status_burn_mage,灼燒,Burning
+status_burn_strong,焚身,Immolation
+strangerCurse,😈 陌生人露出邪惡的笑容，對你施加了詛咒！,😈 The stranger smiles wickedly and curses you!
+strangerDisappear,金幣後消失了。,gold and disappeared.
+strangerGamble,🎲 陌生人邀請你賭一把：投入100金幣，有機會獲得雙倍或失去全部…,"🎲 Stranger invites you to gamble: bet 100 gold, double or nothing…"
+strangerGambleLost,😔 你輸了，損失100金幣。,"😔 You lost, -100 gold."
+strangerGambleWon,🎉 你贏了！獲得200金幣（淨賺100）！,🎉 You won! Gained 200 gold (net +100)!
+strangerGiftGold,💰 陌生人贈送你,💰 The stranger gave you
+strangerGiftItem,✨ 陌生人贈送你,✨ The stranger gave you
+strangerGiftPotions,🧪 陌生人給了你2瓶藥水後神秘地消失了。,🧪 Stranger gave you 2 potions and mysteriously vanished.
+strangerLeaves,陌生人微笑著離開了。,The stranger smiled and left.
+strangerMet,👤 你遇到了一位神秘的陌生人…,👤 You met a mysterious stranger…
+strangerNoGold,陌生人想邀請你賭博，但你的金幣不足（需要100金幣）。,Stranger wants to gamble but you lack gold (need 100).
+strangerProphecy,🔮 陌生人預言了你的未來…,🔮 The stranger prophesied your future…
+strangerSmoke,後化作煙霧消失了！,and vanished in smoke!
+to,到,to
+treasureDecayed,💔 陶罐中的黃金已經完全風化，化為塵土，一無所獲。,"💔 Gold in jar completely weathered to dust, found nothing."
+treasureEmpty,😔 陶罐是空的，什麼也沒有…,"😔 Jar is empty, nothing inside…"
+treasureGood,💰 陶罐中有一些金幣，獲得,"💰 Some gold in jar, obtained"
+treasureJackpot,✨ 陶罐中滿是閃亮的金幣！獲得,✨ Jar full of shining gold! Obtained
+treasurePoor,🪙 陶罐中只有少量金幣，獲得,"🪙 Only a little gold in jar, obtained"
+unequip,卸下,Unequip
+unequipped,卸下,Unequipped
+weapon,武器,Weapon

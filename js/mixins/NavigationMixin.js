@@ -152,7 +152,12 @@ const NavigationMixin = {
 		// Compass effect: show more detailed hints
 		const hasCompass = this.player.compassEffect && this.player.compassEffect > 0;
 
-		const directionTexts = {
+		// Use pyramid-specific direction texts when in pyramid
+		const directionTexts = this.inPyramid ? {
+			'前': t('pyramidDirFront'),
+			'左': t('pyramidDirLeft'),
+			'右': t('pyramidDirRight')
+		} : {
 			'前': t('dirFront'),
 			'左': t('dirLeft'),
 			'右': t('dirRight')
