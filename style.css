@@ -1,15 +1,11 @@
 * {
     box-sizing: border-box;
-    /* 確保所有元素都支援觸控滾動 */
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 html {
     height: 100%;
-    touch-action: manipulation;
+    /* 不限制觸控行為，讓滾動自然發生 */
     -webkit-tap-highlight-color: transparent;
-    /* iOS Safari 慣性滾動 */
-    -webkit-overflow-scrolling: touch;
 }
 
 body {
@@ -22,12 +18,8 @@ body {
     padding: 0;
     position: relative;
     min-height: 100vh;
-    /* 允許頁面滾動，不阻擋任何觸控手勢 */
-    touch-action: auto;
+    /* iOS Chrome/Safari 需要完全不限制觸控 */
     -webkit-overflow-scrolling: touch;
-    /* 確保 iOS 可以滾動 */
-    overflow-y: scroll;
-    overflow-x: hidden;
 }
 
 /* 莎草紙紋理效果 - 加強版 */
@@ -88,7 +80,6 @@ body::after {
     border-left: 8px solid #654321;
     border-right: 8px solid #654321;
     z-index: 1;
-    touch-action: manipulation;
 }
 
 /* 莎草紙捲軸頂部裝飾 - 超清晰版 */
@@ -747,7 +738,6 @@ button[disabled] {
     overflow: hidden;
     pointer-events: auto !important;
     z-index: 101;
-    touch-action: manipulation;
 }
 
 #slot-controls button::before {
@@ -937,7 +927,6 @@ button[disabled] {
     cursor: pointer;
     background: #d4a855;
     color: white;
-    touch-action: manipulation !important;
     -webkit-tap-highlight-color: rgba(212, 168, 85, 0.3);
     user-select: none;
     -webkit-user-select: none;
@@ -963,7 +952,6 @@ button[disabled] {
 #equipment-panel button,
 #close-equip,
 #close-blackmarket {
-    touch-action: manipulation !important;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
     user-select: none;
     -webkit-user-select: none;
@@ -991,7 +979,6 @@ button[disabled] {
     cursor: pointer !important;
     background: #4a90e2;
     color: white;
-    touch-action: manipulation !important;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
     user-select: none;
     -webkit-user-select: none;
@@ -1023,7 +1010,6 @@ button[disabled] {
     pointer-events: auto !important;
     z-index: 101;
     cursor: pointer;
-    touch-action: manipulation !important;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
     user-select: none;
     -webkit-user-select: none;
@@ -1313,7 +1299,6 @@ button[disabled] {
         position: relative;
         z-index: 301;
         pointer-events: auto !important;
-        touch-action: manipulation !important;
     }
     
     /* 確保戰鬥按鈕在平板上可點擊 */
@@ -1338,7 +1323,6 @@ button[disabled] {
     /* 按鈕觸控友善 */
     button {
         min-height: 40px;
-        touch-action: manipulation !important;
         pointer-events: auto !important;
         position: relative;
         z-index: 150;
@@ -1363,7 +1347,6 @@ button[disabled] {
         position: relative;
         z-index: 301;
         pointer-events: auto !important;
-        touch-action: manipulation !important;
     }
 }
 
@@ -1373,7 +1356,6 @@ button[disabled] {
     html, body {
         overflow-x: hidden;
         max-width: 100vw;
-        touch-action: pan-y pinch-zoom;
         -webkit-overflow-scrolling: touch;
     }
 
@@ -1433,7 +1415,6 @@ button[disabled] {
         font-size: 14px !important;
         position: relative;
         z-index: 2000 !important;
-        touch-action: manipulation;
         pointer-events: auto !important;
         cursor: pointer !important;
     }
@@ -1450,7 +1431,6 @@ button[disabled] {
         font-size: 14px !important;
         position: relative;
         z-index: 2001 !important;
-        touch-action: manipulation;
         transition: background 0.3s ease;
         pointer-events: auto !important;
         cursor: pointer !important;
@@ -1669,7 +1649,6 @@ button[disabled] {
         position: relative;
         z-index: 1001 !important;
         pointer-events: auto !important;
-        touch-action: manipulation !important;
         cursor: pointer !important;
     }
     
@@ -1694,7 +1673,6 @@ button[disabled] {
         font-size: 0.95em;
         width: 100%;
         pointer-events: auto !important;
-        touch-action: manipulation !important;
         position: relative;
         z-index: 1001 !important;
         cursor: pointer !important;
@@ -1826,7 +1804,6 @@ button[disabled] {
         position: relative;
         cursor: pointer !important;
         pointer-events: auto !important;
-        touch-action: manipulation;
     }
     
     /* 裝備按鈕特別處理 - 確保可點擊 */
@@ -1963,7 +1940,6 @@ button[disabled] {
         position: relative;
         z-index: 1001 !important;
         pointer-events: auto !important;
-        touch-action: manipulation !important;
         cursor: pointer !important;
     }
     
@@ -2044,7 +2020,6 @@ button[disabled] {
         position: relative;
         z-index: 1001 !important;
         pointer-events: auto !important;
-        touch-action: manipulation !important;
         cursor: pointer !important;
     }
 }
