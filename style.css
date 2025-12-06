@@ -1,5 +1,15 @@
 * {
     box-sizing: border-box;
+    /* 確保所有元素都支援觸控滾動 */
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+html {
+    height: 100%;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    /* iOS Safari 慣性滾動 */
+    -webkit-overflow-scrolling: touch;
 }
 
 body {
@@ -12,8 +22,11 @@ body {
     padding: 0;
     position: relative;
     min-height: 100vh;
-    touch-action: pan-y pan-x;
+    /* 允許頁面滾動，不阻擋任何觸控手勢 */
+    touch-action: auto;
     -webkit-overflow-scrolling: touch;
+    /* 確保 iOS 可以滾動 */
+    overflow-y: scroll;
     overflow-x: hidden;
 }
 
@@ -75,6 +88,7 @@ body::after {
     border-left: 8px solid #654321;
     border-right: 8px solid #654321;
     z-index: 1;
+    touch-action: manipulation;
 }
 
 /* 莎草紙捲軸頂部裝飾 - 超清晰版 */
@@ -175,7 +189,7 @@ body::after {
     padding: 20px;
     font-size: 1.05em;
     height: 320px;
-    overflow-y: auto;
+    overflow-y: scroll;
     overflow-x: hidden;
     box-sizing: border-box;
     border: 4px solid #8b4513;
@@ -185,7 +199,8 @@ body::after {
         inset 0 0 30px rgba(218, 165, 32, 0.08);
     position: relative;
     z-index: 5;
-    touch-action: pan-y;
+    /* iOS 需要 auto 才能正常觸控滾動內部元素 */
+    touch-action: auto;
     -webkit-overflow-scrolling: touch;
 }
 
@@ -1459,10 +1474,11 @@ button[disabled] {
         font-size: 1.05em;
         padding: 12px;
         height: 220px;
-        overflow-y: auto;
+        overflow-y: scroll;
         overflow-x: hidden;
         line-height: 1.5;
-        touch-action: pan-y;
+        /* iOS Safari 必須用 auto 來允許觸控滾動 */
+        touch-action: auto;
         -webkit-overflow-scrolling: touch;
     }
     
