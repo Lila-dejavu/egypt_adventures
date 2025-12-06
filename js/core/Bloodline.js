@@ -72,7 +72,29 @@
             const perTurn = flag.perTurnPct || flag.perTurnPctRange && ((flag.perTurnPctRange[0]+flag.perTurnPctRange[1])/2) || 0.06;
             const duration = flag.duration || 3;
             // Store as absolute hp-per-turn by converting percent of enemy.max_hp
-            const dmgPerTurn = Math.max(1, Math.floor(game.enemy.max_hp * perTurn));
+            // Apply player's bloodline/spell modifiers and difficulty scaling so the effect feels meaningful
+            let totalMultiplier = 1;
+            try {
+                // Player bloodline modifiers (e.g., burn_damage_pct, spell_damage_pct, fire_skill_damage_pct)
+                const mods = (game.player && game.player.bloodline && game.player.bloodline.modifiers) ? game.player.bloodline.modifiers : {};
+                const modSum = (mods.burn_damage_pct || 0) + (mods.spell_damage_pct || 0) + (mods.fire_skill_damage_pct || 0) + (mods.lightning_trigger_bonus_pct || 0);
+                totalMultiplier += modSum;
+
+                // Difficulty-based boost (10% per difficulty level)
+                const diffBoost = (typeof game.difficulty === 'number') ? (0.10 * game.difficulty) : 0;
+                totalMultiplier += diffBoost;
+
+                // New Game+ / playthroughs gentle scaling
+                const playthroughs = parseInt(localStorage.getItem('egypt_playthroughs') || '0', 10) || 0;
+                if (playthroughs > 0) totalMultiplier += (0.05 * playthroughs);
+            } catch (e) {
+                totalMultiplier = 1;
+            }
+
+            let dmgPerTurn = Math.max(1, Math.floor(game.enemy.max_hp * perTurn * totalMultiplier));
+            // Ensure a sensible minimum (not just 1) so percentages feel impactful on low-HP enemies
+            const sensibleMin = 3;
+            if (dmgPerTurn < sensibleMin) dmgPerTurn = sensibleMin;
             // Prefer engine helper if available (supports stacking). Bloodline stacks capped at 5 layers.
             if (typeof game.addDebuffStack === 'function') {
                 try {
