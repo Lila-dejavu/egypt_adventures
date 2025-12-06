@@ -5,45 +5,45 @@
 (function(){
     const pools = {
         mage: [
-            // Common (10)
-            { id:'mage_common_ember', name:'火光傳承', description:'火焰類技能傷害 +8%', tier:'common', modifiers:{fire_skill_damage_pct:0.08}, flags:{} },
-            { id:'mage_common_frost', name:'冰霜根源', description:'冰凍類技能持續時間 +1 回合', tier:'common', modifiers:{freeze_duration_bonus:1}, flags:{} },
-            { id:'mage_common_scholar', name:'學者血脈', description:'魔力消耗降低 5%', tier:'common', modifiers:{mana_cost_pct:-0.05}, flags:{} },
-            { id:'mage_common_aether', name:'以太微光', description:'施放技能後下次攻擊附帶魔法傷害', tier:'common', modifiers:{spell_echo_pct:0.10}, flags:{} },
-            { id:'mage_common_mana', name:'魔力脈絡', description:'最大魔力增加 +20', tier:'common', modifiers:{max_mana:20}, flags:{} },
-            { id:'mage_common_lightning', name:'閃電親和', description:'閃電圖示觸發血脈時額外傷害 +5%', tier:'common', modifiers:{lightning_trigger_bonus_pct:0.05}, flags:{} },
-            { id:'mage_common_arcane', name:'奧術印記', description:'隨機技能有更高機率觸發稀有技能', tier:'common', modifiers:{rare_skill_chance_pct:0.08}, flags:{} },
-            { id:'mage_common_wisdom', name:'智者血統', description:'每回合回復 3 點魔力', tier:'common', modifiers:{mana_regen_per_turn:3}, flags:{} },
-            { id:'mage_common_barrier', name:'魔障遺澤', description:'施法時有 10% 機率獲得護盾', tier:'common', modifiers:{chance_shield_on_spell:0.10}, flags:{} },
-            { id:'mage_common_versatile', name:'多才根源', description:'不同類型技能連續使用傷害遞增', tier:'common', modifiers:{diverse_skill_bonus_pct:0.06}, flags:{} },
+            // Common (10) - 大幅強化基礎效果
+            { id:'mage_common_ember', name:'火光傳承', description:'火焰類技能傷害 +25%', tier:'common', modifiers:{fire_skill_damage_pct:0.25}, flags:{} },
+            { id:'mage_common_frost', name:'冰霜根源', description:'冰凍類技能持續時間 +2 回合', tier:'common', modifiers:{freeze_duration_bonus:2}, flags:{} },
+            { id:'mage_common_scholar', name:'學者血脈', description:'魔力消耗降低 20%', tier:'common', modifiers:{mana_cost_pct:-0.20}, flags:{} },
+            { id:'mage_common_aether', name:'以太微光', description:'施放技能後下次攻擊附帶 30% 魔法傷害', tier:'common', modifiers:{spell_echo_pct:0.30}, flags:{} },
+            { id:'mage_common_mana', name:'魔力脈絡', description:'最大魔力增加 +50', tier:'common', modifiers:{max_mana:50}, flags:{} },
+            { id:'mage_common_lightning', name:'閃電親和', description:'閃電圖示觸發血脈時額外傷害 +20%', tier:'common', modifiers:{lightning_trigger_bonus_pct:0.20}, flags:{} },
+            { id:'mage_common_arcane', name:'奧術印記', description:'隨機技能有更高機率觸發稀有技能 +25%', tier:'common', modifiers:{rare_skill_chance_pct:0.25}, flags:{} },
+            { id:'mage_common_wisdom', name:'智者血統', description:'每回合回復 8 點魔力', tier:'common', modifiers:{mana_regen_per_turn:8}, flags:{} },
+            { id:'mage_common_barrier', name:'魔障遺澤', description:'施法時有 35% 機率獲得護盾', tier:'common', modifiers:{chance_shield_on_spell:0.35}, flags:{} },
+            { id:'mage_common_versatile', name:'多才根源', description:'不同類型技能連續使用傷害遞增 +18%', tier:'common', modifiers:{diverse_skill_bonus_pct:0.18}, flags:{} },
 
-            // Fine / 精良 (8)
-            { id:'mage_fine_concentration', name:'深度專注', description:'所有技能魔力消耗降低 12%', tier:'fine', modifiers:{mana_cost_pct:-0.12}, flags:{} },
-            { id:'mage_fine_channel', name:'導能脈', description:'控制類技能（冰凍、詛咒）效果 +30%', tier:'fine', modifiers:{control_skill_bonus_pct:0.30}, flags:{} },
-            { id:'mage_fine_pyro', name:'烈焰掌控', description:'火焰技能附加的灼燒傷害 +50%', tier:'fine', modifiers:{burn_damage_pct:0.50}, flags:{} },
-            { id:'mage_fine_ward', name:'結界傳承', description:'魔力護盾技能額外生成 +8 點護盾', tier:'fine', modifiers:{shield_skill_bonus:8}, flags:{} },
-            { id:'mage_fine_flux', name:'魔力湧動', description:'攻擊圖示觸發技能時魔力消耗降低 50%', tier:'fine', modifiers:{random_skill_mana_discount_pct:0.50}, flags:{} },
-            { id:'mage_fine_resonance', name:'共鳴血脈', description:'連續使用相同類型技能傷害 +15%', tier:'fine', modifiers:{same_type_bonus_pct:0.15}, flags:{} },
-            { id:'mage_fine_overload', name:'魔力過載', description:'魔力充足時技能傷害 +10%', tier:'fine', modifiers:{high_mana_damage_pct:0.10}, flags:{} },
-            { id:'mage_fine_siphon', name:'汲能之裔', description:'擊殺敵人回復 30% 最大魔力', tier:'fine', modifiers:{onKill_restore_mana_pct:0.30}, flags:{} },
+            // Fine / 精良 (8) - 顯著強化
+            { id:'mage_fine_concentration', name:'深度專注', description:'所有技能魔力消耗降低 35%', tier:'fine', modifiers:{mana_cost_pct:-0.35}, flags:{} },
+            { id:'mage_fine_channel', name:'導能脈', description:'控制類技能（冰凍、詛咒）效果 +80%', tier:'fine', modifiers:{control_skill_bonus_pct:0.80}, flags:{} },
+            { id:'mage_fine_pyro', name:'烈焰掌控', description:'火焰技能附加的灼燒傷害 +150%', tier:'fine', modifiers:{burn_damage_pct:1.50}, flags:{} },
+            { id:'mage_fine_ward', name:'結界傳承', description:'魔力護盾技能額外生成 +25 點護盾', tier:'fine', modifiers:{shield_skill_bonus:25}, flags:{} },
+            { id:'mage_fine_flux', name:'魔力湧動', description:'攻擊圖示觸發技能時魔力消耗降低 80%', tier:'fine', modifiers:{random_skill_mana_discount_pct:0.80}, flags:{} },
+            { id:'mage_fine_resonance', name:'共鳴血脈', description:'連續使用相同類型技能傷害 +40%', tier:'fine', modifiers:{same_type_bonus_pct:0.40}, flags:{} },
+            { id:'mage_fine_overload', name:'魔力過載', description:'魔力充足時技能傷害 +35%', tier:'fine', modifiers:{high_mana_damage_pct:0.35}, flags:{} },
+            { id:'mage_fine_siphon', name:'汲能之裔', description:'擊殺敵人回復 60% 最大魔力', tier:'fine', modifiers:{onKill_restore_mana_pct:0.60}, flags:{} },
 
-            // Rare / 優良 (6)
-            { id:'mage_rare_inferno', name:'地獄烈焰', description:'火焰技能造成強力灼燒，每回合 8% 最大 HP', tier:'rare', modifiers:{fire_skill_damage_pct:0.12}, flags:{onFireSkill_applyStatus:{name:'burn', perTurnPct:0.08,duration:4}} },
-            { id:'mage_rare_frostlord', name:'冰霜領主', description:'冰凍技能額外降低敵人 20% 攻擊速度', tier:'rare', modifiers:{freeze_skill_bonus_pct:0.15}, flags:{onFreezeSkill_slowAttack:0.20} },
-            { id:'mage_rare_chain', name:'連鎖閃電', description:'閃電類技能有 25% 機率造成連鎖傷害', tier:'rare', modifiers:{lightning_skill_damage_pct:0.12, chain_chance:0.25}, flags:{} },
-            { id:'mage_rare_arcane_mastery', name:'奧術精通', description:'所有技能傷害 +15%，魔力回復速度 +50%', tier:'rare', modifiers:{all_skill_damage_pct:0.15, mana_regen_pct:0.50}, flags:{} },
-            { id:'mage_rare_versatile_master', name:'全能法師', description:'每場戰鬥使用不同技能種類越多，傷害遞增', tier:'rare', modifiers:{versatility_stacking:true}, flags:{} },
-            { id:'mage_rare_mana_burst', name:'魔力爆發', description:'魔力耗盡時觸發爆發，恢復 50% 魔力並下次技能免費', tier:'rare', modifiers:{mana_burst_trigger:true}, flags:{} },
+            // Rare / 優良 (6) - 極大強化效果與傷害
+            { id:'mage_rare_inferno', name:'地獄烈焰', description:'火焰技能造成強力灼燒，每回合 18% 最大 HP，持續 6 回合', tier:'rare', modifiers:{fire_skill_damage_pct:0.45}, flags:{onFireSkill_applyStatus:{name:'burn', perTurnPct:0.18,duration:6}} },
+            { id:'mage_rare_frostlord', name:'冰霜領主', description:'冰凍技能額外降低敵人 50% 攻擊速度與傷害', tier:'rare', modifiers:{freeze_skill_bonus_pct:0.50}, flags:{onFreezeSkill_slowAttack:0.50} },
+            { id:'mage_rare_chain', name:'連鎖閃電', description:'閃電類技能有 60% 機率造成 150% 連鎖傷害', tier:'rare', modifiers:{lightning_skill_damage_pct:0.40, chain_chance:0.60}, flags:{} },
+            { id:'mage_rare_arcane_mastery', name:'奧術精通', description:'所有技能傷害 +50%，魔力回復速度 +120%', tier:'rare', modifiers:{all_skill_damage_pct:0.50, mana_regen_pct:1.20}, flags:{} },
+            { id:'mage_rare_versatile_master', name:'全能法師', description:'每場戰鬥使用不同技能種類越多，傷害遞增（每種 +25%）', tier:'rare', modifiers:{versatility_stacking:true, versatility_bonus_per_type:0.25}, flags:{} },
+            { id:'mage_rare_mana_burst', name:'魔力爆發', description:'魔力耗盡時觸發爆發，恢復 100% 魔力並接下來 3 個技能免費', tier:'rare', modifiers:{mana_burst_trigger:true, burst_free_skills:3}, flags:{} },
 
-            // Epic / 史詩 (4)
-            { id:'mage_epic_phoenix', name:'鳳凰血脈', description:'開場獲得一次復甦效果（自動回復 30% HP）', tier:'epic', modifiers:{max_hp:20}, flags:{onBattleStart_revivePercent:0.3} },
-            { id:'mage_epic_arcana', name:'奧紋傳承', description:'法術強度大幅提升 (+15%)', tier:'epic', modifiers:{spell_damage_pct:0.15}, flags:{} },
-            { id:'mage_epic_singularity', name:'奇點之裔', description:'終極技能造成額外範圍爆發效果', tier:'epic', modifiers:{ultimate_aoe_bonus:true}, flags:{} },
-            { id:'mage_epic_timelord', name:'時之血脈', description:'有限次數的回合加速/延緩控制能力', tier:'epic', modifiers:{time_control_charges:1}, flags:{} },
+            // Epic / 史詩 (4) - 戰鬥改變性效果
+            { id:'mage_epic_phoenix', name:'鳳凰血脈', description:'開場獲得一次復甦效果（自動回復 60% HP）+ 最大HP +50', tier:'epic', modifiers:{max_hp:50}, flags:{onBattleStart_revivePercent:0.6} },
+            { id:'mage_epic_arcana', name:'奧紋傳承', description:'法術強度極大提升 (+80%)，魔力消耗 -30%', tier:'epic', modifiers:{spell_damage_pct:0.80, mana_cost_pct:-0.30}, flags:{} },
+            { id:'mage_epic_singularity', name:'奇點之裔', description:'終極技能造成 200% 額外範圍爆發效果', tier:'epic', modifiers:{ultimate_aoe_bonus:true, aoe_multiplier:2.0}, flags:{} },
+            { id:'mage_epic_timelord', name:'時之血脈', description:'每場戰鬥 3 次回合加速（2x 傷害）或延緩敵人攻擊', tier:'epic', modifiers:{time_control_charges:3}, flags:{} },
 
-            // Legendary / 傳說 (2)
-            { id:'mage_legend_nirvana', name:'涅槃之裔', description:'涅槃技能：造成燃燒，敵人獲得焚身狀態，每回合減少 HP 10~15%', tier:'legendary', modifiers:{spell_damage_pct:0.15}, flags:{onSpell_applyStatus:{name:'burn_strong', perTurnPctRange:[0.10,0.15],duration:4}} },
-            { id:'mage_legend_archmage', name:'大法師裔', description:'大幅提升所有法術屬性與冷卻大幅縮短', tier:'legendary', modifiers:{spell_damage_pct:0.25, cooldown_pct:-0.20}, flags:{} }
+            // Legendary / 傳說 (2) - 遊戲定義性效果
+            { id:'mage_legend_nirvana', name:'涅槃之裔', description:'涅槃技能：造成焚身，敵人每回合減少 HP 20~30%，持續 8 回合', tier:'legendary', modifiers:{spell_damage_pct:0.60, all_skill_damage_pct:0.40}, flags:{onSpell_applyStatus:{name:'burn_strong', perTurnPctRange:[0.20,0.30],duration:8}} },
+            { id:'mage_legend_archmage', name:'大法師裔', description:'所有法術傷害 +100%，魔力消耗 -50%，暴擊率 +25%', tier:'legendary', modifiers:{spell_damage_pct:1.00, cooldown_pct:-0.50, crit_chance:0.25}, flags:{} }
         ],
         warrior: [
             // Common (10)
