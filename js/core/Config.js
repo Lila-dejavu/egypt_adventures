@@ -28,7 +28,8 @@ const Config = {
 
         // Combat bonuses
         TRIPLE_BONUS: 2.5,
-        PYRAMID_XP_MULTIPLIER: 15,
+        // Lowered pyramid multiplier to reduce XP/gold rewards
+        PYRAMID_XP_MULTIPLIER: 5,
 
         // Flee mechanics
         FLEE_BASE_CHANCE: 0.4,

@@ -421,7 +421,7 @@
     "evt_js_events_choices_js_500": "It was a bandit trap!",
     "evt_js_events_choices_js_512": "🔺 You discovered an ancient pyramid!",
     "evt_js_events_choices_js_513": "Full of danger, but holds great treasures…",
-    "evt_js_events_choices_js_514": "Pyramid dungeon: 8 steps, very strong enemies (scales with map), rich rewards (15x XP/gold), guaranteed fine+ equipment drops!",
+    "evt_js_events_choices_js_514": "High rewards and equipment drop chance",
     "evt_js_events_choices_js_37_1": "🎁 Hermit gave you a gift: ${this.formatItem(item)}",
     "evt_js_events_choices_js_50_1": "💰 While searching ruins, you found ${gold} gold!",
     "evt_js_events_choices_js_54_1": "⚔️ Also found ${this.formatItem(item)}!",

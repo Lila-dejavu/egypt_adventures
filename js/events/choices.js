@@ -514,7 +514,7 @@ const ChoiceEvents = {
         handler() {
             showMessage('🔺 你發現了一座古老的金字塔！');
             showMessage('這裡充滿危險，但也蘊藏著巨大的寶藏...');
-            showMessage('金字塔副本：8步探險，敵人強度極高（隨地圖提升），獎勵豐厚（15倍經驗/金幣），保證掉落優良以上裝備！');
+            showMessage('高額獎勵與裝備掉落機率');
             this.showPyramidChoice();
         }
     },

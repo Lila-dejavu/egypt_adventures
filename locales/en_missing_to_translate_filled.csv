@@ -318,7 +318,7 @@
 "godCurse","受到詛咒：HP -15","You have been cursed by the god."
 "pyramidFound","🔺 你發現了一座古老的金字塔！","Pyramid Discovered"
 "pyramidDanger","這裡充滿危險，但也蘊藏著巨大的寶藏...","The air inside is stale and dangerous."
-"pyramidInfo","金字塔副本：8步探險，敵人強度極高（隨地圖提升），獎勵豐厚（15倍經驗/金幣），保證掉落優良以上裝備！","Information"
+"pyramidInfo","高額獎勵與裝備掉落機率","Information"
 "declinePyramid","你決定不進入金字塔，繼續前行。","Leave"
 "enterPyramid","⚡ 你踏入了金字塔深處...","Enter"
 "pyramidStart","🔺 金字塔副本開始！你有 8 步探險機會。","You enter the dark tomb..."

@@ -267,7 +267,7 @@ key,zh,existing_en
 “evt_js_events_choices_js_50_1”,“💰 在廢墟中搜尋時，你發現了 ${gold} 金幣！”,“💰 While searching ruins, you found ${gold} gold!”
 “evt_js_events_choices_js_512”,“🔺 你發現了一座古老的金字塔！”,“🔺 You discovered an ancient pyramid!”
 “evt_js_events_choices_js_513”,“這裡充滿危險，但也蘊藏著巨大的寶藏…”,“Full of danger, but holds great treasures…”
-“evt_js_events_choices_js_514”,“金字塔副本：8步探險，敵人強度極高（隨地圖提升），獎勵豐厚（15倍經驗/金幣），保證掉落優良以上裝備！”,“Pyramid dungeon: 8 steps, very strong enemies (scales with map), rich rewards (15x XP/gold), guaranteed fine+ equipment drops!”
+“evt_js_events_choices_js_514”,“高額獎勵與裝備掉落機率”,“High rewards and equipment drop chance”
 “evt_js_events_choices_js_54”,“⚔️ 還找到了 ${this.formatItem(item)}！”,“⚔️ Also found ${this.formatItem(item)}!”
 “evt_js_events_choices_js_54_1”,“⚔️ 還找到了 ${this.formatItem(item)}！”,“⚔️ Also found ${this.formatItem(item)}!”
 “evt_js_events_choices_js_59”,“💥 廢墟部分坍塌！你受到 ${damage} 點傷害。”,“💥 Ruins partially collapsed! You took ${damage} damage.”

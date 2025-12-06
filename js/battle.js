@@ -852,12 +852,17 @@ const BattleMixin = {
 		let dropped = null;
 
 		if (this.inPyramid) {
-			// Pyramid guarantees 1-2 rare/epic items
-			const dropCount = 1 + Math.floor(Math.random() * 2);
-			showMessage(`🔺 金字塔寶藏！掉落 ${dropCount} 件裝備`);
+			// Reduced pyramid rewards: 0-1 items, epic less likely
+			const dropCount = Math.random() < 0.5 ? 0 : 1; // 50% chance to drop 1 item
+			if (dropCount > 0) {
+				showMessage(`🔺 金字塔寶藏！掉落 ${dropCount} 件裝備`);
+			} else {
+				showMessage(`🔺 金字塔寶藏...但這次沒有額外掉落`);
+			}
 			for (let i = 0; i < dropCount; i++) {
 				const rarityRoll = Math.random();
-				let targetRarity = rarityRoll < 0.3 ? 'epic' : 'rare';
+				// Epic less likely than before
+				let targetRarity = rarityRoll < 0.15 ? 'epic' : 'rare';
 				const candidateItems = ITEMS.filter(it => it.slot);
 				if (candidateItems.length > 0) {
 					const baseItem = candidateItems[Math.floor(Math.random() * candidateItems.length)];

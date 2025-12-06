@@ -671,7 +671,7 @@ const TRANSLATIONS = {
 		// Pyramid events
 		pyramidFound: '🔺 你發現了一座古老的金字塔！',
 		pyramidDanger: '這裡充滿危險，但也蘊藏著巨大的寶藏...',
-		pyramidInfo: '金字塔副本：8步探險，敵人強度極高（隨地圖提升），獎勵豐厚（15倍經驗/金幣），保證掉落優良以上裝備！',
+		pyramidInfo: '高額獎勵與裝備掉落機率',
 		declinePyramid: '你決定不進入金字塔，繼續前行。',
 		enterPyramid: '⚡ 你踏入了金字塔深處...',
 		pyramidStart: '🔺 金字塔副本開始！你有 8 步探險機會。',
@@ -1129,7 +1129,7 @@ const TRANSLATIONS = {
 		// Pyramid events
 		pyramidFound: '🔺 You discovered an ancient pyramid!',
 		pyramidDanger: 'Filled with danger, but also great treasures...',
-		pyramidInfo: 'Pyramid dungeon: 8-step exploration, extremely powerful enemies (scales with map), generous rewards (15x exp/gold), guaranteed Fine+ equipment drop!',
+		pyramidInfo: 'High rewards and equipment drop chance',
 		declinePyramid: 'You decided not to enter the pyramid and continued onward.',
 		enterPyramid: '⚡ You stepped into the pyramid depths...',
 		pyramidStart: '🔺 Pyramid dungeon started! You have 8 exploration steps.',
@@ -1582,7 +1582,7 @@ const TRANSLATIONS = {
 		// Pyramid events
 		pyramidFound: '🔺 Vous avez découvert une pyramide ancienne !',
 		pyramidDanger: 'Remplie de dangers, mais aussi de grands trésors...',
-		pyramidInfo: 'Donjon de pyramide : 8 étapes d\'exploration, ennemis extrêmement puissants (augmente avec la carte), récompenses généreuses (15x exp/or), équipement Bon+ garanti !',
+		pyramidInfo: 'Récompenses élevées et chance d\'obtenir de l\'équipement',
 		declinePyramid: 'Vous avez décidé de ne pas entrer dans la pyramide et avez continué.',
 		enterPyramid: '⚡ Vous êtes entré dans les profondeurs de la pyramide...',
 		pyramidStart: '🔺 Donjon de pyramide commencé ! Vous avez 8 étapes d\'exploration.',
