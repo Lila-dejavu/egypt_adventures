@@ -73,7 +73,8 @@ const GameState = {
     createMapState() {
         return {
             map_steps: 0,
-            map_goal: 30,
+            // Match Config default so map goal increase is consistent
+            map_goal: 40,
             difficulty: 1,
             pyramidSteps: 0,
             pyramidMaxSteps: 8,

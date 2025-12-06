@@ -79,7 +79,8 @@ const Config = {
 
     // Map progression
     MAP: {
-        DEFAULT_GOAL: 30,
+        // Increase default map steps by 10
+        DEFAULT_GOAL: 40,
         PYRAMID_MAX_STEPS: 8
     }
 };

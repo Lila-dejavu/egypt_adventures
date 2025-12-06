@@ -99,8 +99,8 @@ document.addEventListener('DOMContentLoaded', async function() {
 				}
 				
 				// 每個周目增加初始地圖目標
-				// 基礎 30 步 + 周目數 * 5 步
-				this.map_goal = 30 + (playthroughs * 5);
+				// 基礎步數由 Config 控制；每個周目仍額外增加步數
+				this.map_goal = Config.MAP.DEFAULT_GOAL + (playthroughs * 5);
 				
 				console.log(`周目 ${playthroughs + 1} 開始 - 初始難度: ${this.difficulty.toFixed(1)}, 地圖目標: ${this.map_goal}`);
 			}
