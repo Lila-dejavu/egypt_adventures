@@ -34,6 +34,11 @@ const DungeonMixin = {
 		this.pyramidSteps = 0;
 		this.map_steps = this.normalMapSteps; // Restore normal map steps
 		this.updateStatus();
+		
+		// Generate direction hints for continuing the journey
+		if (!this.inBattle && !this.inShop) {
+			this.generateDirectionHints();
+		}
 	},
 
 	/**
