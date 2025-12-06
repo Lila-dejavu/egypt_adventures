@@ -401,17 +401,18 @@ const NavigationMixin = {
 		const goalIncrease = 5 + Math.min(playthroughs * 2, 10);
 		this.map_goal += goalIncrease;
 		
-		// 顯示周目相關訊息
-		if (playthroughs > 0) {
-			showMessage(`⚡ 周目 ${playthroughs + 1} 難度提升：地圖難度 +${difficultyIncrease.toFixed(1)}，目標步數 +${goalIncrease}`);
-		}
-		
-		// Reset caravan rest tracking for new map
-		this.hasEncounteredCaravanRest = false;
-		this.updateStatus();
-	},
-
-	/**
+	// 顯示周目相關訊息
+	if (playthroughs > 0) {
+		showMessage(`⚡ 周目 ${playthroughs + 1} 難度提升：地圖難度 +${difficultyIncrease.toFixed(1)}，目標步數 +${goalIncrease}`);
+	}
+	
+	// Reset caravan rest tracking for new map
+	this.hasEncounteredCaravanRest = false;
+	this.updateStatus();
+	
+	// Generate direction hints for the new map
+	this.generateDirectionHints();
+},	/**
 	 * Handle event dispatch
 	 * @param {string} event - Event type (snake_case)
 	 */
