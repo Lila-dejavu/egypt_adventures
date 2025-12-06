@@ -1452,7 +1452,8 @@ button[disabled] {
     /* 遊戲輸出區域 - 放大文字 */
     #game-output {
         font-size: 1.05em;
-        padding: 12px;
+        /* 增加上方 padding 避免被象形文字裝飾遮住 */
+        padding: 20px 12px 12px 12px;
         height: 220px;
         overflow-y: scroll;
         overflow-x: hidden;
@@ -1465,7 +1466,8 @@ button[disabled] {
     #game-output::before {
         font-size: 18px;
         letter-spacing: 8px;
-        top: -18px;
+        /* 確保象形文字完全在外面 */
+        top: -20px;
     }
     
     /* 主區域使用 flex 控制子元素順序 */
@@ -1859,7 +1861,8 @@ button[disabled] {
     
     #game-output {
         height: 180px;
-        padding: 10px;
+        /* 增加上方 padding 避免被象形文字裝飾遮住 */
+        padding: 18px 10px 10px 10px;
         font-size: 1em;
         line-height: 1.5;
     }
