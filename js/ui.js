@@ -205,18 +205,17 @@ const UIMixin = {
 			summary.textContent = `HP:${this.player.hp}/${this.player.max_hp}  ${t('stamina')}:${this.player.stamina}/${this.player.max_stamina}  ${t('gold')}:${this.player.gold}  ${t('luckCombat')}:${this.player.luck_combat} ${t('goldLuck')}:${this.player.luck_gold}`;
 		}
 
-		// Update map steps display
-		const mapEl = DOMRefs.mapSteps;
-		if (mapEl) {
-			if (this.inPyramid) {
-				mapEl.textContent = `🔺 ${this.pyramidSteps}/${this.pyramidMaxSteps}`;
-			} else {
-				mapEl.textContent = Math.max(0, this.map_goal - this.map_steps);
-			}
+
+	// Update map steps display
+	const mapEl = DOMRefs.mapSteps;
+	if (mapEl) {
+		if (this.inPyramid) {
+			mapEl.textContent = `🔺 ${this.pyramidSteps}/${this.pyramidMaxSteps}`;
+		} else {
+			mapEl.textContent = `${this.map_steps}/${this.map_goal}`;
 		}
-	},
-
-
+	}
+},
 
 	/**
 	 * Helper to get localized rarity text
