@@ -1,0 +1,98 @@
+file,line,snippet,suggested_key
+js/ui.js,51,"// Show active debuffs (e.g., 屍毒)",i18n_js_ui_L51_debuff_comment
+js/ui.js,58,"💀 屍毒：${cp.stacks.length} 層（每回合 -${total} HP，最短 ${minTurns} 回合）",i18n_js_ui_L58_debuff_active
+js/ui.js,61,"💀 屍毒：剩餘 ${cpLegacy.turns} 回合（每回合 -${cpLegacy.dmg} HP）",i18n_js_ui_L61_debuff_remaining
+js/ui.js,92,"${t('mana') || '魔力'}: ${this.player.mana || 0}/${this.player.max_mana || 0}",i18n_js_ui_L92_mana_label
+js/ui.js,168,"${label} ${stacks} 層（最短 ${minTurns} 回合）",i18n_js_ui_L168_debuff_row
+js/ui.js,174,"${label} ${turns} 回合",i18n_js_ui_L174_turns_row
+js/ui.js,178,"${label}：每回合 ${dmg} 傷害",i18n_js_ui_L178_dmg_row
+js/ui.js,228,"'rare': { 'zh-TW': '稀有', 'en': 'Rare' }",i18n_js_ui_L228_rarity_rare
+js/ui.js,229,"'excellent': { 'zh-TW': '精良', 'en': 'Excellent' }",i18n_js_ui_L229_rarity_excellent
+js/ui.js,230,"'epic': { 'zh-TW': '史詩', 'en': 'Epic' }",i18n_js_ui_L230_rarity_epic
+js/ui.js,231,"'legendary': { 'zh-TW': '傳說', 'en': 'Legendary' }",i18n_js_ui_L231_rarity_legendary
+js/ui.js,498,"mage: { id: 'mage', name: '法師', desc: '法術傷害高，耐久較低', ngBonus: '起始魔力/耐力 +10' }",i18n_js_ui_L498_class_mage
+js/ui.js,499,"warrior: { id: 'warrior', name: '戰士', desc: '高生命值與近戰輸出', ngBonus: '起始護盾 +20' }",i18n_js_ui_L499_class_warrior
+js/ui.js,500,"archer: { id: 'archer', name: '弓手', desc: '遠程攻擊，擅長單體輸出', ngBonus: '起始箭矢 x10' }",i18n_js_ui_L500_class_archer
+js/ui.js,501,"desert_mage: { id: 'desert_mage', name: '沙漠巫師', desc: '周目+ 專屬，掌控沙暴與日炎', ngBonus: '起始魔力 +30，特殊沙系技能' }",i18n_js_ui_L501_class_desert_mage
+js/ui.js,511,"<label>... 普通遊戲</label>",i18n_js_ui_L511_ngmode_normal
+js/ui.js,512,"<label>... 第${pts+1}周目（新遊戲+）</label>",i18n_js_ui_L512_ngmode_ngplus
+js/ui.js,518,"<h2 style=\"...\">🔰 選擇職業</h2>",i18n_js_ui_L518_choose_class_title
+js/ui.js,519,"偵測到你已完成 ${pts} 次周目；選擇「周目+」以啟用額外職業與起始加成。",i18n_js_ui_L519_ngplus_notice
+js/ui.js,522,"<button id=\"bloodline-start-close\">取消</button>",i18n_js_ui_L522_cancel_button
+js/ui.js,551,"<span class=\"badge\">解鎖於周目+</span>",i18n_js_ui_L551_unlock_badge
+js/ui.js,560,"<button ...>選擇</button>",i18n_js_ui_L560_choose_button
+js/ui.js,567,"lockBadge.innerHTML = '<div...>未解鎖</div>'",i18n_js_ui_L567_locked_label
+js/ui.js,631,"<h3>選擇血脈 — ${cls}</h3>...<button id=\"bloodline-cancel\">取消</button>",i18n_js_ui_L631_choose_bloodline_title
+js/ui.js,648,"<button class=\"choose-bl\">選擇</button>",i18n_js_ui_L648_choose_bloodline_button
+js/slotMachine.js,259,"輪${i+1}: ${currentPos}px (H:${symbolHeight}) → ${results[i]}",i18n_js_slotMachine_L259_spin_line
+js/slotMachine.js,278,"插槽結果： ${results.join(' | ')}",i18n_js_slotMachine_L278_result
+js/slotMachine.js,317,"自動旋轉",i18n_js_slotMachine_L317_autospin
+js/music.js,1,"// ===== 音樂系統 =====",i18n_js_music_L1_header
+js/music.js,9,"currentTrack: 'exploration', // 'exploration' 或 'battle'",i18n_js_music_L9_track_comment
+js/music.js,29,"// 初始化 Web Audio API",i18n_js_music_L29_init_comment
+js/music.js,34,"// 從 localStorage 讀取設定",i18n_js_music_L34_localstorage
+js/music.js,40,"// 解析三種音樂",i18n_js_music_L40_parse_music
+js/music.js,44,"this.parsedMusic = this.parsedExploration; // 預設使用探索音樂",i18n_js_music_L44_default
+js/music.js,54,"// 停止當前音樂",i18n_js_music_L54_stop_music
+js/music.js,57,"// 切換音軌",i18n_js_music_L57_switch_track
+js/music.js,70,"// 如果之前在播放，繼續播放新音軌",i18n_js_music_L70_resume
+js/music.js,78,"// 播放勝利音樂（單次播放，結束後切換回探索音樂）",i18n_js_music_L78_victory
+js/music.js,85,"// 停止當前音樂",i18n_js_music_L85_stop_music_2
+js/music.js,88,"// 設定勝利音樂",i18n_js_music_L88_set_victory
+js/music.js,96,"// 播放勝利音樂",i18n_js_music_L96_play_victory
+js/music.js,99,"// 計算勝利音樂總時長",i18n_js_music_L99_calc_duration
+js/music.js,102,"// 音樂結束後切換回探索音樂",i18n_js_music_L102_switch_back
+js/music.js,107,"// 多加0.5秒緩衝",i18n_js_music_L107_buffer_note
+js/music.js,113,"let tempo = 120; // 預設速度",i18n_js_music_L113_tempo
+js/music.js,114,"let defaultLength = 8; // 預設八分音符",i18n_js_music_L114_default_length
+js/music.js,116,"// 解析標頭資訊",i18n_js_music_L116_parse_header
+js/music.js,128,"// 解析音符行",i18n_js_music_L128_parse_note_lines
+js/music.js,136,"// 移除小節線和其他符號",i18n_js_music_L136_strip_bars
+js/music.js,140,"// 解析音符（支援 ABC 記譜中的 C' 高音表示法）",i18n_js_music_L140_parse_notes_detail
+js/music.js,150,"// 計算實際持續時間（秒）",i18n_js_music_L150_calc_duration_sec
+js/music.js,173,"// 確保 AudioContext 已恢復（瀏覽器安全要求）",i18n_js_music_L173_audiocontext
+js/music.js,191,"// 如果正在播放，更新音量（需考慮音軌類型的音量倍增器）",i18n_js_music_L191_volume_update
+js/music.js,212,"// 樂曲結束，循環播放",i18n_js_music_L212_loop_play
+js/music.js,220,"// 播放音符",i18n_js_music_L220_play_note
+js/music.js,224,"// 安排下一個音符",i18n_js_music_L224_schedule_next
+js/music.js,238,"// 根據音軌選擇音色",i18n_js_music_L238_choose_instrument
+js/music.js,240,"// 戰鬥音樂：使用方波創造更尖銳、激烈的音色",i18n_js_music_L240_battle_note
+js/music.js,243,"// 探索音樂：使用三角波創造較柔和的音色",i18n_js_music_L243_explore_note
+js/music.js,249,"// 設定音量包絡（ADSR）",i18n_js_music_L249_adsr
+js/music.js,254,"// 根據音軌類型調整音量",i18n_js_music_L254_adjust_volume
+js/music.js,286,"// 音符可能已經停止",i18n_js_music_L286_note_stopped
+js/music.js,301,"🔊 <span data-i18n=\"musicOn\">音樂：開啟</span>",i18n_js_music_L301_music_on
+js/music.js,304,"🔇 <span data-i18n=\"musicOff\">音樂：關閉</span>",i18n_js_music_L304_music_off
+js/mixins/PersistenceMixin.js,125,"💾 遊戲已儲存！(等級 ${this.player.level}, 金幣 ${this.player.gold}, 時間 ${saveDate.toLocaleTimeString('zh-TW')})",i18n_js_persistence_L125_save_ok
+js/mixins/PersistenceMixin.js,128,"⚠️ 儲存可能失敗，請檢查瀏覽器設定是否允許 localStorage",i18n_js_persistence_L128_save_warn
+js/mixins/PersistenceMixin.js,132,"❌ 儲存失敗：",i18n_js_persistence_L132_save_fail
+js/mixins/PersistenceMixin.js,146,"❌ 找不到存檔！請先點擊「儲存」按鈕建立存檔。",i18n_js_persistence_L146_no_save
+js/mixins/PersistenceMixin.js,154,"⚠️ 存檔資料損壞，將重新開始遊戲。",i18n_js_persistence_L154_corrupt_save
+js/mixins/PersistenceMixin.js,166,"📂 讀取成功！存檔時間：${saveDate.toLocaleString('zh-TW')}",i18n_js_persistence_L166_load_ok
+js/mixins/PersistenceMixin.js,170,"⚠️ 存檔讀取失敗，將重新開始遊戲。",i18n_js_persistence_L170_load_fail
+js/mixins/PersistenceMixin.js,189,"🗑️ 存檔已清除",i18n_js_persistence_L189_save_cleared
+js/mixins/NavigationMixin.js,21,"🌴 綠洲祝福：自動恢復 ${healAmount} HP 和 ${staminaAmount} 體力（剩餘 ${this.player.oasisBlessing} 次）",i18n_js_navigation_L21_oasis_blessing
+js/mixins/NavigationMixin.js,26,"'前': this.generateBranchPath()",i18n_js_navigation_L26_dir_front
+js/mixins/NavigationMixin.js,27,"'左': this.generateBranchPath()",i18n_js_navigation_L27_dir_left
+js/mixins/NavigationMixin.js,28,"'右': this.generateBranchPath()",i18n_js_navigation_L28_dir_right
+js/mixins/NavigationMixin.js,41,"showMessage('🏪 你感覺前方不遠處有驛站的氣息...')",i18n_js_navigation_L41_outpost_scent
+js/mixins/NavigationMixin.js,56,"🗺️ 強盜情報：你感覺${targetDir}方似乎有好東西...（剩餘 ${this.player.banditInfo} 次）",i18n_js_navigation_L56_bandit_info
+js/mixins/NavigationMixin.js,138,"🐪 迷失的商隊呼救聲, 商隊的旗幟在風中飄揚, 你聽到駱駝的哀鳴",i18n_js_navigation_L138_lost_merchant
+js/mixins/NavigationMixin.js,139,"⚠️ 不祥的氣息, 神殿散發詭異光芒, 低語聲從廢墟中傳來",i18n_js_navigation_L139_cursed_shrine
+js/mixins/NavigationMixin.js,140,"⚔️ 沙丘後有人影移動, 刀劍碰撞的聲音, 你感覺被人盯上了",i18n_js_navigation_L140_bandit_ambush
+js/mixins/NavigationMixin.js,141,"🧩 神秘的石碑, 古老的象形文字, 謎題的氣息",i18n_js_navigation_L141_ancient_puzzle
+js/mixins/NavigationMixin.js,142,"🌴 清新的水汽, 茂密的植被, 綠洲的芬芳, 生命的氣息",i18n_js_navigation_L142_desert_oasis
+js/mixins/NavigationMixin.js,157,"'前': t('pyramidDirFront')",i18n_js_navigation_L157_pyramidDirFront
+js/mixins/NavigationMixin.js,158,"'左': t('pyramidDirLeft')",i18n_js_navigation_L158_pyramidDirLeft
+js/mixins/NavigationMixin.js,159,"'右': t('pyramidDirRight')",i18n_js_navigation_L159_pyramidDirRight
+js/mixins/NavigationMixin.js,181,"if (normalized === '什麼都沒有') return false;",i18n_js_navigation_L181_nothing
+js/mixins/NavigationMixin.js,220,"🧭 沙漠指南針剩餘 ${this.player.compassEffect} 次使用",i18n_js_navigation_L220_compass_remaining
+js/mixins/NavigationMixin.js,222,"🧭 沙漠指南針效果已消失",i18n_js_navigation_L222_compass_gone
+js/mixins/NavigationMixin.js,289,"@param {string} direction - Direction chosen ('前', '左', '右')",i18n_js_navigation_L289_param_direction
+js/mixins/NavigationMixin.js,379,"// 根據周目數調整難度增長",i18n_js_navigation_L379_comments
+js/mixins/NavigationMixin.js,386,"// 周目加成：每個完成的周目增加額外難度",i18n_js_navigation_L386_comments
+js/mixins/NavigationMixin.js,387,"// 第1周目（playthroughs=1）: 每張地圖 +1.3 難度",i18n_js_navigation_L387_comments
+js/mixins/NavigationMixin.js,388,"// 第2周目（playthroughs=2）: 每張地圖 +1.6 難度",i18n_js_navigation_L388_comments
+js/mixins/NavigationMixin.js,389,"// 第3周目（playthroughs=3）: 每張地圖 +2.0 難度",i18n_js_navigation_L389_comments
+js/mixins/NavigationMixin.js,390,"// 第4周目+: 每張地圖 +2.5 難度",i18n_js_navigation_L390_comments
+js/mixins/NavigationMixin.js,392,"const ngBonus = Math.min(playthroughs * 0.3, 1.5); // 最多增加 1.5",i18n_js_navigation_L392_ngBonus

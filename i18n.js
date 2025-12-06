@@ -323,6 +323,12 @@ const TRANSLATIONS = {
 		branchSpecialEvent: '🎲 觸發特殊事件',
 		
 		// Game events messages
+		// Beast pack choice labels
+		choice_beast_title: '野獸群來襲！',
+		choice_beast_fight_label: '迎戰（正面戰鬥）',
+		choice_beast_scare_label: '嚇跑牠們（需要消耗體力）',
+		choice_beast_negotiate_label: '用食物安撫（消耗藥水）',
+		
 		mirageAppear: '💫 你看到了遠處的幻象...',
 		mirageReal: '🌴 幻象是真的！你找到了一處隱藏的綠洲！',
 		mirageRecovery: '完全恢復HP和體力，並且找到',

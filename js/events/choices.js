@@ -239,63 +239,66 @@ const ChoiceEvents = {
     beast_pack: {
         weight: 6,
         handler() {
-            showMessage('🐺 你遭遇了一群沙漠野獸！');
+            // use i18n keys so translations are applied
+            showMessage(t('evt_js_events_choices_js_242'));
             const choices = [
-                { id: 'fight', label: '迎戰（正面戰鬥）', weight: 35 },
-                { id: 'scare', label: '嚇跑牠們（需要消耗體力）', weight: 30 },
-                { id: 'negotiate', label: '用食物安撫（消耗藥水）', weight: 35 }
+                { id: 'fight', label: t('choice_beast_fight_label'), weight: 35 },
+                { id: 'scare', label: t('choice_beast_scare_label'), weight: 30 },
+                { id: 'negotiate', label: t('choice_beast_negotiate_label'), weight: 35 }
             ];
             this.showChoicePanel(
-                '野獸群來襲！',
+                t('choice_beast_title'),
                 choices,
                 (choiceId) => {
                     if (choiceId === 'fight') {
-                        showMessage('⚔️ 你決定迎擊野獸群！');
+                        showMessage(t('evt_js_events_choices_js_253'));
                         this.enemy.isBeastPack = true;
                         this.enemy.beastPackRemaining = 2;
                         this.battle('monster');
                     } else if (choiceId === 'scare') {
                         const staminaCost = 30;
                         if (this.player.stamina < staminaCost) {
-                            showMessage('😓 你的體力不足以嚇跑野獸！');
-                            showMessage('🐺 野獸們嗅到了你的虛弱，發起攻擊！');
+                            showMessage(t('evt_js_events_choices_js_260'));
+                            showMessage(t('evt_js_events_choices_js_261'));
                             this.battle('elite');
                         } else {
                             const scareRoll = Math.random();
                             if (scareRoll < 0.7) {
                                 this.player.stamina -= staminaCost;
-                                showMessage(`💪 你展現出強大的氣勢，成功嚇跑了野獸！（消耗 ${staminaCost} 體力）`);
+                                // translation strings use ${staminaCost} placeholder in locales; replace it here
+                                showMessage(t('evt_js_events_choices_js_267').replace('${staminaCost}', staminaCost));
                                 if (Math.random() < 0.5) {
                                     const gold = 30 + Math.floor(Math.random() * 40);
                                     this.player.gold += gold;
-                                    showMessage(`💰 野獸逃跑時掉落了 ${gold} 金幣！`);
+                                    showMessage(t('evt_js_events_choices_js_271').replace('${gold}', gold));
                                 }
                                 this.updateStatus();
                                 this.generateDirectionHints();
                             } else {
                                 this.player.stamina -= staminaCost;
-                                showMessage(`😰 嚇唬失敗！野獸更加憤怒了！（消耗 ${staminaCost} 體力）`);
+                                showMessage(t('evt_js_events_choices_js_277').replace('${staminaCost}', staminaCost));
                                 this.battle('elite');
                             }
+
                         }
                     } else if (choiceId === 'negotiate') {
                         if (this.player.potions < 1) {
-                            showMessage('🧪 你沒有藥水可以當作食物！');
-                            showMessage('🐺 野獸們向你撲來！');
+                            showMessage(t('evt_js_events_choices_js_279'));
+                            showMessage(t('evt_js_events_choices_js_284'));
                             this.battle('monster');
                         } else {
                             this.player.potions -= 1;
-                            showMessage('🍖 你用藥水中的草藥安撫了野獸。');
-                            showMessage('🐺 野獸們吃飽後滿意地離開了。');
+                            showMessage(t('evt_js_events_choices_js_288'));
+                            showMessage(t('evt_js_events_choices_js_289'));
                             const giftRoll = Math.random();
                             if (giftRoll < 0.4) {
                                 const item = generateItem(Math.random() < 0.4 ? 'rare' : 'common', this.difficulty);
                                 this.player.inventory.push(item);
-                                showMessage(`🎁 野獸頭領留下了一件物品：${this.formatItem(item)}！`);
+                                showMessage(t('evt_js_events_choices_js_294').replace('${this.formatItem(item)}', this.formatItem(item)));
                             } else {
                                 const gold = 40 + Math.floor(Math.random() * 60);
                                 this.player.gold += gold;
-                                showMessage(`💰 野獸離開時留下了 ${gold} 金幣。`);
+                                showMessage(t('evt_js_events_choices_js_298').replace('${gold}', gold));
                             }
                             const xp = 40;
                             this.addXP(xp);
