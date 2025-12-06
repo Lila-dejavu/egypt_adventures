@@ -157,7 +157,16 @@ const BattleMixin = {
 	// Apply New Game+ multiplier
 	hpMultiplier *= ngPlusMultiplier;
 	atkMultiplier *= ngPlusMultiplier;
-	strengthBonus *= ngPlusMultiplier;		// Get enemy type base stats from Config (support boss)
+	strengthBonus *= ngPlusMultiplier;
+
+	// Increase enemy attack with map/pyramid progress so attack scales with player's progression
+	// Use a modest per-step multiplier to avoid exploding values (e.g., +3% per step)
+	const progressSteps = this.inPyramid ? (this.pyramidSteps || 0) : (this.map_steps || 0);
+	if (progressSteps > 0) {
+		const progressAtkBoost = 1 + (progressSteps * 0.03); // 3% per step
+		atkMultiplier *= progressAtkBoost;
+	}
+		// Get enemy type base stats from Config (support boss)
 		const stats = type === 'boss' ? B.BOSS
 			: type === 'elite' ? B.ELITE
 			: type === 'mini_boss' ? B.MINI_BOSS
@@ -562,12 +571,24 @@ const BattleMixin = {
 				break;
 			}
 			case '🛡️': {
-				// Shield scales with map progress, difficulty, and playthroughs
+				// Shield scales with progress, difficulty, and playthroughs
+				// Apply much gentler scaling and a stricter cap to avoid shield > enemy damage
 				const playthroughs = parseInt(localStorage.getItem('egypt_playthroughs') || '0', 10);
-				const progressBonus = Math.floor(this.map_steps * 2); // +2 per map step
-				const ngPlusBonus = playthroughs * 15; // +15 per playthrough
-				const baseShield = 30 + progressBonus + (this.difficulty * 8) + ngPlusBonus;
-				const shieldGain = this._calcScaledValue(baseShield, matchCount, tripleBonus, comboMultiplier);
+				// Use pyramidSteps when inside pyramid, otherwise map_steps
+				const progressSteps = this.inPyramid ? (this.pyramidSteps || 0) : (this.map_steps || 0);
+				// Gentler progress scaling: +0.5 per step
+				const progressBonus = Math.floor(progressSteps * 0.5);
+				// Smaller NG+ bonus
+				const ngPlusBonus = playthroughs * 8;
+				// Much lower base and difficulty factor
+				const baseShield = 10 + progressBonus + (this.difficulty * 2) + ngPlusBonus;
+				// Reduce combo impact for shield (use 40% per extra combo instead of 100%)
+				const comboFactor = 1 + Math.max(0, effectiveCombo - 1) * 0.4;
+				let shieldGainRaw = Math.round(baseShield * matchCount * tripleBonus * comboFactor);
+				// Cap shield gain to a conservative fraction of player's max HP (20%), at least 8
+				const maxHp = (this.player && this.player.max_hp) ? this.player.max_hp : 100;
+				const cap = Math.max(8, Math.floor(maxHp * 0.20));
+				const shieldGain = Math.min(shieldGainRaw, cap);
 				this.player.shield += shieldGain;
 				showMessage(t('shieldGain', { count: matchCount, combo: effectiveCombo, shield: shieldGain }));
 				break;

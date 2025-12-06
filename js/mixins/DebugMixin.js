@@ -265,11 +265,21 @@ const DebugSystem = {
 		document.getElementById('debug-in-pyramid').checked = game.inPyramid;
 		document.getElementById('debug-pyramid-steps').value = game.pyramidSteps;
 		document.getElementById('debug-in-battle').checked = game.inBattle;
-		document.getElementById('debug-enemy-hp').value = game.enemy.hp;
-		document.getElementById('debug-enemy-max-hp').value = game.enemy.max_hp;
-		document.getElementById('debug-enemy-attack').value = game.enemy.baseAttack;
-		document.getElementById('debug-enemy-turns').value = game.enemy.turnsToAttack;
-		document.getElementById('debug-enemy-strength').value = game.enemy.strength || 1;
+		
+		// Enemy info - check if enemy exists
+		if (game.enemy) {
+			document.getElementById('debug-enemy-hp').value = game.enemy.hp;
+			document.getElementById('debug-enemy-max-hp').value = game.enemy.max_hp;
+			document.getElementById('debug-enemy-attack').value = game.enemy.baseAttack;
+			document.getElementById('debug-enemy-turns').value = game.enemy.turnsToAttack;
+			document.getElementById('debug-enemy-strength').value = game.enemy.strength || 1;
+		} else {
+			document.getElementById('debug-enemy-hp').value = 0;
+			document.getElementById('debug-enemy-max-hp').value = 0;
+			document.getElementById('debug-enemy-attack').value = 0;
+			document.getElementById('debug-enemy-turns').value = 0;
+			document.getElementById('debug-enemy-strength').value = 1;
+		}
 
 		// Playthroughs & bloodline selection (test keys)
 		try {
