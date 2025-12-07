@@ -153,15 +153,15 @@ const ShopsMixin = {
 				<div style="display: flex; flex-direction: column; gap: 6px;">
 					<div style="display: flex; justify-content: space-between; align-items: center; padding: 6px; background: #f8f8f8; border-radius: 4px; font-size: 0.9em;">
 						<span>🧪 ${t('potionItem')}</span>
-						<button class="tp-buy-btn" data-item="potion" data-price="500" style="padding: 5px 10px; background: #2ecc71; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9em; white-space: nowrap;">500 ${t('gold')}</button>
+						<button class="tp-buy-btn" data-item="potion" data-price="500" style="padding: 5px 10px; background: #2ecc71; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; white-space: nowrap; touch-action: manipulation;">500 ${t('gold')}</button>
 					</div>
 					<div style="display: flex; justify-content: space-between; align-items: center; padding: 6px; background: #f8f8f8; border-radius: 4px; font-size: 0.85em;">
 						<span>🍖 ${t('foodItem')}</span>
-						<button class="tp-buy-btn" data-item="food" data-price="40" style="padding: 5px 10px; background: #2ecc71; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9em; white-space: nowrap;">40 ${t('gold')}</button>
+						<button class="tp-buy-btn" data-item="food" data-price="40" style="padding: 5px 10px; background: #2ecc71; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; white-space: nowrap; touch-action: manipulation;">40 ${t('gold')}</button>
 					</div>
 					<div style="display: flex; justify-content: space-between; align-items: center; padding: 6px; background: #f8f8f8; border-radius: 4px; font-size: 0.85em;">
 						<span>💊 ${t('fullHealItem')}</span>
-						<button class="tp-buy-btn" data-item="fullheal" data-price="80" style="padding: 5px 10px; background: #2ecc71; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9em; white-space: nowrap;">80 ${t('gold')}</button>
+						<button class="tp-buy-btn" data-item="fullheal" data-price="80" style="padding: 5px 10px; background: #2ecc71; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; white-space: nowrap; touch-action: manipulation;">80 ${t('gold')}</button>
 					</div>
 				</div>
 			</div>
@@ -238,8 +238,8 @@ const ShopsMixin = {
 							<div style="font-size: 0.75em; color: #666;">${item.rarity}${item.isPyramid ? ' 🔺' : ''}</div>
 						</div>
 						<div style="display:flex; gap:6px; align-items:center;">
-							<button class="tp-enhance-btn" ${dataAttr} style="padding: 5px 10px; background: #f39c12; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.85em; white-space: nowrap;">${t('enhanceBtn')}</button>
-							${isEquipped ? '' : `<button class="tp-sell-btn" data-idx="${entry.idx}" data-price="${basePrice}" style="padding: 5px 10px; background: #e74c3c; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.85em; white-space: nowrap;">${t('sellBtn')} ${basePrice}</button>`}
+							<button class="tp-enhance-btn" ${dataAttr} style="padding: 5px 10px; background: #f39c12; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; white-space: nowrap; touch-action: manipulation;">${t('enhanceBtn')}</button>
+							${isEquipped ? '' : `<button class="tp-sell-btn" data-idx="${entry.idx}" data-price="${basePrice}" style="padding: 5px 10px; background: #e74c3c; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; white-space: nowrap; touch-action: manipulation;">${t('sellBtn')} ${basePrice}</button>`}
 						</div>
 					</div>
 				`;
