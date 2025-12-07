@@ -481,6 +481,8 @@ const UIMixin = {
 			enterBtn.addEventListener('click', () => {
 				game.enterPyramid();
 				document.body.removeChild(panel);
+				// Clear pending boss battle flag when entering pyramid
+				game.pendingBossBattle = false;
 			});
 		}
 
@@ -489,7 +491,13 @@ const UIMixin = {
 			declineBtn.addEventListener('click', () => {
 				showMessage(t('declinePyramid'));
 				document.body.removeChild(panel);
-				DOMRefs.enableMovement();
+				// Check if boss battle was pending (last step of map)
+				if (game.pendingBossBattle) {
+					game.pendingBossBattle = false;
+					game.battle('boss');
+				} else {
+					DOMRefs.enableMovement();
+				}
 			});
 		}
 	},

@@ -325,7 +325,13 @@ const NavigationMixin = {
 				this.exitPyramid();
 			} else if (!this.inPyramid && this.map_steps >= this.map_goal) {
 				// Reached the final tile of the map: spawn a map Boss encounter
-				this.battle('boss');
+				// But skip if just triggered pyramid event (player needs to choose first)
+				if (eventPath.main !== 'pyramid') {
+					this.battle('boss');
+				} else {
+					// Mark that boss battle is pending after pyramid choice
+					this.pendingBossBattle = true;
+				}
 			}
 		}
 

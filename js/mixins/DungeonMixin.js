@@ -35,8 +35,12 @@ const DungeonMixin = {
 		this.map_steps = this.normalMapSteps; // Restore normal map steps
 		this.updateStatus();
 		
-		// Generate direction hints for continuing the journey
-		if (!this.inBattle && !this.inShop) {
+		// Check if boss battle was pending after pyramid
+		if (this.pendingBossBattle && this.map_steps >= this.map_goal) {
+			this.pendingBossBattle = false;
+			this.battle('boss');
+		} else if (!this.inBattle && !this.inShop) {
+			// Generate direction hints for continuing the journey
 			this.generateDirectionHints();
 		}
 	},
