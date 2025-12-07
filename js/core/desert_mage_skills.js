@@ -208,6 +208,11 @@
                 return null;
             }
             game.player.mana -= cost;
+            // 應用武器技能增幅
+            const weaponSkillPower = (game.player.equipment.weapon && game.player.equipment.weapon.skill_power) || 0;
+            if(weaponSkillPower > 0) {
+                comboMultiplier = comboMultiplier * (1 + weaponSkillPower / 100);
+            }
             return skill.effect(game, matchCount, comboMultiplier);
         }
     };

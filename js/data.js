@@ -163,7 +163,7 @@ const SET_BONUSES = {
 };
 
 // 符號與權重
-const SYMBOLS = ['⚔️','⚡️','🛡️','💀','🧪','⭐','💰'];
+const SYMBOLS = ['⚔️','⚡️','🛡️','💫','💰'];
 const SYMBOL_WEIGHTS = {
 	'⚔️': 6,
 	'⚡️': 3,

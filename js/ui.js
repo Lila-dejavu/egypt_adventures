@@ -32,11 +32,16 @@ const UIMixin = {
 			const xpPct = this.player.level >= 99 ? 100 : Math.max(0, Math.min(100, Math.floor((this.player.xp / xpNeeded) * 100)));
 
 			// Bloodline display (show below XP if present)
+			// 現在會同時顯示血脈名稱與說明（如果有）
 			let bloodlineHtml = '';
 			try {
 				if (this.player && this.player.bloodline) {
 					const bn = this.player.bloodline.name || this.player.bloodline.id || '';
+					const desc = this.player.bloodline.description || '';
 					bloodlineHtml = `<div class="combo-row bloodline-row">${t('bloodline_awakened',{name:bn})}</div>`;
+					if (desc) {
+						bloodlineHtml += `<div class="small" style="margin-top:4px;color:#555;">${desc}</div>`;
+					}
 				}
 			} catch (e) { bloodlineHtml = ''; }
 

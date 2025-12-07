@@ -524,18 +524,16 @@ const BattleMixin = {
 				}
 				break;
 			}
-			case '⚡️': {
-				// 閃電符號：觸發血脈效果
+			case '💫': {
+				// 血脈符號：觸發血脈效果
 				try {
 					// 先執行基礎傷害
-					let baseDmg = this._calcScaledValue(20, matchCount, tripleBonus, comboMultiplier);
+					let baseDmg = this._calcScaledValue(25, matchCount, tripleBonus, comboMultiplier);
 					baseDmg += this._getWeaponAttr('atk');
-					const skillPower = this._getWeaponAttr('skill_power');
-					baseDmg = Math.floor(baseDmg * (1 + skillPower / 100));
 					const isCrit = Math.random() < this._calcCritChance();
 					const finalDmg = isCrit ? Math.floor(baseDmg * 2.0) : baseDmg;
 					this.enemy.hp -= finalDmg;
-					showMessage(`⚡️ 閃電攻擊造成 ${finalDmg} 傷害${isCrit ? ' (暴擊!)' : ''}`);
+					showMessage(`💫 血脈力量造成 ${finalDmg} 傷害${isCrit ? ' (暴擊!)' : ''}`);
 					
 					// 主要功能：觸發血脈效果
 					try {
