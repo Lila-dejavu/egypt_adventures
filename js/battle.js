@@ -196,7 +196,7 @@ const BattleMixin = {
 
 		// Bloodline: apply any on-battle-start flags (e.g., revivePercent, start_shield)
 		try{
-			const bl = this.player && this.player.bloodline;
+			const bl = this.player && (this.player.bloodline || this.player.selectedBloodline);
 			if(bl && bl.flags){
 				if(bl.flags.onBattleStart_revivePercent && !this.player._bloodline_revive_used){
 					const pct = bl.flags.onBattleStart_revivePercent;
@@ -440,7 +440,7 @@ const BattleMixin = {
 
 				// Bloodline: on-hit flags & modifiers
 				try{
-					const bl = this.player && this.player.bloodline;
+					const bl = this.player && (this.player.bloodline || this.player.selectedBloodline);
 					// flags that apply status on hit (legacy: onHit_applyStatus in flags)
 					if(bl && bl.flags && bl.flags.onHit_applyStatus){
 						const f = bl.flags.onHit_applyStatus;
@@ -553,11 +553,11 @@ const BattleMixin = {
 					this.enemy.hp -= finalDmg;
 					showMessage(`💫 血脈力量造成 ${finalDmg} 傷害${isCrit ? ' (暴擊!)' : ''}`);
 					
-					// 主要功能：觸發血脈效果
-					try {
+						// 主要功能：觸發血脈效果
+						try {
 						// Additional: handle generic onSpell flags (onSpell_applyStatus, onSpell_applyStatusChance) and modifiers like chance_shield_on_spell
 						try{
-							const bl = this.player && this.player.bloodline;
+							const bl = this.player && (this.player.bloodline || this.player.selectedBloodline);
 							if(bl && bl.flags){
 								if(bl.flags.onSpell_applyStatus){
 									const f = bl.flags.onSpell_applyStatus;
@@ -775,7 +775,7 @@ const BattleMixin = {
 		// End battle
 		// Bloodline: onKill effects (e.g., heal on kill)
 		try{
-			const bl = this.player && this.player.bloodline;
+			const bl = this.player && (this.player.bloodline || this.player.selectedBloodline);
 			if(bl && bl.flags && typeof bl.flags.onKill_healPercent === 'number'){
 				const pct = bl.flags.onKill_healPercent;
 				const heal = Math.max(1, Math.floor((this.player.max_hp || 0) * pct));

@@ -57,9 +57,9 @@
      * @param {Object} game - game instance (this)
      */
     function applyOnLightningSkill(game){
-        if(!game.player || !game.player.bloodline) return;
-        const bl = game.player.bloodline;
-        if(!bl.flags) return;
+        if(!game.player) return;
+        const bl = game.player.bloodline || game.player.selectedBloodline;
+        if(!bl || !bl.flags) return;
         const flag = bl.flags.onLightningSkill_applyStatus;
         if(!flag) return;
 
