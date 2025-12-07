@@ -422,7 +422,59 @@ const BattleMixin = {
 	_processSymbolEffect(primary, matchCount, tripleBonus, comboMultiplier, effectiveCombo) {
 		switch (primary) {
 			case '⚔️': {
-				// 根據職業隨機觸發對應的技能
+				// 武器符號：普通攻擊（會依裝備提升傷害）
+				let baseDmg = this._calcScaledValue(15, matchCount, tripleBonus, comboMultiplier);
+				baseDmg += this._getWeaponAttr('atk');
+				const isCrit = Math.random() < this._calcCritChance();
+				const finalDmg = isCrit ? Math.floor(baseDmg * 2.0) : baseDmg;
+				// Apply possible temporary attack buff from temp_buffs
+				let modifiedDmg = finalDmg;
+				try{
+					if(this.player && this.player.temp_buffs && this.player.temp_buffs.attack){
+						const pct = this.player.temp_buffs.attack.pct || 0;
+						modifiedDmg = Math.floor(modifiedDmg * (1 + pct));
+					}
+				}catch(e){}
+				this.enemy.hp -= modifiedDmg;
+				showMessage(t('normalAttack', { count: matchCount, crit: isCrit ? t('critical') : '', damage: modifiedDmg }));
+
+				// Bloodline: on-hit flags & modifiers
+				try{
+					const bl = this.player && this.player.bloodline;
+					// flags that apply status on hit (legacy: onHit_applyStatus in flags)
+					if(bl && bl.flags && bl.flags.onHit_applyStatus){
+						const f = bl.flags.onHit_applyStatus;
+						const per = f.dmgPerTurn || f.perTurnPct ? Math.max(1, Math.floor((f.dmgPerTurn || 0) || (this.enemy.max_hp * (f.perTurnPct||0)))) : 0;
+						if(per > 0){
+							this.addDebuffStack(this.enemy, f.name || 'bleed', per, f.duration || 3, 'bloodline', 5);
+						}
+					}
+					// flags that apply generic debuff (e.g., armor_down)
+					if(bl && bl.flags && bl.flags.onHit_applyDebuff){
+						const d = bl.flags.onHit_applyDebuff;
+						this.enemy.debuffs = this.enemy.debuffs || {};
+						this.enemy.debuffs[d.name] = Object.assign(this.enemy.debuffs[d.name]||{}, { turns: d.duration || 2, value: d.value });
+					}
+					// modifiers applied to player on hit (defined in modifiers and copied to player by applyBloodlineModifiers)
+					if(this.player && typeof this.player.onHit_restore_mana_pct === 'number' && this.player.max_mana){
+						const add = Math.max(1, Math.floor(this.player.max_mana * this.player.onHit_restore_mana_pct));
+						this.player.mana = Math.min(this.player.max_mana, (this.player.mana || 0) + add);
+						this.showMessage(`🔋 命中回復魔力 ${add}`);
+					}
+					if(this.player && typeof this.player.onHit_temp_attack_pct === 'number'){
+						this.player.temp_buffs = this.player.temp_buffs || {};
+						this.player.temp_buffs.attack = { pct: this.player.onHit_temp_attack_pct, turns: 2 };
+						this.showMessage(`⚔ 獲得暫時攻擊提升 ${(this.player.onHit_temp_attack_pct*100).toFixed(0)}%（2 回合）`);
+					}
+					if(this.player && typeof this.player.onHit_temp_penetration_pct === 'number'){
+						this.player.temp_buffs = this.player.temp_buffs || {};
+						this.player.temp_buffs.penetration = { pct: this.player.onHit_temp_penetration_pct, turns: 2 };
+					}
+				}catch(e){ console.warn('onHit bloodline handlers failed', e); }
+				break;
+			}
+			case '⚡️': {
+				// 閃電符號：職業技能攻擊（會依裝備提升傷害效果）
 				const playerClass = this.player && this.player.selectedClass;
 				let skillTriggered = false;
 				
@@ -433,7 +485,7 @@ const BattleMixin = {
 					const result = MageSkills.useSkill(this, randomSkillId, matchCount, comboMultiplier);
 					if (result) {
 						const skillName = (MageSkills.SKILLS[randomSkillId] && MageSkills.SKILLS[randomSkillId].name) || randomSkillId;
-						showMessage(`⚔️ 法師攻擊：觸發 ${skillName}`);
+						showMessage(`⚡️ 法師技能：${skillName}`);
 						skillTriggered = true;
 					}
 				}
@@ -443,7 +495,7 @@ const BattleMixin = {
 					const randomSkill = skillList[Math.floor(Math.random() * skillList.length)];
 					const result = DesertMageSkills.applySkill(this, randomSkill.id, matchCount, comboMultiplier);
 					if (result) {
-						showMessage(`⚔️ 沙漠巫師攻擊：觸發 ${randomSkill.name}`);
+						showMessage(`⚡️ 沙漠巫師技能：${randomSkill.name}`);
 						skillTriggered = true;
 					}
 				}
@@ -454,7 +506,7 @@ const BattleMixin = {
 					const result = WarriorSkills.useSkill(this, randomSkillId, matchCount, comboMultiplier);
 					if (result) {
 						const skillName = (WarriorSkills.SKILLS[randomSkillId] && WarriorSkills.SKILLS[randomSkillId].name) || randomSkillId;
-						showMessage(`⚔️ 武士攻擊：觸發 ${skillName}`);
+						showMessage(`⚡️ 武士技能：${skillName}`);
 						skillTriggered = true;
 					}
 				}
@@ -465,62 +517,24 @@ const BattleMixin = {
 					const result = ArcherSkills.useSkill(this, randomSkillId, matchCount, comboMultiplier);
 					if (result) {
 						const skillName = (ArcherSkills.SKILLS[randomSkillId] && ArcherSkills.SKILLS[randomSkillId].name) || randomSkillId;
-						showMessage(`⚔️ 弓箭手攻擊：觸發 ${skillName}`);
+						showMessage(`⚡️ 弓箭手技能：${skillName}`);
 						skillTriggered = true;
 					}
 				}
 				
-				// 如果技能未觸發（資源不足或無職業），使用普通攻擊
+				// 如果技能未觸發（資源不足或無職業），使用基礎技能傷害
 				if (!skillTriggered) {
-					// 非法師職業，使用原本的普通攻擊
-					let baseDmg = this._calcScaledValue(15, matchCount, tripleBonus, comboMultiplier);
+					let baseDmg = this._calcScaledValue(20, matchCount, tripleBonus, comboMultiplier);
+					// 技能也會受裝備加成影響
 					baseDmg += this._getWeaponAttr('atk');
+					// 技能受到 skill_power 加成
+					const skillPower = this._getWeaponAttr('skill_power') || 0;
+					baseDmg = Math.floor(baseDmg * (1 + skillPower / 100));
+					
 					const isCrit = Math.random() < this._calcCritChance();
 					const finalDmg = isCrit ? Math.floor(baseDmg * 2.0) : baseDmg;
-					// Apply possible temporary attack buff from temp_buffs
-					let modifiedDmg = finalDmg;
-					try{
-						if(this.player && this.player.temp_buffs && this.player.temp_buffs.attack){
-							const pct = this.player.temp_buffs.attack.pct || 0;
-							modifiedDmg = Math.floor(modifiedDmg * (1 + pct));
-						}
-					}catch(e){}
-					this.enemy.hp -= modifiedDmg;
-					showMessage(t('normalAttack', { count: matchCount, crit: isCrit ? t('critical') : '', damage: modifiedDmg }));
-
-					// Bloodline: on-hit flags & modifiers
-					try{
-						const bl = this.player && this.player.bloodline;
-						// flags that apply status on hit (legacy: onHit_applyStatus in flags)
-						if(bl && bl.flags && bl.flags.onHit_applyStatus){
-							const f = bl.flags.onHit_applyStatus;
-							const per = f.dmgPerTurn || f.perTurnPct ? Math.max(1, Math.floor((f.dmgPerTurn || 0) || (this.enemy.max_hp * (f.perTurnPct||0)))) : 0;
-							if(per > 0){
-								this.addDebuffStack(this.enemy, f.name || 'bleed', per, f.duration || 3, 'bloodline', 5);
-							}
-						}
-						// flags that apply generic debuff (e.g., armor_down)
-						if(bl && bl.flags && bl.flags.onHit_applyDebuff){
-							const d = bl.flags.onHit_applyDebuff;
-							this.enemy.debuffs = this.enemy.debuffs || {};
-							this.enemy.debuffs[d.name] = Object.assign(this.enemy.debuffs[d.name]||{}, { turns: d.duration || 2, value: d.value });
-						}
-						// modifiers applied to player on hit (defined in modifiers and copied to player by applyBloodlineModifiers)
-						if(this.player && typeof this.player.onHit_restore_mana_pct === 'number' && this.player.max_mana){
-							const add = Math.max(1, Math.floor(this.player.max_mana * this.player.onHit_restore_mana_pct));
-							this.player.mana = Math.min(this.player.max_mana, (this.player.mana || 0) + add);
-							this.showMessage(`🔋 命中回復魔力 ${add}`);
-						}
-						if(this.player && typeof this.player.onHit_temp_attack_pct === 'number'){
-							this.player.temp_buffs = this.player.temp_buffs || {};
-							this.player.temp_buffs.attack = { pct: this.player.onHit_temp_attack_pct, turns: 2 };
-							this.showMessage(`⚔ 獲得暫時攻擊提升 ${(this.player.onHit_temp_attack_pct*100).toFixed(0)}%（2 回合）`);
-						}
-						if(this.player && typeof this.player.onHit_temp_penetration_pct === 'number'){
-							this.player.temp_buffs = this.player.temp_buffs || {};
-							this.player.temp_buffs.penetration = { pct: this.player.onHit_temp_penetration_pct, turns: 2 };
-						}
-					}catch(e){ console.warn('onHit bloodline handlers failed', e); }
+					this.enemy.hp -= finalDmg;
+					showMessage(`⚡️ 技能攻擊造成 ${finalDmg} 傷害${isCrit ? ' (暴擊!)' : ''}`);
 				}
 				break;
 			}
