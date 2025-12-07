@@ -1018,8 +1018,9 @@ const BattleMixin = {
 	 */
 	_endBattle() {
 		// Check if this was a boss battle that completed the game
+		// Game is complete only when defeating boss on the 6th map (difficulty >= 6)
 		const wasBossBattle = this.enemy.type === 'boss';
-		const isGameComplete = wasBossBattle && !this.inPyramid && this.map_steps >= this.map_goal;
+		const isGameComplete = wasBossBattle && !this.inPyramid && this.map_steps >= this.map_goal && this.difficulty >= 6;
 
 		// Stop auto-spin
 		try { stopAutoSpinLoop(); } catch(e) {}
