@@ -129,7 +129,8 @@ document.addEventListener('DOMContentLoaded', async function() {
 		DungeonMixin: typeof DungeonMixin !== 'undefined' ? DungeonMixin : null,
 		NavigationMixin: typeof NavigationMixin !== 'undefined' ? NavigationMixin : null,
 		XPMixin: typeof XPMixin !== 'undefined' ? XPMixin : null,
-		BloodlineMixin: typeof BloodlineMixin !== 'undefined' ? BloodlineMixin : null
+		BloodlineMixin: typeof BloodlineMixin !== 'undefined' ? BloodlineMixin : null,
+		NewGamePlusMixin: typeof NewGamePlusMixin !== 'undefined' ? NewGamePlusMixin : null
 	};
 
 	// Validate all required mixins loaded
@@ -157,6 +158,11 @@ document.addEventListener('DOMContentLoaded', async function() {
 	// Update slot machine module with game reference
 	if (typeof initSlotMachine === 'function') {
 		initSlotMachine(reels, spinBtn, stopBtn, game);
+	}
+
+	// Apply carryover equipment from previous playthrough (if any)
+	if (typeof game.applyCarryoverEquipment === 'function') {
+		game.applyCarryoverEquipment();
 	}
 
 	game.updateStatus();

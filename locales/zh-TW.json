@@ -1089,6 +1089,18 @@
     "evt_js_shops_js_318_1": "💥 ${t('enhanceFailed')} ${item.name} ${t('enhanceLevel')} -1 (${t('currentLevel')} +${item.enhanceLevel})",
     "evt_js_shops_js_347_1": "🍖 ${t('boughtFood')}, HP +${hpGain}, ${t('stamina')} +${staminaGain}",
     "evt_js_slotMachine_js_278": "插槽結果： ${results.join(' | ')}",
-    "evt_js_slotMachine_js_278_1": "插槽結果： ${results.join(' | ')}"
+    "evt_js_slotMachine_js_278_1": "插槽結果： ${results.join(' | ')}",
+    "congratulations": "🎉 恭喜通關！🎉",
+    "victoryDescription": "你成功征服了埃及的沙漠！",
+    "selectCarryOverEquipment": "選擇一件裝備攜帶至下一周目：",
+    "startNewGamePlus": "開始新周目 ➤",
+    "noEquipmentToCarry": "（沒有可攜帶的裝備）",
+    "skipCarryOver": "不攜帶裝備",
+    "gameCompleteStats": "完成統計",
+    "finalLevel": "最終等級",
+    "totalGold": "累積金幣",
+    "defeatedEnemies": "擊敗敵人",
+    "completedMaps": "完成地圖",
+    "playthroughCount": "周目數"
   }
 }

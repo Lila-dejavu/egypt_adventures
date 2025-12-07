@@ -1017,13 +1017,17 @@ const BattleMixin = {
 	 * @private
 	 */
 	_endBattle() {
+		// Check if this was a boss battle that completed the game
+		const wasBossBattle = this.enemy.type === 'boss';
+		const isGameComplete = wasBossBattle && !this.inPyramid && this.map_steps >= this.map_goal;
+
 		// Stop auto-spin
 		try { stopAutoSpinLoop(); } catch(e) {}
 
 		this.inBattle = false;
 
-		// Switch back to exploration music
-		if (typeof MusicSystem !== 'undefined') {
+		// Switch back to exploration music (unless showing victory screen)
+		if (typeof MusicSystem !== 'undefined' && !isGameComplete) {
 			MusicSystem.switchTrack('exploration');
 		}
 
@@ -1041,6 +1045,22 @@ const BattleMixin = {
 		DOMRefs.enableMovement();
 
 		this.enemy.turnsToAttack = 3;
+
+		// Check if game is complete (boss defeated at map goal)
+		if (isGameComplete) {
+			// Show victory screen for game completion
+			if (typeof this.showVictoryScreen === 'function') {
+				// Delay slightly to let victory message show
+				setTimeout(() => {
+					this.showVictoryScreen();
+				}, 1500);
+			} else {
+				console.error('showVictoryScreen method not found');
+				// Fallback to normal map progression
+				this.nextMap();
+			}
+			return;
+		}
 
 		// Check if pyramid or map goal reached after battle ends
 		if (this.inPyramid && this.pyramidSteps >= this.pyramidMaxSteps) {
