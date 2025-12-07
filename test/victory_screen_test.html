@@ -41,6 +41,20 @@
             color: #666;
             margin-top: 10px;
         }
+        /* 覆寫修正：避免測試畫面中遊戲輸出被側邊欄或其他面板遮蔽 */
+        #game-output {
+            position: relative;
+            z-index: 10002 !important; /* 高於一般 sidebar，但保留更高層級給模態覆蓋層 */
+            background: rgba(255,255,255,0.96);
+            padding: 12px;
+            border-radius: 6px;
+            overflow: visible !important;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        }
+        /* 使主區塊允許子元素顯示在上方 */
+        #main-area { position: relative; z-index: 1; }
+        /* 測試環境下若有 sidebar，降低其優先度以免遮掩輸出 */
+        #sidebar { z-index: 9000 !important; }
     </style>
 </head>
 <body>
