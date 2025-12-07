@@ -580,8 +580,8 @@ const BattleMixin = {
 				const progressBonus = Math.floor(progressSteps * 0.5);
 				// Smaller NG+ bonus
 				const ngPlusBonus = playthroughs * 8;
-				// Much lower base and difficulty factor
-				const baseShield = 10 + progressBonus + (this.difficulty * 2) + ngPlusBonus;
+				// Base value doubled from 10 to 20
+				const baseShield = 20 + progressBonus + (this.difficulty * 2) + ngPlusBonus;
 				// Reduce combo impact for shield (use 40% per extra combo instead of 100%)
 				const comboFactor = 1 + Math.max(0, effectiveCombo - 1) * 0.4;
 				let shieldGainRaw = Math.round(baseShield * matchCount * tripleBonus * comboFactor);
