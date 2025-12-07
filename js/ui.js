@@ -292,6 +292,29 @@ const UIMixin = {
 		content.innerHTML = html;
 		panel.style.display = 'block';
 
+		// Position panel near player status on wider screens; center on small screens
+		try {
+			if (window.innerWidth > 600 && DOMRefs.playerStatus) {
+				const ps = DOMRefs.playerStatus;
+				// offsetLeft/Top are relative to offsetParent (battle-area)
+				const left = ps.offsetLeft + ps.offsetWidth + 12; // small gap
+				const top = ps.offsetTop;
+				panel.style.position = 'absolute';
+				panel.style.left = left + 'px';
+				panel.style.top = top + 'px';
+				panel.style.transform = 'none';
+			} else {
+				// mobile/modal behavior - center it
+				panel.style.position = 'fixed';
+				panel.style.left = '50%';
+				panel.style.top = '50%';
+				panel.style.transform = 'translate(-50%, -50%)';
+			}
+		} catch (e) {
+			// fallback: leave existing CSS
+			console.warn('Positioning equipment panel failed', e);
+		}
+
 		const game = this;
 
 		// Bind equip buttons
