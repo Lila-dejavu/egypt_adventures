@@ -8,7 +8,7 @@ const App = {
 
     // Initialize App
     init() {
-        this.version = DOMRefs.versionDisplay ? DOMRefs.versionDisplay.textContent.trim() : 'Version 1.1.43';
+        this.version = DOMRefs.versionDisplay ? DOMRefs.versionDisplay.textContent.trim() : 'Version 1.1.44';
         console.log('App Version:', this.version);
     },
 
