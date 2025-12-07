@@ -1,11 +1,15 @@
 * {
     box-sizing: border-box;
+    /* 確保所有元素都支援觸控滾動 */
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 html {
     height: 100%;
-    /* 不限制觸控行為，讓滾動自然發生 */
+    touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
+    /* iOS Safari 慣性滾動 */
+    -webkit-overflow-scrolling: touch;
 }
 
 body {
@@ -18,8 +22,12 @@ body {
     padding: 0;
     position: relative;
     min-height: 100vh;
-    /* iOS Chrome/Safari 需要完全不限制觸控 */
+    /* 允許頁面滾動，不阻擋任何觸控手勢 */
+    touch-action: auto;
     -webkit-overflow-scrolling: touch;
+    /* 確保 iOS 可以滾動 */
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 /* 莎草紙紋理效果 - 加強版 */
@@ -59,15 +67,10 @@ body::after {
     font-weight: bold;
     text-shadow: 1px 1px 2px rgba(218, 165, 32, 0.3);
 }
-#game-container-wrapper {
+#game-container {
     max-width: 960px;
     width: 95%;
     margin: 40px auto;
-    position: relative;
-}
-
-#game-container {
-    contain: paint;
     background: 
         repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(139, 69, 19, 0.04) 3px, rgba(139, 69, 19, 0.04) 6px),
         linear-gradient(180deg, rgba(218, 165, 32, 0.12) 0%, transparent 15%, transparent 85%, rgba(139, 69, 19, 0.12) 100%),
@@ -85,10 +88,11 @@ body::after {
     border-left: 8px solid #654321;
     border-right: 8px solid #654321;
     z-index: 1;
+    touch-action: manipulation;
 }
 
 /* 莎草紙捲軸頂部裝飾 - 超清晰版 */
-#game-container-wrapper::before {
+#game-container::before {
     content: '𓇋𓇋𓇋 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 𓇋𓇋𓇋';
     position: absolute;
     top: -35px;
@@ -106,7 +110,7 @@ body::after {
 }
 
 /* 莎草紙捲軸底部裝飾 - 超清晰版 */
-#game-container-wrapper::after {
+#game-container::after {
     content: '𓇋𓇋𓇋 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 𓇋𓇋𓇋';
     position: absolute;
     bottom: -35px;
@@ -743,6 +747,7 @@ button[disabled] {
     overflow: hidden;
     pointer-events: auto !important;
     z-index: 101;
+    touch-action: manipulation;
 }
 
 #slot-controls button::before {
@@ -932,6 +937,7 @@ button[disabled] {
     cursor: pointer;
     background: #d4a855;
     color: white;
+    touch-action: manipulation !important;
     -webkit-tap-highlight-color: rgba(212, 168, 85, 0.3);
     user-select: none;
     -webkit-user-select: none;
@@ -957,6 +963,7 @@ button[disabled] {
 #equipment-panel button,
 #close-equip,
 #close-blackmarket {
+    touch-action: manipulation !important;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
     user-select: none;
     -webkit-user-select: none;
@@ -984,6 +991,7 @@ button[disabled] {
     cursor: pointer !important;
     background: #4a90e2;
     color: white;
+    touch-action: manipulation !important;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
     user-select: none;
     -webkit-user-select: none;
@@ -1015,6 +1023,7 @@ button[disabled] {
     pointer-events: auto !important;
     z-index: 101;
     cursor: pointer;
+    touch-action: manipulation !important;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
     user-select: none;
     -webkit-user-select: none;
@@ -1080,10 +1089,10 @@ button[disabled] {
 }
 
 /* 當畫面窄時轉成直列 */
-@media (max-width:600px) {
-    #equipment-panel { width:90% !important; left:5% !important; right:5% !important; top:80px !important; z-index:10000 !important; max-height:70vh !important; overflow-y:auto !important; position: fixed !important; }
-    #blackmarket-panel { width:90% !important; left:5% !important; right:5% !important; top:80px !important; z-index:10000 !important; max-height:70vh !important; overflow-y:auto !important; position: fixed !important; }
-}
+@media (max-width:800px) {
+    #battle-area { 
+        flex-direction: column;
+        z-index: auto;
     }
     .status-box-side {
         flex: 1 1 auto;
@@ -1304,6 +1313,7 @@ button[disabled] {
         position: relative;
         z-index: 301;
         pointer-events: auto !important;
+        touch-action: manipulation !important;
     }
     
     /* 確保戰鬥按鈕在平板上可點擊 */
@@ -1328,6 +1338,7 @@ button[disabled] {
     /* 按鈕觸控友善 */
     button {
         min-height: 40px;
+        touch-action: manipulation !important;
         pointer-events: auto !important;
         position: relative;
         z-index: 150;
@@ -1352,6 +1363,7 @@ button[disabled] {
         position: relative;
         z-index: 301;
         pointer-events: auto !important;
+        touch-action: manipulation !important;
     }
 }
 
@@ -1361,6 +1373,7 @@ button[disabled] {
     html, body {
         overflow-x: hidden;
         max-width: 100vw;
+        touch-action: pan-y pinch-zoom;
         -webkit-overflow-scrolling: touch;
     }
 
@@ -1420,6 +1433,7 @@ button[disabled] {
         font-size: 14px !important;
         position: relative;
         z-index: 2000 !important;
+        touch-action: manipulation;
         pointer-events: auto !important;
         cursor: pointer !important;
     }
@@ -1436,6 +1450,7 @@ button[disabled] {
         font-size: 14px !important;
         position: relative;
         z-index: 2001 !important;
+        touch-action: manipulation;
         transition: background 0.3s ease;
         pointer-events: auto !important;
         cursor: pointer !important;
@@ -1457,8 +1472,7 @@ button[disabled] {
     /* 遊戲輸出區域 - 放大文字 */
     #game-output {
         font-size: 1.05em;
-        /* 大幅增加上方 padding 避免被象形文字裝飾遮住 */
-        padding: 30px 12px 12px 12px;
+        padding: 12px;
         height: 220px;
         overflow-y: scroll;
         overflow-x: hidden;
@@ -1471,8 +1485,7 @@ button[disabled] {
     #game-output::before {
         font-size: 18px;
         letter-spacing: 8px;
-        /* 象形文字裝飾移得更遠一點 */
-        top: -22px;
+        top: -18px;
     }
     
     /* 主區域使用 flex 控制子元素順序 */
@@ -1656,6 +1669,7 @@ button[disabled] {
         position: relative;
         z-index: 1001 !important;
         pointer-events: auto !important;
+        touch-action: manipulation !important;
         cursor: pointer !important;
     }
     
@@ -1680,6 +1694,7 @@ button[disabled] {
         font-size: 0.95em;
         width: 100%;
         pointer-events: auto !important;
+        touch-action: manipulation !important;
         position: relative;
         z-index: 1001 !important;
         cursor: pointer !important;
@@ -1720,32 +1735,25 @@ button[disabled] {
         font-size: 1.1em;
     }
     
-    /* 裝備面板 - 手機版全螢幕顯示，使用置中定位 */
+    /* 裝備面板 - 手機版全螢幕顯示 */
     #equipment-panel {
-        position: fixed !important;
         width: 90% !important;
-        left: 50% !important;
-        top: 50% !important;
-        transform: translate(-50%, -50%) !important;
-        right: auto !important;
+        left: 5% !important;
+        right: 5% !important;
+        top: 80px !important;
         z-index: 10000 !important;
-        max-height: 80vh !important;
+        max-height: 70vh !important;
         overflow-y: auto !important;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
     }
 
-    /* 黑市面板 - 手機版全螢幕顯示，使用置中定位 */
+    /* 黑市面板 - 手機版全螢幕顯示 */
     #blackmarket-panel {
-        position: fixed !important;
         width: 90% !important;
-        left: 50% !important;
-        top: 50% !important;
-        transform: translate(-50%, -50%) !important;
-        right: auto !important;
+        left: 5% !important;
+        top: 80px !important;
         z-index: 10000 !important;
-        max-height: 80vh !important;
+        max-height: 70vh !important;
         overflow-y: auto !important;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
     }
     
     .equip-row {
@@ -1818,6 +1826,7 @@ button[disabled] {
         position: relative;
         cursor: pointer !important;
         pointer-events: auto !important;
+        touch-action: manipulation;
     }
     
     /* 裝備按鈕特別處理 - 確保可點擊 */
@@ -1873,8 +1882,7 @@ button[disabled] {
     
     #game-output {
         height: 180px;
-        /* 大幅增加上方 padding 避免被象形文字裝飾遮住 */
-        padding: 28px 10px 10px 10px;
+        padding: 10px;
         font-size: 1em;
         line-height: 1.5;
     }
@@ -1955,6 +1963,7 @@ button[disabled] {
         position: relative;
         z-index: 1001 !important;
         pointer-events: auto !important;
+        touch-action: manipulation !important;
         cursor: pointer !important;
     }
     
@@ -2035,6 +2044,7 @@ button[disabled] {
         position: relative;
         z-index: 1001 !important;
         pointer-events: auto !important;
+        touch-action: manipulation !important;
         cursor: pointer !important;
     }
 }
@@ -2241,103 +2251,5 @@ button[disabled] {
     #bloodline-start-panel #class-grid {
         grid-template-columns: 1fr !important;
         gap: 8px !important;
-    }
-}
-
-/* Victory Panel Styles */
-#victory-panel {
-    animation: victoryFadeIn 0.5s ease-out;
-}
-
-@keyframes victoryFadeIn {
-    from {
-        opacity: 0;
-        transform: translate(-50%, -60%);
-    }
-    to {
-        opacity: 1;
-        transform: translate(-50%, -50%);
-    }
-}
-
-#victory-overlay {
-    animation: overlayFadeIn 0.3s ease-out;
-}
-
-@keyframes overlayFadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-#start-new-game-plus:hover {
-    background: #27ae60 !important;
-    transform: scale(1.05);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.4) !important;
-}
-
-#start-new-game-plus:active {
-    transform: scale(0.98);
-}
-
-.equipment-item-selection {
-    padding: 10px;
-    margin: 5px 0;
-    background: rgba(255,255,255,0.8);
-    border: 2px solid #8b4513;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.equipment-item-selection:hover {
-    background: rgba(218,165,32,0.3);
-    border-color: #d4af37;
-    transform: translateX(5px);
-}
-
-.equipment-item-selection.selected {
-    background: rgba(46,204,113,0.3);
-    border-color: #27ae60;
-    border-width: 3px;
-    box-shadow: 0 0 10px rgba(46,204,113,0.5);
-}
-
-.equipment-item-selection input[type="radio"] {
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-}
-
-.equipment-item-selection label {
-    flex: 1;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-@media (max-width: 600px) {
-    #victory-panel {
-        width: 95vw !important;
-        padding: 20px !important;
-    }
-    
-    #victory-panel h2 {
-        font-size: 24px !important;
-    }
-    
-    #victory-panel h3 {
-        font-size: 16px !important;
-    }
-    
-    .equipment-item-selection {
-        padding: 8px;
-        font-size: 14px;
-    }
-    
-    #start-new-game-plus {
-        padding: 10px 20px !important;
-        font-size: 16px !important;
     }
 }
