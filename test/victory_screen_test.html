@@ -44,6 +44,32 @@
     </style>
 </head>
 <body>
+    <!-- Error display for debugging runtime issues -->
+    <div id="test-errors" style="position:fixed; bottom:10px; left:10px; right:10px; max-height:200px; overflow:auto; background:rgba(255,240,230,0.95); border:2px solid #c0392b; padding:10px; border-radius:6px; z-index:30000; display:none; font-family:monospace; font-size:13px; color:#333;"></div>
+    <script>
+        // Show runtime errors and unhandled rejections inside the page to help debugging
+        (function(){
+            const errBox = document.getElementById('test-errors');
+            function showErr(msg) {
+                if(!errBox) return;
+                errBox.style.display = 'block';
+                const p = document.createElement('div');
+                p.textContent = msg;
+                p.style.margin = '6px 0';
+                errBox.appendChild(p);
+                // keep latest visible
+                errBox.scrollTop = errBox.scrollHeight;
+            }
+            window.addEventListener('error', function(e){
+                try{ showErr('[Error] ' + (e && e.message ? e.message : String(e)) + ' @ ' + (e && e.filename ? e.filename + ':' + e.lineno : '')) }catch(_){}
+                console.error('Captured error', e);
+            });
+            window.addEventListener('unhandledrejection', function(ev){
+                try{ showErr('[UnhandledRejection] ' + (ev && ev.reason ? (ev.reason.message || JSON.stringify(ev.reason)) : String(ev))) }catch(_){}
+                console.error('Captured unhandledrejection', ev);
+            });
+        })();
+    </script>
     <div class="test-controls">
         <h3>🧪 測試控制台</h3>
         <button id="test-victory">顯示完成畫面</button>

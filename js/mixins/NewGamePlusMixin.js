@@ -197,6 +197,15 @@ const NewGamePlusMixin = {
 			
 			// Clear the carryover data (one-time use)
 			localStorage.removeItem('egypt_carryover_equipment');
+			
+			// Auto-save immediately after applying carryover equipment
+			// This ensures the equipment is persisted in the save file
+			if (typeof this.saveGame === 'function') {
+				setTimeout(() => {
+					this.saveGame();
+					showMessage('💾 攜帶裝備已自動保存');
+				}, 100);
+			}
 		} catch (e) {
 			console.error('Failed to apply carryover equipment:', e);
 			localStorage.removeItem('egypt_carryover_equipment');
