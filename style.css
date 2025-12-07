@@ -1735,25 +1735,32 @@ button[disabled] {
         font-size: 1.1em;
     }
     
-    /* 裝備面板 - 手機版全螢幕顯示 */
+    /* 裝備面板 - 手機版置中 modal 顯示 */
     #equipment-panel {
+        position: fixed !important;
         width: 90% !important;
-        left: 5% !important;
-        right: 5% !important;
-        top: 80px !important;
+        left: 50% !important;
+        top: 50% !important;
+        transform: translate(-50%, -50%) !important;
         z-index: 10000 !important;
-        max-height: 70vh !important;
+        max-height: 80vh !important;
         overflow-y: auto !important;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.45) !important;
+        right: auto !important;
     }
 
-    /* 黑市面板 - 手機版全螢幕顯示 */
+    /* 黑市面板 - 手機版置中 modal 顯示 */
     #blackmarket-panel {
+        position: fixed !important;
         width: 90% !important;
-        left: 5% !important;
-        top: 80px !important;
+        left: 50% !important;
+        top: 50% !important;
+        transform: translate(-50%, -50%) !important;
         z-index: 10000 !important;
-        max-height: 70vh !important;
+        max-height: 80vh !important;
         overflow-y: auto !important;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.45) !important;
+        right: auto !important;
     }
     
     .equip-row {
