@@ -1722,6 +1722,7 @@ button[disabled] {
     
     /* 裝備面板 - 手機版全螢幕顯示，使用置中定位 */
     #equipment-panel {
+        position: fixed !important;
         width: 90% !important;
         left: 50% !important;
         top: 50% !important;
@@ -1730,10 +1731,12 @@ button[disabled] {
         z-index: 10000 !important;
         max-height: 80vh !important;
         overflow-y: auto !important;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
     }
 
     /* 黑市面板 - 手機版全螢幕顯示，使用置中定位 */
     #blackmarket-panel {
+        position: fixed !important;
         width: 90% !important;
         left: 50% !important;
         top: 50% !important;
@@ -1742,6 +1745,7 @@ button[disabled] {
         z-index: 10000 !important;
         max-height: 80vh !important;
         overflow-y: auto !important;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
     }
     
     .equip-row {
