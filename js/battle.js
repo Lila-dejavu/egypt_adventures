@@ -940,9 +940,10 @@ const BattleMixin = {
 				showMessage(`🔺 金字塔寶藏...但這次沒有額外掉落`);
 			}
 			for (let i = 0; i < dropCount; i++) {
-				const rarityRoll = Math.random();
-				// Epic less likely than before
-				let targetRarity = rarityRoll < 0.15 ? 'epic' : 'rare';
+				// Allow pyramid drops to be any rarity (including common) with weighted probabilities
+				// Weights correspond to [common, rare, excellent, epic, legendary]
+				const pyramidWeights = [40, 30, 15, 10, 5];
+				let targetRarity = Utils.pickWeightedRarity(pyramidWeights);
 				const candidateItems = ITEMS.filter(it => it.slot);
 				if (candidateItems.length > 0) {
 					const baseItem = candidateItems[Math.floor(Math.random() * candidateItems.length)];

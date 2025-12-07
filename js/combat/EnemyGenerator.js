@@ -32,8 +32,8 @@ function cloneItem(base, rarity, isPyramid = false) {
         }
     }
 
-    // Add pyramid affix for non-common items
-    if (isPyramid && rarity !== 'common') {
+    // Add pyramid affix for pyramid items of any rarity
+    if (isPyramid) {
         const affix = PYRAMID_AFFIXES[Math.floor(Math.random() * PYRAMID_AFFIXES.length)];
         it.affix = affix.id;
         it.affixName = affix.name;
