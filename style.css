@@ -67,6 +67,12 @@ body::after {
     font-weight: bold;
     text-shadow: 1px 1px 2px rgba(218, 165, 32, 0.3);
 }
+/* 移除在小螢幕上的象形文字裝飾（避免遮擋事件/對話框） */
+@media (max-width: 640px) {
+    body::after {
+        display: none !important;
+    }
+}
 #game-container {
     max-width: 960px;
     width: 95%;
