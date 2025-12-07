@@ -201,7 +201,7 @@
         if(weaponSkillPower > 0) {
             comboMultiplier = comboMultiplier * (1 + weaponSkillPower / 100);
         }
-        return s.effect(game, matchCount, comboMultiplier);
+        return s.effect.call(s, game, matchCount, comboMultiplier);
     }
 
     window.MageSkills = {

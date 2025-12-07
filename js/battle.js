@@ -486,6 +486,7 @@ const BattleMixin = {
 					if (result) {
 						const skillName = (MageSkills.SKILLS[randomSkillId] && MageSkills.SKILLS[randomSkillId].name) || randomSkillId;
 						showMessage(`⚡️ 法師技能：${skillName}`);
+						if(typeof result.damage === 'number') showMessage(`造成 ${result.damage} 傷害`);
 						skillTriggered = true;
 					}
 				}
@@ -496,6 +497,7 @@ const BattleMixin = {
 					const result = DesertMageSkills.applySkill(this, randomSkill.id, matchCount, comboMultiplier);
 					if (result) {
 						showMessage(`⚡️ 沙漠巫師技能：${randomSkill.name}`);
+						if(typeof result.damage === 'number') showMessage(`造成 ${result.damage} 傷害`);
 						skillTriggered = true;
 					}
 				}
@@ -507,6 +509,7 @@ const BattleMixin = {
 					if (result) {
 						const skillName = (WarriorSkills.SKILLS[randomSkillId] && WarriorSkills.SKILLS[randomSkillId].name) || randomSkillId;
 						showMessage(`⚡️ 武士技能：${skillName}`);
+						if(typeof result.damage === 'number') showMessage(`造成 ${result.damage} 傷害`);
 						skillTriggered = true;
 					}
 				}
@@ -518,6 +521,7 @@ const BattleMixin = {
 					if (result) {
 						const skillName = (ArcherSkills.SKILLS[randomSkillId] && ArcherSkills.SKILLS[randomSkillId].name) || randomSkillId;
 						showMessage(`⚡️ 弓箭手技能：${skillName}`);
+						if(typeof result.damage === 'number') showMessage(`造成 ${result.damage} 傷害`);
 						skillTriggered = true;
 					}
 				}

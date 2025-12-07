@@ -213,7 +213,7 @@
             if(weaponSkillPower > 0) {
                 comboMultiplier = comboMultiplier * (1 + weaponSkillPower / 100);
             }
-            return skill.effect(game, matchCount, comboMultiplier);
+            return skill.effect.call(skill, game, matchCount, comboMultiplier);
         }
     };
 
