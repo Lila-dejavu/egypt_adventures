@@ -437,13 +437,12 @@ const UIMixin = {
 				✦ ${t('hp')} x${(3 + this.difficulty * 0.5).toFixed(1)}, ${t('atkShort')} x${(2.5 + this.difficulty * 0.3).toFixed(1)}<br>
 				${(() => {
 					// Compute dynamic multipliers shown to the player
+					// Only show pyramid-specific bonus multipliers (not map multiplier)
 					const pyramidMultiplier = (typeof Config !== 'undefined' && Config.BATTLE && Config.BATTLE.PYRAMID_XP_MULTIPLIER) ? Config.BATTLE.PYRAMID_XP_MULTIPLIER : 1;
 					const playthroughs = parseInt(localStorage.getItem('egypt_playthroughs') || '0', 10) || 0;
 					const ngPlusRewardMultiplier = playthroughs > 0 ? (1.0 + (playthroughs * 0.3)) : 1.0;
-					const mapMultiplier = (typeof Utils !== 'undefined' && typeof Utils.getMapMultiplier === 'function') ? Utils.getMapMultiplier(this.difficulty) : Math.pow(2, Math.max(0, this.difficulty - 1));
-					// XP uses mapMultiplier * pyramidMultiplier * ngPlusRewardMultiplier
-					const xpMult = (mapMultiplier * pyramidMultiplier * ngPlusRewardMultiplier);
-					// Gold display uses pyramidMultiplier * ngPlusRewardMultiplier (per _handleVictory logic)
+					// Display only pyramid bonus multipliers (excluding map multiplier which applies everywhere)
+					const xpMult = (pyramidMultiplier * ngPlusRewardMultiplier);
 					const goldMult = (pyramidMultiplier * ngPlusRewardMultiplier);
 					return `✦ ${t('xp')} x${xpMult.toFixed(1)}<br>✦ ${t('gold')} x${goldMult.toFixed(1)}<br>`;
 				})()}
