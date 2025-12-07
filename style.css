@@ -69,7 +69,10 @@ body::after {
 }
 /* 移除在小螢幕上的象形文字裝飾（避免遮擋事件/對話框） */
 @media (max-width: 640px) {
-    body::after {
+    body::after,
+    /* 隱藏輸出區的象形文字裝飾，避免在手機上遮擋文字 */
+    #game-output::before,
+    #game-output::after {
         display: none !important;
     }
 }
@@ -2266,3 +2269,19 @@ button[disabled] {
         gap: 8px !important;
     }
 }
+
+/* ==== 移除所有象形文字裝飾（覆寫） ==== */
+/* 隱藏常見的 pseudo-elements，避免在手機或窄螢幕上遮擋內容。若需要恢復某些裝飾，請移除此區塊或針對特定 selector 解除隱藏。 */
+body::before, body::after,
+#game-container::before, #game-container::after,
+#game-output::before, #game-output::after,
+#slot-machine::before, #slot-machine::after,
+.reel:first-child::before, .reel:last-child::after,
+#welcome-panel::before, #welcome-panel::after {
+    content: none !important;
+    display: none !important;
+    pointer-events: none !important;
+}
+
+/* 保留一個空的 #remove-hieroglyphs 選擇器，方便將來精細恢復特定區塊 */
+#remove-hieroglyphs { display: none; }
