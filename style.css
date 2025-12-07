@@ -59,10 +59,15 @@ body::after {
     font-weight: bold;
     text-shadow: 1px 1px 2px rgba(218, 165, 32, 0.3);
 }
-#game-container {
+#game-container-wrapper {
     max-width: 960px;
     width: 95%;
     margin: 40px auto;
+    position: relative;
+}
+
+#game-container {
+    contain: paint;
     background: 
         repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(139, 69, 19, 0.04) 3px, rgba(139, 69, 19, 0.04) 6px),
         linear-gradient(180deg, rgba(218, 165, 32, 0.12) 0%, transparent 15%, transparent 85%, rgba(139, 69, 19, 0.12) 100%),
@@ -83,7 +88,7 @@ body::after {
 }
 
 /* 莎草紙捲軸頂部裝飾 - 超清晰版 */
-#game-container::before {
+#game-container-wrapper::before {
     content: '𓇋𓇋𓇋 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 𓇋𓇋𓇋';
     position: absolute;
     top: -35px;
@@ -101,7 +106,7 @@ body::after {
 }
 
 /* 莎草紙捲軸底部裝飾 - 超清晰版 */
-#game-container::after {
+#game-container-wrapper::after {
     content: '𓇋𓇋𓇋 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 𓇋𓇋𓇋';
     position: absolute;
     bottom: -35px;
