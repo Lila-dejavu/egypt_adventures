@@ -269,8 +269,13 @@ const BattleMixin = {
 	enemyAutoAttack() {
 		// Calculate base attack with combo counter-attack bonus
 		const raw = this.enemy.baseAttack;
+		// Apply rage buff if active
+		let rageMultiplier = 1.0;
+		if (this.enemy.buffs && this.enemy.buffs.rage) {
+			rageMultiplier = 1.0 + this.enemy.buffs.rage.attackBonus;
+		}
 		const extra = Math.max(0, this.consecutivePrimaryCount - 1) * 0.3; // 30% counter per combo
-		const dmg = Math.floor(raw * (1 + extra));
+		const dmg = Math.floor(raw * rageMultiplier * (1 + extra));
 
 		if (Math.random() < this._calcDodgeChance()) {
 			showMessage(t('dodgedAutoAttack', { luck: this.player.luck_combat }));
@@ -375,6 +380,9 @@ const BattleMixin = {
 
 			// Update status and messages first
 			this.updateStatus();
+
+			// Process enemy buffs (decrease turn counters)
+			this._processEnemyBuffs();
 
 			// Enemy turn countdown (if enemy is still alive)
 			this.enemy.turnsToAttack -= 1;
@@ -611,13 +619,27 @@ const BattleMixin = {
 				break;
 			}
 			case '💀': {
+				// Elite monster skill: Rage (triggered on skull symbol)
+				if (this.enemy && this.enemy.type === 'elite') {
+					// Initialize enemy buffs if needed
+					this.enemy.buffs = this.enemy.buffs || {};
+					// Apply Rage buff: 50% attack increase for 3 turns
+					this.enemy.buffs.rage = { turns: 3, attackBonus: 0.5 };
+					showMessage('🔥 菁英怪物進入狂怒狀態！攻擊力提升 50%（持續 3 回合）');
+				}
+
 				// Calculate damage based on enemy auto-attack formula
                 const baseAttack = this.enemy.baseAttack || 10; // Default base attack if undefined
+                // Apply rage buff if active
+                let rageMultiplier = 1.0;
+                if (this.enemy.buffs && this.enemy.buffs.rage) {
+                	rageMultiplier = 1.0 + this.enemy.buffs.rage.attackBonus;
+                }
                 const comboBonus = Math.max(0, this.consecutivePrimaryCount - 1) * 0.3; // 30% per combo
-                const adjustedDmg = Math.floor(baseAttack * (1 + comboBonus) * matchCount * tripleBonus);
+                const adjustedDmg = Math.floor(baseAttack * rageMultiplier * (1 + comboBonus) * matchCount * tripleBonus);
 
                 // Log calculation details for debugging
-                console.log(`💀 Skull Symbol Damage: baseAttack=${baseAttack}, comboBonus=${comboBonus}, matchCount=${matchCount}, tripleBonus=${tripleBonus}, adjustedDmg=${adjustedDmg}`);
+                console.log(`💀 Skull Symbol Damage: baseAttack=${baseAttack}, rageMultiplier=${rageMultiplier}, comboBonus=${comboBonus}, matchCount=${matchCount}, tripleBonus=${tripleBonus}, adjustedDmg=${adjustedDmg}`);
 
 				if (Math.random() < this._calcDodgeChance()) {
 					showMessage(t('dodgedSymbolAttack', { luck: this.player.luck_combat }));
@@ -862,6 +884,31 @@ const BattleMixin = {
 		// If enemy died from DoT, handle victory
 		if (this.enemy.hp <= 0) {
 			this._handleVictory();
+		}
+	},
+
+	/**
+	 * Process active buffs on enemy (called each turn)
+	 * Decrements turn counters and removes expired buffs
+	 * @private
+	 */
+	_processEnemyBuffs() {
+		if (!this.enemy || !this.enemy.buffs) return;
+		const buffs = this.enemy.buffs;
+		
+		for (const key of Object.keys(buffs)) {
+			const buff = buffs[key];
+			if (buff.turns > 0) {
+				buff.turns -= 1;
+				if (buff.turns <= 0) {
+					delete buffs[key];
+					if (key === 'rage') {
+						showMessage('🔥 菁英怪物的狂怒狀態消失了！');
+					} else {
+						showMessage(`🟢 敵人 ${key} 效果消失`);
+					}
+				}
+			}
 		}
 	},
 
