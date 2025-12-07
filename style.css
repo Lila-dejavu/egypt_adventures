@@ -1080,10 +1080,10 @@ button[disabled] {
 }
 
 /* 當畫面窄時轉成直列 */
-@media (max-width:800px) {
-    #battle-area { 
-        flex-direction: column;
-        z-index: auto;
+@media (max-width:600px) {
+    #equipment-panel { width:90% !important; left:5% !important; right:5% !important; top:80px !important; z-index:10000 !important; max-height:70vh !important; overflow-y:auto !important; position: fixed !important; }
+    #blackmarket-panel { width:90% !important; left:5% !important; right:5% !important; top:80px !important; z-index:10000 !important; max-height:70vh !important; overflow-y:auto !important; position: fixed !important; }
+}
     }
     .status-box-side {
         flex: 1 1 auto;
