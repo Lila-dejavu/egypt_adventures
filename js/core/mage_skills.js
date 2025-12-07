@@ -21,7 +21,7 @@
         firebolt: {
             id: 'firebolt',
             name: '火焰箭',
-            description: '消耗魔力攻擊單一目標並造成灼燒',
+            description: '消耗魔力攻擊單一目標並造成灼燒（基礎傷害：28，灼燒3回合）',
             tags: ['single','burn'],
             manaCost: 8,
             effect(game, matchCount, comboMultiplier){
@@ -46,7 +46,7 @@
         flame_wave: {
             id: 'flame_wave',
             name: '烈焰波',
-            description: '消耗較多魔力對敵人施加範圍灼燒（強化 DoT）',
+            description: '消耗較多魔力對敵人施加範圍灼燒（基礎傷害：18，強化灼燒4回合）',
             tags: ['aoe','burn'],
             manaCost: 12,
             effect(game, matchCount, comboMultiplier){
@@ -70,7 +70,7 @@
         mana_shield: {
             id: 'mana_shield',
             name: '魔力護盾',
-            description: '消耗魔力轉化為護盾',
+            description: '消耗魔力轉化為護盾（基礎：6+匹配數×3）',
             tags: ['self','shield'],
             manaCost: 6,
             effect(game, matchCount, comboMultiplier){
@@ -109,7 +109,7 @@
         scorch: {
             id: 'scorch',
             name: '灼燒',
-            description: '強化單體灼燒，造成持續流失生命',
+            description: '強化單體灼燒，造成持續流失生命（基礎傷害：12，DoT 4回合）',
             tags: ['single','burn'],
             manaCost: 9,
             effect(game, matchCount, comboMultiplier){
@@ -132,8 +132,8 @@
         // 閃電連鎖：造成多次小傷害並附帶短暫震盪效果
         lightning_chain: {
             id: 'lightning_chain',
-            name: '閃電連鎖',
-            description: '對敵人造成連續多次攻擊',
+            name: '閃電連鏈',
+            description: '對敵人造成連續多次攻擊（基礎傷害：20，震盪2回合）',
             tags: ['single','chain','shock'],
             manaCost: 11,
             effect(game, matchCount, comboMultiplier){
@@ -158,7 +158,7 @@
         curse: {
             id: 'curse',
             name: '詛咒',
-            description: '降低敵人攻擊與閃避率',
+            description: '降低敵人攻擊與閃避率（攻擊-8%、閃避-6%，3回合）',
             tags: ['single','debuff'],
             manaCost: 7,
             effect(game, matchCount, comboMultiplier){

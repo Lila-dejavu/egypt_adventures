@@ -35,14 +35,32 @@ const ENEMY_IMAGE_MAP = {
 
 // 裝備與掉落樣本（基礎屬性，品質會在生成時添加）
 const ITEMS = [
-	// 武器類
-	{ name: '青銅劍', slot: 'weapon', atk: 3, rarity: 'common' },
-	{ name: '鋼鐵劍', slot: 'weapon', atk: 6, rarity: 'common' },
-	{ name: '法老彎刀', slot: 'weapon', atk: 8, rarity: 'common' },
-	{ name: '聖甲蟲戰斧', slot: 'weapon', atk: 10, rarity: 'common' },
-	{ name: '荷魯斯之劍', slot: 'weapon', atk: 12, rarity: 'common' },
-	{ name: '阿努比斯之鎌', slot: 'weapon', atk: 15, rarity: 'common' },
-	{ name: '太陽神之矛', slot: 'weapon', atk: 18, rarity: 'common' },
+	// 武器類 - 戰士（近戰武器）
+	{ name: '青銅劍', slot: 'weapon', type: 'melee', atk: 3, rarity: 'common' },
+	{ name: '鋼鐵劍', slot: 'weapon', type: 'melee', atk: 6, rarity: 'common' },
+	{ name: '法老彎刀', slot: 'weapon', type: 'melee', atk: 8, rarity: 'common' },
+	{ name: '聖甲蟲戰斧', slot: 'weapon', type: 'melee', atk: 10, rarity: 'common' },
+	{ name: '荷魯斯之劍', slot: 'weapon', type: 'melee', atk: 12, rarity: 'common' },
+	{ name: '阿努比斯之鎌', slot: 'weapon', type: 'melee', atk: 15, rarity: 'common' },
+	{ name: '太陽神之矛', slot: 'weapon', type: 'melee', atk: 18, rarity: 'common' },
+	
+	// 武器類 - 法師（法杖）
+	{ name: '學徒法杖', slot: 'weapon', type: 'staff', atk: 2, mana_bonus: 10, skill_power: 5, rarity: 'common' },
+	{ name: '橡木法杖', slot: 'weapon', type: 'staff', atk: 4, mana_bonus: 15, skill_power: 8, rarity: 'common' },
+	{ name: '水晶法杖', slot: 'weapon', type: 'staff', atk: 6, mana_bonus: 20, skill_power: 12, rarity: 'common' },
+	{ name: '賢者法杖', slot: 'weapon', type: 'staff', atk: 8, mana_bonus: 25, skill_power: 15, rarity: 'common' },
+	{ name: '托特的智慧杖', slot: 'weapon', type: 'staff', atk: 10, mana_bonus: 30, skill_power: 18, rarity: 'common' },
+	{ name: '伊西斯的魔杖', slot: 'weapon', type: 'staff', atk: 12, mana_bonus: 35, skill_power: 22, rarity: 'common' },
+	{ name: '星辰法杖', slot: 'weapon', type: 'staff', atk: 15, mana_bonus: 40, skill_power: 25, rarity: 'common' },
+	
+	// 武器類 - 弓箭手（弓）
+	{ name: '短弓', slot: 'weapon', type: 'bow', atk: 3, crit_rate: 3, rarity: 'common' },
+	{ name: '獵人之弓', slot: 'weapon', type: 'bow', atk: 6, crit_rate: 5, rarity: 'common' },
+	{ name: '複合弓', slot: 'weapon', type: 'bow', atk: 8, crit_rate: 7, rarity: 'common' },
+	{ name: '精靈長弓', slot: 'weapon', type: 'bow', atk: 10, crit_rate: 9, combo_rate: 5, rarity: 'common' },
+	{ name: '神射手之弓', slot: 'weapon', type: 'bow', atk: 12, crit_rate: 11, combo_rate: 8, rarity: 'common' },
+	{ name: '塞特的迅風弓', slot: 'weapon', type: 'bow', atk: 15, crit_rate: 13, combo_rate: 10, rarity: 'common' },
+	{ name: '荷魯斯之翼弓', slot: 'weapon', type: 'bow', atk: 18, crit_rate: 15, combo_rate: 12, rarity: 'common' },
 
 	// 防具類
 	{ name: '皮甲', slot: 'armor', def: 2, rarity: 'common' },
@@ -66,7 +84,7 @@ const ITEMS = [
 // 品質額外屬性池
 const QUALITY_BONUS = {
 	weapon: {
-		// 武器額外屬性：暴擊率、連擊率、技能增幅
+		// 武器額外屬性：暴擊率、連擊率、技能增幅（通用）
 		common: [], // 普通無額外屬性
 		rare: [ // 稀有：2個額外屬性
 			{ crit_rate: 5 }, // +5% 暴擊率
@@ -74,21 +92,28 @@ const QUALITY_BONUS = {
 			{ combo_rate: 8 }, // +8% 連擊維持率
 			{ combo_rate: 12 },
 			{ skill_power: 10 }, // +10% 技能傷害
-			{ skill_power: 15 }
+			{ skill_power: 15 },
+			{ mana_bonus: 15 }, // 法師專屬：魔力
+			{ stamina_bonus: 15 } // 戰士/弓箭手：體力
 		],
 		epic: [ // 史詩：2個額外屬性
 			{ crit_rate: 10, combo_rate: 15 },
 			{ crit_rate: 12, skill_power: 20 },
 			{ combo_rate: 18, skill_power: 25 },
 			{ crit_rate: 15, combo_rate: 20 },
-			{ skill_power: 30, combo_rate: 15 }
+			{ skill_power: 30, combo_rate: 15 },
+			{ mana_bonus: 30, skill_power: 20 }, // 法師專屬
+			{ crit_rate: 15, stamina_bonus: 25 }, // 弓箭手專屬
+			{ atk: 5, stamina_bonus: 30 } // 戰士專屬
 		],
 		legendary: [ // 傳說：4個額外屬性
 			{ crit_rate: 20, combo_rate: 25, skill_power: 35, atk: 8 },
 			{ crit_rate: 25, combo_rate: 30, skill_power: 40, dodge_rate: 10 },
 			{ crit_rate: 22, combo_rate: 28, atk: 10, max_hp_bonus: 30 },
 			{ skill_power: 50, crit_rate: 18, combo_rate: 22, luck_combat: 3 },
-			{ combo_rate: 35, crit_rate: 20, skill_power: 30, stamina_bonus: 25 }
+			{ combo_rate: 35, crit_rate: 20, skill_power: 30, stamina_bonus: 25 },
+			{ mana_bonus: 50, skill_power: 45, crit_rate: 15, combo_rate: 20 }, // 法師專屬
+			{ crit_rate: 30, combo_rate: 25, stamina_bonus: 35, dodge_rate: 15 } // 弓箭手專屬
 		]
 	},
 	armor: {

@@ -20,6 +20,11 @@ function cloneItem(base, rarity, isPyramid = false) {
     if (it.luck_gold) it.luck_gold = Math.max(1, Math.round(it.luck_gold * scale));
     if (it.luck_combat) it.luck_combat = Math.max(1, Math.round(it.luck_combat * scale));
     if (it.max_hp_bonus) it.max_hp_bonus = Math.max(1, Math.round(it.max_hp_bonus * scale));
+    if (it.mana_bonus) it.mana_bonus = Math.max(1, Math.round(it.mana_bonus * scale));
+    if (it.stamina_bonus) it.stamina_bonus = Math.max(1, Math.round(it.stamina_bonus * scale));
+    if (it.crit_rate) it.crit_rate = Math.max(1, Math.round(it.crit_rate * scale));
+    if (it.combo_rate) it.combo_rate = Math.max(1, Math.round(it.combo_rate * scale));
+    if (it.skill_power) it.skill_power = Math.max(1, Math.round(it.skill_power * scale));
 
     // Add quality bonuses based on rarity
     const bonusCount = BONUS_COUNT_BY_RARITY[rarity] || 0;

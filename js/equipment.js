@@ -61,6 +61,7 @@ const EquipmentMixin = {
 		if (it.luck_combat) parts.push(`戰運+${it.luck_combat}`);
 		if (it.max_hp_bonus) parts.push(`HP+${it.max_hp_bonus}`);
 		if (it.stamina_bonus) parts.push(`體力+${it.stamina_bonus}`);
+		if (it.mana_bonus) parts.push(`魔力+${it.mana_bonus}`);
 		if (it.crit_rate) parts.push(`暴擊+${it.crit_rate}%`);
 		if (it.combo_rate) parts.push(`連擊+${it.combo_rate}%`);
 		if (it.skill_power) parts.push(`技能+${it.skill_power}%`);
@@ -108,6 +109,10 @@ const EquipmentMixin = {
 					this.player.max_stamina = Math.max(1, this.player.max_stamina - oldEquipment.stamina_bonus);
 					this.player.stamina = Math.min(this.player.max_stamina, this.player.stamina);
 				}
+				if (oldEquipment.mana_bonus) {
+					this.player.max_mana = Math.max(0, (this.player.max_mana || 0) - oldEquipment.mana_bonus);
+					this.player.mana = Math.min(this.player.max_mana, this.player.mana || 0);
+				}
 				// Return old equipment to inventory
 				this.player.inventory.push(oldEquipment);
 				showMessage(`${t('unequipped')} ${oldEquipment.name}, ${t('addedToInventory')}.`);
@@ -131,6 +136,11 @@ const EquipmentMixin = {
 				this.player.max_stamina += it.stamina_bonus;
 				this.player.stamina = Math.min(this.player.max_stamina, this.player.stamina + it.stamina_bonus);
 				showMessage(`${t('maxStaminaBonus')} +${it.stamina_bonus}`);
+			}
+			if (it.mana_bonus) {
+				this.player.max_mana = (this.player.max_mana || 0) + it.mana_bonus;
+				this.player.mana = Math.min(this.player.max_mana, (this.player.mana || 0) + it.mana_bonus);
+				showMessage(`最大魔力 +${it.mana_bonus}`);
 			}
 
 			// Remove new item from inventory
@@ -170,6 +180,11 @@ const EquipmentMixin = {
 			this.player.max_stamina = Math.max(1, this.player.max_stamina - it.stamina_bonus);
 			this.player.stamina = Math.min(this.player.max_stamina, this.player.stamina);
 			showMessage(`${t('maxStaminaBonus')} -${it.stamina_bonus}`);
+		}
+		if (it.mana_bonus) {
+			this.player.max_mana = Math.max(0, (this.player.max_mana || 0) - it.mana_bonus);
+			this.player.mana = Math.min(this.player.max_mana, this.player.mana || 0);
+			showMessage(`最大魔力 -${it.mana_bonus}`);
 		}
 
 		this.updateStatus();

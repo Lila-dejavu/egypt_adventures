@@ -21,7 +21,7 @@
         power_slash: {
             id: 'power_slash',
             name: '力劈斬',
-            description: '消耗體力進行強力斬擊',
+            description: '消耗體力進行強力斬擊（基礎傷害：35）',
             tags: ['single','physical'],
             staminaCost: 8,
             effect(game, matchCount, comboMultiplier){
@@ -40,7 +40,7 @@
         whirlwind: {
             id: 'whirlwind',
             name: '旋風斬',
-            description: '旋轉攻擊造成範圍傷害',
+            description: '旋轉攻擊造成範圍傷害（基礎傷害：28×0.85）',
             tags: ['aoe','physical'],
             staminaCost: 10,
             effect(game, matchCount, comboMultiplier){
@@ -59,7 +59,7 @@
         iron_defense: {
             id: 'iron_defense',
             name: '鐵壁',
-            description: '消耗體力獲得大量護盾',
+            description: '消耗體力獲得大量護盾（基礎：15+匹配數×5）',
             tags: ['self','shield'],
             staminaCost: 7,
             effect(game, matchCount, comboMultiplier){
@@ -75,7 +75,7 @@
         bleeding_strike: {
             id: 'bleeding_strike',
             name: '裂傷斬',
-            description: '攻擊並造成持續流血',
+            description: '攻擊並造成持續流血（基礎傷害：22，流血4回合）',
             tags: ['single','bleed'],
             staminaCost: 9,
             effect(game, matchCount, comboMultiplier){
@@ -101,7 +101,7 @@
         armor_break: {
             id: 'armor_break',
             name: '破甲斬',
-            description: '攻擊並降低敵人防禦',
+            description: '攻擊並降低敵人防禦（基礎傷害：25，降低防禦15%）',
             tags: ['single','debuff'],
             staminaCost: 8,
             effect(game, matchCount, comboMultiplier){
@@ -126,7 +126,7 @@
         counter_stance: {
             id: 'counter_stance',
             name: '反擊姿態',
-            description: '進入反擊姿態，受到攻擊時反擊',
+            description: '進入反擊姿態，受到攻擊時反擊（基礎働傷：20，2回合）',
             tags: ['self','buff'],
             staminaCost: 6,
             effect(game, matchCount, comboMultiplier){
@@ -146,7 +146,7 @@
         critical_strike: {
             id: 'critical_strike',
             name: '致命一擊',
-            description: '高機率暴擊的強力攻擊',
+            description: '高機率暴擊的強力攻擊（基礎傷害：30，80%暴擊率×2.5倍）',
             tags: ['single','crit'],
             staminaCost: 11,
             effect(game, matchCount, comboMultiplier){

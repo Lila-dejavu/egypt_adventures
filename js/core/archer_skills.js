@@ -21,7 +21,7 @@
         precision_shot: {
             id: 'precision_shot',
             name: '精準射擊',
-            description: '消耗體力進行精準的單體射擊',
+            description: '消耗體力進行精準的單體射擊（基礎傷害：32）',
             tags: ['single','physical'],
             staminaCost: 7,
             effect(game, matchCount, comboMultiplier){
@@ -40,7 +40,7 @@
         multi_shot: {
             id: 'multi_shot',
             name: '多重射擊',
-            description: '快速連續射出多支箭矢',
+            description: '快速連續射出多支箭矢（基礎傷害：18×3支）',
             tags: ['multi','physical'],
             staminaCost: 10,
             effect(game, matchCount, comboMultiplier){
@@ -60,7 +60,7 @@
         poison_arrow: {
             id: 'poison_arrow',
             name: '毒箭',
-            description: '射出帶毒的箭矢造成持續中毒',
+            description: '射出帶毒的箭矢造成持續中毒（基礎傷害：20，中毒5回合）',
             tags: ['single','poison'],
             staminaCost: 8,
             effect(game, matchCount, comboMultiplier){
@@ -86,7 +86,7 @@
         evasive_shot: {
             id: 'evasive_shot',
             name: '閃避射擊',
-            description: '靈活移動並射擊，提升閃避率',
+            description: '靈活移動並射擊，提升閃避率（基礎傷害：22，閃避+20%）',
             tags: ['single','buff'],
             staminaCost: 7,
             effect(game, matchCount, comboMultiplier){
@@ -111,7 +111,7 @@
         explosive_arrow: {
             id: 'explosive_arrow',
             name: '爆裂箭',
-            description: '射出會爆炸的箭矢造成範圍傷害',
+            description: '射出會爆炸的箭矢造成範圍傷害（基礎傷害：28+30%濘射）',
             tags: ['aoe','physical'],
             staminaCost: 11,
             effect(game, matchCount, comboMultiplier){
@@ -132,7 +132,7 @@
         frost_arrow: {
             id: 'frost_arrow',
             name: '冰凍箭',
-            description: '射出冰凍箭矢減緩敵人行動',
+            description: '射出冰凍箭矢減緩敵人行動（基礎傷害：24，減速30%）',
             tags: ['single','slow'],
             staminaCost: 8,
             effect(game, matchCount, comboMultiplier){
@@ -157,7 +157,7 @@
         piercing_shot: {
             id: 'piercing_shot',
             name: '穿透射擊',
-            description: '強力穿透攻擊無視部分防禦',
+            description: '強力穿透攻擊無視部分防禦（基礎傷害：30×1.2）',
             tags: ['single','pierce'],
             staminaCost: 9,
             effect(game, matchCount, comboMultiplier){
