@@ -486,7 +486,20 @@ const BattleMixin = {
 					if (result) {
 						const skillName = (MageSkills.SKILLS[randomSkillId] && MageSkills.SKILLS[randomSkillId].name) || randomSkillId;
 						showMessage(`⚡️ 法師技能：${skillName}`);
-						if(typeof result.damage === 'number') showMessage(`造成 ${result.damage} 傷害`);
+						if(typeof result.damage === 'number'){
+							showMessage(`造成 ${result.damage} 傷害`);
+						} else {
+							// Fallback: estimate damage based on weapon and base skill formula
+							try{
+								let est = this._calcScaledValue(20, matchCount, tripleBonus, comboMultiplier);
+								est += this._getWeaponAttr('atk');
+								const skillPower = this._getWeaponAttr('skill_power') || 0;
+								est = Math.floor(est * (1 + skillPower / 100));
+								const isCritEst = Math.random() < this._calcCritChance();
+								const finalEst = isCritEst ? Math.floor(est * 2.0) : est;
+								showMessage(`造成 約 ${finalEst} 傷害`);
+							}catch(e){/* ignore fallback errors */}
+						}
 						skillTriggered = true;
 					}
 				}
@@ -497,7 +510,19 @@ const BattleMixin = {
 					const result = DesertMageSkills.applySkill(this, randomSkill.id, matchCount, comboMultiplier);
 					if (result) {
 						showMessage(`⚡️ 沙漠巫師技能：${randomSkill.name}`);
-						if(typeof result.damage === 'number') showMessage(`造成 ${result.damage} 傷害`);
+						if(typeof result.damage === 'number'){
+							showMessage(`造成 ${result.damage} 傷害`);
+						} else {
+							try{
+								let est = this._calcScaledValue(20, matchCount, tripleBonus, comboMultiplier);
+								est += this._getWeaponAttr('atk');
+								const skillPower = this._getWeaponAttr('skill_power') || 0;
+								est = Math.floor(est * (1 + skillPower / 100));
+								const isCritEst = Math.random() < this._calcCritChance();
+								const finalEst = isCritEst ? Math.floor(est * 2.0) : est;
+								showMessage(`造成 約 ${finalEst} 傷害`);
+							}catch(e){}
+						}
 						skillTriggered = true;
 					}
 				}
@@ -509,7 +534,19 @@ const BattleMixin = {
 					if (result) {
 						const skillName = (WarriorSkills.SKILLS[randomSkillId] && WarriorSkills.SKILLS[randomSkillId].name) || randomSkillId;
 						showMessage(`⚡️ 武士技能：${skillName}`);
-						if(typeof result.damage === 'number') showMessage(`造成 ${result.damage} 傷害`);
+						if(typeof result.damage === 'number'){
+							showMessage(`造成 ${result.damage} 傷害`);
+						} else {
+							try{
+								let est = this._calcScaledValue(20, matchCount, tripleBonus, comboMultiplier);
+								est += this._getWeaponAttr('atk');
+								const skillPower = this._getWeaponAttr('skill_power') || 0;
+								est = Math.floor(est * (1 + skillPower / 100));
+								const isCritEst = Math.random() < this._calcCritChance();
+								const finalEst = isCritEst ? Math.floor(est * 2.0) : est;
+								showMessage(`造成 約 ${finalEst} 傷害`);
+							}catch(e){}
+						}
 						skillTriggered = true;
 					}
 				}
@@ -521,7 +558,19 @@ const BattleMixin = {
 					if (result) {
 						const skillName = (ArcherSkills.SKILLS[randomSkillId] && ArcherSkills.SKILLS[randomSkillId].name) || randomSkillId;
 						showMessage(`⚡️ 弓箭手技能：${skillName}`);
-						if(typeof result.damage === 'number') showMessage(`造成 ${result.damage} 傷害`);
+						if(typeof result.damage === 'number'){
+							showMessage(`造成 ${result.damage} 傷害`);
+						} else {
+							try{
+								let est = this._calcScaledValue(20, matchCount, tripleBonus, comboMultiplier);
+								est += this._getWeaponAttr('atk');
+								const skillPower = this._getWeaponAttr('skill_power') || 0;
+								est = Math.floor(est * (1 + skillPower / 100));
+								const isCritEst = Math.random() < this._calcCritChance();
+								const finalEst = isCritEst ? Math.floor(est * 2.0) : est;
+								showMessage(`造成 約 ${finalEst} 傷害`);
+							}catch(e){}
+						}
 						skillTriggered = true;
 					}
 				}
