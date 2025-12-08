@@ -98,8 +98,12 @@ const PersistenceMixin = {
 			if(typeof this.applyClassBonuses === 'function'){
 				try{ this.applyClassBonuses(this.player && this.player.selectedClass); }catch(e){ console.warn('applyClassBonuses failed on load', e); }
 			}
-			if(typeof this.applyBloodlineModifiers === 'function' && this.player && this.player.bloodline){
-				try{ this.applyBloodlineModifiers(this.player.bloodline); }catch(e){ console.warn('applyBloodlineModifiers failed on load', e); }
+			// Re-apply bloodline modifiers on load. Support both `player.bloodline` and legacy `player.selectedBloodline`.
+			if(typeof this.applyBloodlineModifiers === 'function' && this.player){
+				try{
+					const bl = this.player.bloodline || this.player.selectedBloodline;
+					if(bl) this.applyBloodlineModifiers(bl);
+				}catch(e){ console.warn('applyBloodlineModifiers failed on load', e); }
 			}
 			// Ensure mage has a default skill if missing
 			if(this.player && this.player.selectedClass === 'mage' && !this.player.mage_selected_skill && window.MageSkills){
