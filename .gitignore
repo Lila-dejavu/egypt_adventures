@@ -1,0 +1,39 @@
+# Operating System Files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editor and IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.settings/
+.classpath
+
+# Temporary files
+*.tmp
+*.bak
+*.log
+
+# Node.js (if used for build tools)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Build and distribution files
+dist/
+build/
+*.min.js
+*.min.css
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Test coverage
+coverage/
+.nyc_output/
